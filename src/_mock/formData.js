@@ -68,12 +68,6 @@ export const BasicInfo = [
         "defaultValue": ""
     },
     {
-        "label": "Profile picture url",
-        "name": "profile_picture_url",
-        "type": "text",
-        "defaultValue": ""
-    },
-    {
         "label": "Social media links",
         "name": "social_media_links",
         "type": "text",
@@ -115,18 +109,25 @@ export const BasicInfo = [
         "type": "text",
         "defaultValue": ""
     },
-    {
-        "label": "Work permit upload url",
-        "name": "work_permit_upload_url",
-        "type": "text",
-        "defaultValue": ""
-    },
+    
     {
         "label": "Residency status",
         "name": "residency_status",
         "type": "text",
         "defaultValue": ""
-    }
+    },
+    {
+        "label": "Profile picture",
+        "name": "profile_picture_url",
+        "type": "upload",
+        "defaultValue": ""
+    },
+    {
+        "label": "Work permit",
+        "name": "work_permit_upload_url",
+        "type": "upload",
+        "defaultValue": ""
+    },
 ]
 
 export const ContactInfo = [
@@ -354,9 +355,9 @@ export const EducationInfo = [
         "defaultValue": ""
     },
     {
-        "label": "Certificate url",
+        "label": "Certificate",
         "name": "certificate_url",
-        "type": "text",
+        "type": "upload",
         "defaultValue": ""
     },
     {
@@ -568,9 +569,9 @@ export const IdentificationInfo = [
         "defaultValue": ""
     },
     {
-        "label": "Document url",
+        "label": "Document",
         "name": "Document_url",
-        "type": "text",
+        "type": "upload",
         "defaultValue": ""
     }
 ]

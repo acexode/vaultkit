@@ -52,10 +52,7 @@ UploadMultiFile.propTypes = {
   onRemoveAll: PropTypes.func,
   sx: PropTypes.object
 };
-ShowRejectionItems.propTypes = {
 
-  fileRejections: PropTypes.array,
-};
 
 const ShowRejectionItems = ({ fileRejections }) => (
   <Paper
@@ -69,12 +66,12 @@ const ShowRejectionItems = ({ fileRejections }) => (
     }}
   >
     {fileRejections.map(({ fille, errors }) => {
-      const { path, size } = fille;
+      const { path } = fille;
       return (
         <Box key={path} sx={{ my: 1 }}>
-          <Typography variant="subtitle2" noWrap>
+          {/* <Typography variant="subtitle2" noWrap>
             {path} - {fData(size)}
-          </Typography>
+          </Typography> */}
           {errors.map((e) => (
             <Typography key={e.code} variant="caption" component="p">
               - {e.message}
@@ -85,6 +82,11 @@ const ShowRejectionItems = ({ fileRejections }) => (
     })}
   </Paper>
 );
+
+ShowRejectionItems.propTypes = {
+
+  fileRejections: PropTypes.array,
+};
 
 export default function UploadMultiFile({ error, showPreview = false, files, onRemove, onRemoveAll, sx, ...other }) {
   const hasFile = files.length > 0;

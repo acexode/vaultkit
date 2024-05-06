@@ -7,6 +7,9 @@ import {  Grid, Card, Stack, Button, MenuItem, TextField, Typography } from '@mu
 
 import { useRouter } from 'src/routes/hooks';
 
+import { UploadSingleFile } from 'src/components/uploads';
+
+
 const MyFormComponent = ({ fields, title }) => {
   const router = useRouter()
   const initialValues = {};
@@ -28,6 +31,9 @@ const MyFormComponent = ({ fields, title }) => {
 
   const renderField = (field) => {
     switch (field.type) {
+
+      case 'upload':
+        return <UploadSingleFile label={field.label} />
       case 'select':
         return (
           <TextField
@@ -85,7 +91,7 @@ const MyFormComponent = ({ fields, title }) => {
             <Grid container spacing={2} mt={2}>
       
             {fields.map((field) => (
-              <Grid key={field.name} mb={3} xs={12} md={5} lg={5} mx={3}>
+              <Grid key={field.name} mb={3} xs={12} md={field.type === 'upload' ? 12 : 5} lg={field.type === 'upload' ? 12 : 5} mx={3}>
               
                 {renderField(field)}
               </Grid>

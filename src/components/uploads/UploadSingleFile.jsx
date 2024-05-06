@@ -4,7 +4,7 @@ import { useDropzone } from 'react-dropzone';
 
 import { Box, Paper, alpha, styled, Typography } from '@mui/material';
 
-import { fData } from 'src/utils/format-number';
+// import { fData } from 'src/utils/format-number';
 
 import UploadIllustration from 'src/assets/illustration_upload';
 // material
@@ -38,13 +38,11 @@ const DropZoneStyle = styled('div')(({ theme }) => ({
 
 UploadSingleFile.propTypes = {
   error: PropTypes.bool,
+  label: PropTypes.string,
   file: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   sx: PropTypes.object,
 };
-ShowRejectionItems.propTypes = {
 
-  fileRejections: PropTypes.array,
-};
 
 const ShowRejectionItems = ({ fileRejections }) => (
   <Paper
@@ -57,24 +55,35 @@ const ShowRejectionItems = ({ fileRejections }) => (
       bgcolor: (theme) => alpha(theme.palette.error.main, 0.08),
     }}
   >
-    {fileRejections.map(({ fille, errors }) => {
-      const { path, size } = fille;
+    {fileRejections.map(({ file, errors }) => {
+      const { path,  } = file;
       return (
-        <Box key={path} sx={{ my: 1 }}>
-          <Typography variant="subtitle2" noWrap>
-            {path} - {fData(size)}
-          </Typography>
-          {errors.map((e) => (
-            <Typography key={e.code} variant="caption" component="p">
-              - {e.message}
-            </Typography>
-          ))}
-        </Box>
+        <>
+        {file && 
+           <Box key={path} sx={{ my: 1 }}>
+           {/* <Typography variant="subtitle2" noWrap>
+             {path} - {fData(size)}
+           </Typography> */}
+           {errors.map((e) => (
+             <Typography key={e.code} variant="caption" component="p">
+               - {e.message}
+             </Typography>
+           ))}
+         </Box>
+        }
+        
+        </>
+       
       );
     })}
   </Paper>
 );
-export default function UploadSingleFile({ error, file, sx, ...other }) {
+
+ShowRejectionItems.propTypes = {
+
+  fileRejections: PropTypes.array,
+};
+export default function UploadSingleFile({ error, file, sx, label,  ...other }) {
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
     multiple: false,
     ...other,
@@ -100,7 +109,7 @@ export default function UploadSingleFile({ error, file, sx, ...other }) {
 
         <Box sx={{ p: 3, ml: { md: 2 } }}>
           <Typography gutterBottom variant="h5">
-            Drop or Select file
+            Drop or Select {label}
           </Typography>
 
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
