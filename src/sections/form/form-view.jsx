@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
 
-import { Box, Grid, Card, Stack, Button, MenuItem, TextField, Typography } from '@mui/material';
+import {  Grid, Card, Stack, Button, MenuItem, TextField, Typography } from '@mui/material';
 
 import { useRouter } from 'src/routes/hooks';
 
@@ -41,6 +41,7 @@ const MyFormComponent = ({ fields, title }) => {
             onChange={formik.handleChange}
             error={formik.touched[field.name] && Boolean(formik.errors[field.name])}
             helperText={formik.touched[field.name] && formik.errors[field.name]}
+            margin='3'
           >
             {field.options.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -76,17 +77,20 @@ const MyFormComponent = ({ fields, title }) => {
           <Card
             sx={{
               p: 5,
-              width: 1,
-              maxWidth: 620,
+              width: 720,
+              maxWidth: 720,
             }}
           >
             <Typography variant="h4" mb={2} textAlign="center">{title}</Typography>
-
+            <Grid container spacing={2} mt={2}>
+      
             {fields.map((field) => (
-              <Box key={field.name} mb={2} >
+              <Grid key={field.name} mb={3} xs={12} md={5} lg={5} mx={3}>
+              
                 {renderField(field)}
-              </Box>
+              </Grid>
             ))}
+            </Grid>
         <Grid item xs={12} justifyContent="center">
           <Button onClick={()=> router.back()} variant="outlined" color="primary" sx={{mr: 2}}>
             Cancel
