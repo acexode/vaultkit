@@ -51,7 +51,12 @@ export default function ShareView() {
   const fieldData = getFormFields('field-labels')
 
   const handleChange = (event, newValue) => {
+    console.log(newValue);
     setValue(newValue);
+  };
+  const handleSaveNext = () => {
+    const next = value === 7 ? value : value + 1
+    setValue(next);
   };
   const handleClose = (event, newValue) => {
     console.log(newValue);
@@ -74,7 +79,7 @@ export default function ShareView() {
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">Select data for sharing</Typography>
         <Box direction="row" alignItems="center" justifyContent="space-between">
-          <Button variant="outlined" sx={{mx: 2}} autoFocus onClick={handleClose}>
+          <Button variant="outlined" sx={{mx: 2}} autoFocus onClick={handleSaveNext}>
             Save & Next
           </Button>
           <Button variant="contained" onClick={handleClose} autoFocus>
