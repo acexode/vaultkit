@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { Link as RouterLink } from 'react-router-dom';
@@ -5,6 +6,9 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Card, Button, Typography, CardContent } from '@mui/material';
 
 import SeoIllustration from 'src/assets/illustration_seo';
+
+import AlertDialog from '../modal/modal';
+import ShareView from '../share-data/share-view';
 // material
 ;
 
@@ -30,11 +34,19 @@ AppWelcome.propTypes = {
 };
 
 export default function AppWelcome({ displayName }) {
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <RootStyle>
       <CardContent
         sx={{
-          p: { md: 0 },
+          p: 0,
           pl: { md: 5 },
           color: 'grey.800'
         }}
@@ -47,18 +59,20 @@ export default function AppWelcome({ displayName }) {
         Take control of your data sharing and ensure your information is secure and up-to-date. To do so, please verify or create your access code, which will enable you to manage who can access your data.
         </Typography>
 
-        <Button variant="contained" to="#" component={RouterLink}>
-          Verify/Generate Access Code
+     
+        <Button onClick={handleClickOpen} variant="contained" to="#" component={RouterLink}>
+          {/* Verify/Generate Access Code */}
+          Share Data
         </Button>
       </CardContent>
 
       <SeoIllustration
         sx={{
-          p: 3,
           width: 360,
           margin: { xs: 'auto', md: 'inherit' }
         }}
       />
+      <AlertDialog fullWidth maxWidth="lg" title="Generate Access Code" component={<ShareView handleClose={handleClose} />} open={open} />
     </RootStyle>
   );
 }

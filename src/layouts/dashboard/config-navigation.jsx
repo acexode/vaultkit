@@ -22,6 +22,11 @@ const navConfig = [
     path: '/access-code',
     icon: icon('ic_lock'),
   },
+  {
+    title: 'Analytics',
+    path: '/access-code',
+    icon: icon('ic_analytics'),
+  },
 ];
 
 export default navConfig;

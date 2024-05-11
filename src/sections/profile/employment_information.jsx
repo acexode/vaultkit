@@ -2,9 +2,8 @@ import React from 'react';
 // import { useState } from 'react';
 
 import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
-import { Box, Button, Container, Typography, ListItemText } from '@mui/material';
+import { Box, Grid, Stack, Button, Container, Typography, ListItemText } from '@mui/material';
 
 import { useGlobalContext } from 'src/context/context';
 
@@ -47,6 +46,7 @@ const EmploymentInfo = () => {
     // emergency_contact_province: '',
     // Emergency_contact_postal_code: '',
   };
+  const eduList = [1,2,3]
 
   function convertToSentenceCase(str) {
     // Replace underscores with spaces
@@ -60,36 +60,41 @@ const EmploymentInfo = () => {
   }
   return (
     <Container>
-      <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
-        <Card
-          sx={{
-            p: 2,
-            width: 1,
-            maxWidth: 520,
-          }}
-        >
-          <Stack>
-            <Box sx={{ mb: 3 }}>
-              <Item>
-                <ListItemText sx={{ minWidth: '84px' }}>Employment Info</ListItemText>
-                <ListItemText sx={{ textAlign: 'right' }}>
-                  <Button variant="outlined" onClick={() => handleCurrentForm('employment-info')}>Edit Info</Button>
-                </ListItemText>
-              </Item>
-            </Box>
-            {Object.keys(data).map((e) => (
-              <ListItemRoot>
+      <Grid container  sx={{ height: 1 }}>
+        {eduList.map(v => (
+          <Grid item mb={2} xs={6}>
+              <Card
+            sx={{
+              p: 2,
+              width: 1,
+              maxWidth: 520,
+            }}
+          >
+            <Stack>
+              <Box sx={{ mb: 3 }}>
                 <Item>
-                  <ListItemText sx={{ minWidth: '84px' }}>{convertToSentenceCase(e)}</ListItemText>
+                  <ListItemText sx={{ minWidth: '84px' }}>Employment Info</ListItemText>
                   <ListItemText sx={{ textAlign: 'right' }}>
-                    <Typography sx={{ fontWeight: '700' }}>{data[e]}</Typography>
+                    <Button variant="outlined" onClick={() => handleCurrentForm('employment-info')}>Edit Info</Button>
                   </ListItemText>
                 </Item>
-              </ListItemRoot>
-            ))}
-          </Stack>
-        </Card>
-      </Stack>
+              </Box>
+              {Object.keys(data).map((e) => (
+                <ListItemRoot>
+                  <Item>
+                    <ListItemText sx={{ minWidth: '84px' }}>{convertToSentenceCase(e)}</ListItemText>
+                    <ListItemText sx={{ textAlign: 'right' }}>
+                      <Typography sx={{ fontWeight: '700' }}>{data[e]}</Typography>
+                    </ListItemText>
+                  </Item>
+                </ListItemRoot>
+              ))}
+            </Stack>
+          </Card>
+          </Grid>
+
+        ))}
+      </Grid>
     </Container>
   );
 };

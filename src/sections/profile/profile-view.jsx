@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import  React, {useState} from 'react';
+import React, { useState } from 'react';
 
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
@@ -15,7 +15,6 @@ import EmploymentInfo from './employment_information';
 import RealEstateInfo from './real_estate_informations';
 import ResidentialHistory from './residential_histories';
 import IdentificationInfo from './identification_information';
-
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -61,11 +60,16 @@ export default function ProfileView() {
     <Box sx={{ width: '100%' }}>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">Sir Abubakar</Typography>
-
       </Stack>
 
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          variant="scrollable"
+          scrollButtons="auto"
+          aria-label="basic tabs example"
+        >
           <Tab label="Basic Info" {...a11yProps(0)} />
           <Tab label="Contact Info" {...a11yProps(1)} />
           <Tab label="Employment Info" {...a11yProps(2)} />
@@ -80,25 +84,25 @@ export default function ProfileView() {
         <BasicInfo />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-      <ContactInfo />
+        <ContactInfo />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-      <EmploymentInfo />
+        <EmploymentInfo />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>
-      <EducationInfo/>
+        <EducationInfo />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={4}>
-      <FinancialInfo />
+        <FinancialInfo />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={5}>
-      <IdentificationInfo />
+        <IdentificationInfo />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={6}>
-      <RealEstateInfo />
+        <RealEstateInfo />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={7}>
-      <ResidentialHistory />
+        <ResidentialHistory />
       </CustomTabPanel>
     </Box>
   );

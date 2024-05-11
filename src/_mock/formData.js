@@ -1,3 +1,5 @@
+
+
 export const BasicInfo = [
     {
         "label": "First name",
@@ -678,6 +680,8 @@ export const ResidentialHistory = [
     }
 ]
 
+const getLabels = (arr) => arr.map(e => e.label)
+
 export const getFormFields = (slug) => {
     let data = {}
     switch (slug) {
@@ -704,6 +708,18 @@ export const getFormFields = (slug) => {
             break;
         case 'residential-info':
             data = {form: ResidentialHistory, title: 'Residential History' }
+            break;
+        case 'field-labels':
+            data = {
+                basic: getLabels(BasicInfo),
+                contact: getLabels(ContactInfo),
+                eduInfo: getLabels(EducationInfo),
+                empInfo: getLabels(EmployeeInfo),
+                finInfo: getLabels(FinancialInfo),
+                idInfo: getLabels(IdentificationInfo),
+                reInfo: getLabels(RealEstateInfo),
+                resInfo: getLabels(ResidentialHistory),
+             }
             break;
 
         default:
