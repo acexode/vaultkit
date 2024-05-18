@@ -4,13 +4,15 @@ import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 import DashboardLayout from 'src/layouts/dashboard';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
-export const AccessPage = lazy(() => import('src/pages/access'));
-export const BlogPage = lazy(() => import('src/pages/blog'));
+export const SharedDataPage = lazy(() => import('src/pages/shared-data-history'));
 export const UserPage = lazy(() => import('src/pages/user'));
 export const FormPage = lazy(() => import('src/pages/form'));
 export const LoginPage = lazy(() => import('src/pages/login'));
+export const AnalyticsPage = lazy(() => import('src/pages/analytics'));
 export const OtpPage = lazy(() => import('src/pages/otp'));
-export const ProductsPage = lazy(() => import('src/pages/products'));
+export const DownloadViewPage = lazy(() => import('src/pages/download-view'));
+export const NotificationsPage = lazy(() => import('src/pages/notifications'));
+
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 
 // ----------------------------------------------------------------------
@@ -29,11 +31,12 @@ export default function Router() {
         { element: <IndexPage />, index: true },
         { path: 'user', element: <UserPage /> },
         { path: 'form', element: <FormPage /> },
-        { path: 'products', element: <ProductsPage /> },
-        { path: 'blog', element: <BlogPage /> },
+        { path: 'analytics', element: <AnalyticsPage /> },
+        { path: 'download-view', element: <DownloadViewPage /> },
+        { path: 'notifications', element: <NotificationsPage /> },
         {
-          path: 'access-code',
-          element: <AccessPage />,
+          path: 'shared-data-history',
+          element: <SharedDataPage />,
         },
       ],
     },

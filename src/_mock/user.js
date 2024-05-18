@@ -13,3 +13,10 @@ export const users = [...Array(24)].map((_, index) => ({
   status: sample(['active', 'expired']),
   role: faker.internet.email(),
 }));
+export const notifications = [...Array(24)].map((_, index) => ({
+  id: faker.string.uuid(),
+  avatarUrl: `/assets/images/avatars/avatar_${index + 1}.jpg`,
+  title: faker.commerce.productAdjective(),
+  description: faker.lorem.sentence(),
+  createdAt: faker.date.weekday(),
+}));

@@ -5,6 +5,7 @@ import { set, sub } from 'date-fns';
 
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
+import { Button } from '@mui/material';
 import Badge from '@mui/material/Badge';
 // import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
@@ -17,6 +18,8 @@ import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemButton from '@mui/material/ListItemButton';
+
+import { useRouter } from 'src/routes/hooks';
 
 import { fToNow } from 'src/utils/format-time';
 
@@ -50,7 +53,7 @@ const NOTIFICATIONS = [
 export default function NotificationsPopover() {
   console.log(NOTIFICATIONS);
   const [notifications, setNotifications] = useState(NOTIFICATIONS);
-
+  const router = useRouter();
   const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
 
   const [open, setOpen] = useState(null);
@@ -61,6 +64,9 @@ export default function NotificationsPopover() {
 
   const handleClose = () => {
     setOpen(null);
+  };
+  const handleNavigate = () => {
+    router.push('/notifications');
   };
 
   const handleMarkAllAsRead = () => {
@@ -143,11 +149,11 @@ export default function NotificationsPopover() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        {/* <Box sx={{ p: 1 }}>
-          <Button fullWidth disableRipple>
+        <Box sx={{ p: 1 }}>
+          <Button fullWidth disableRipple onClick={handleNavigate}>
             View All
           </Button>
-        </Box> */}
+        </Box>
       </Popover>
     </>
   );

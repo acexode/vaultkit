@@ -18,13 +18,13 @@ const navConfig = [
     icon: icon('ic_user'),
   },
   {
-    title: 'Access code',
-    path: '/access-code',
+    title: 'Shared Data history',
+    path: '/shared-data-history',
     icon: icon('ic_lock'),
   },
   {
     title: 'Analytics',
-    path: '/access-code',
+    path: '/analytics',
     icon: icon('ic_analytics'),
   },
 ];

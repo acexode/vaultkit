@@ -15,7 +15,7 @@ import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function UserTableRow({
+export default function CommonTableRow({
   selected,
   name,
   company,
@@ -91,7 +91,7 @@ export default function UserTableRow({
   );
 }
 
-UserTableRow.propTypes = {
+CommonTableRow.propTypes = {
   company: PropTypes.any,
   handleClick: PropTypes.func,
   name: PropTypes.any,

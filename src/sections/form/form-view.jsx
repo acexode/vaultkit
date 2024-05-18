@@ -79,11 +79,11 @@ const MyFormComponent = ({ fields, title }) => {
   return (
     <form onSubmit={formik.handleSubmit}>
 
-        <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
+        <Stack alignItems="center" justifyContent="center" sx={{ height: 1, mx: 3 }}>
           <Card
             sx={{
               p: 5,
-              width: 720,
+              // width: 720,
               maxWidth: 720,
             }}
           >

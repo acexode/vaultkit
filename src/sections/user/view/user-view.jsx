@@ -17,12 +17,12 @@ import Scrollbar from 'src/components/scrollbar';
 
 import { AccessView } from 'src/sections/access';
 import AlertDialog from 'src/sections/modal/modal';
+import TableNoData from 'src/sections/table/table-no-data';
+import CommonTableRow from 'src/sections/table/user-table-row';
+import TableToolbar from 'src/sections/table/user-table-toolbar';
+import CommonTableHead from 'src/sections/table/user-table-head';
+import TableEmptyRows from 'src/sections/table/table-empty-rows';
 
-import TableNoData from '../table-no-data';
-import UserTableRow from '../user-table-row';
-import UserTableHead from '../user-table-head';
-import TableEmptyRows from '../table-empty-rows';
-import UserTableToolbar from '../user-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
 // ----------------------------------------------------------------------
@@ -116,7 +116,7 @@ export default function UserPage() {
       </Stack>
 
       <Card>
-        <UserTableToolbar
+        <TableToolbar
           numSelected={selected.length}
           filterName={filterName}
           onFilterName={handleFilterByName}
@@ -125,7 +125,7 @@ export default function UserPage() {
         <Scrollbar>
           <TableContainer sx={{ overflow: 'unset' }}>
             <Table sx={{ minWidth: 800 }}>
-              <UserTableHead
+              <CommonTableHead
                 order={order}
                 orderBy={orderBy}
                 rowCount={users.length}
@@ -145,7 +145,7 @@ export default function UserPage() {
                 {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => (
-                    <UserTableRow
+                    <CommonTableRow
                       key={row.id}
                       name={row.name}
                       role={row.role}

@@ -1,19 +1,17 @@
 import { Helmet } from 'react-helmet-async';
 
-// import { AccessView } from 'src/sections/access';
-import { UserView } from 'src/sections/user/view';
+import SharedDataView from 'src/sections/share-data/shared-data-history';
 
 // ----------------------------------------------------------------------
 
-export default function AccessPage() {
+export default function SharedDataPage() {
   return (
     <>
       <Helmet>
         <title> Shared Data History | Vaultkit App </title>
       </Helmet>
 
-      {/* <AccessView /> */}
-      <UserView />
+      <SharedDataView />
     </>
   );
 }
