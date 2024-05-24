@@ -5,6 +5,10 @@ public/*
 **/out/*
 **/node_modules/*
 
+
+.env
+.env/
+
 **/.next/*
 next.config.js
 
