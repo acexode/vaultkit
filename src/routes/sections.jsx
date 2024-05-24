@@ -3,6 +3,9 @@ import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 
 import DashboardLayout from 'src/layouts/dashboard';
 
+import PrivateRoute from './components/private-route';
+
+
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const SharedDataPage = lazy(() => import('src/pages/shared-data-history'));
 export const UserPage = lazy(() => import('src/pages/user'));
@@ -21,11 +24,13 @@ export default function Router() {
   const routes = useRoutes([
     {
       element: (
-        <DashboardLayout>
-          <Suspense>
-            <Outlet />
-          </Suspense>
-        </DashboardLayout>
+        <PrivateRoute>
+          <DashboardLayout>
+            <Suspense>
+              <Outlet />
+            </Suspense>
+          </DashboardLayout>
+        </PrivateRoute>
       ),
       children: [
         { element: <IndexPage />, index: true },
