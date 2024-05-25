@@ -9,6 +9,7 @@ import SeoIllustration from 'src/assets/illustration_seo';
 
 import AlertDialog from '../modal/modal';
 import ShareView from '../share-data/share-view';
+import SavedSuccessModal from '../share-data/saved-success-modal';
 // material
 ;
 
@@ -35,12 +36,18 @@ AppWelcome.propTypes = {
 
 export default function AppWelcome({ displayName }) {
   const [open, setOpen] = useState(false);
+  const [sharedSuccessfully, setsharedSuccessfully] = useState(false)
 
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+    setsharedSuccessfully(true)
+  };
+  const handleSharedModal = () => {
+    console.log('close modal');
+    setsharedSuccessfully(false);
   };
   return (
     <RootStyle>
@@ -72,7 +79,8 @@ export default function AppWelcome({ displayName }) {
           margin: { xs: 'auto', md: 'inherit' }
         }}
       />
-      <AlertDialog fullWidth maxWidth="lg" title="Generate Access Code" component={<ShareView handleClose={handleClose} />} open={open} />
+      <AlertDialog fullWidth maxWidth="lg" title="Generate Access Code" component={<ShareView handleCloseModal={handleClose} />} open={open} />
+      <AlertDialog  maxWidth="lg" title="Generate Access Code" component={<SavedSuccessModal handleCloseModal={handleSharedModal} />} open={sharedSuccessfully} />
     </RootStyle>
   );
 }

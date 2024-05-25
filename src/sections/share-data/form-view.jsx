@@ -19,10 +19,10 @@ const Item = styled(Paper)(({ theme }) => ({
   textAlign: 'center',
   marginLeft: '7px',
   marginBottom: '7px',
-  // flex: 1,
+  height: '100%',
   color: theme.palette.text.secondary,
 }));
-const SelectDataToShare = ({ fields }) => (
+const SelectDataToShare = ({ fields, selectAll }) => (
     <Grid
       container
       // divider={<Divider orientation="vertical" flexItem />}
@@ -30,10 +30,10 @@ const SelectDataToShare = ({ fields }) => (
       // spacing={{  md: 6, lg: 6 }}
     >
       {fields.map((f) => (
-        <Grid item xs={4}>
+        <Grid item xs={12} md={4} mb={2}>
           <Item>
             <FormGroup>
-              <FormControlLabel control={<Checkbox />} label={f} />
+              <FormControlLabel checked={selectAll} control={<Checkbox />} label={f} />
             </FormGroup>
           </Item>
         </Grid>
@@ -45,5 +45,6 @@ const SelectDataToShare = ({ fields }) => (
   
 SelectDataToShare.propTypes = {
   fields: PropTypes.array,
+  selectAll: PropTypes.bool,
 };
 export default SelectDataToShare;
