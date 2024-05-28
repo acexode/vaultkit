@@ -23,6 +23,7 @@ export default function CommonTableRow({
   validity,
   status,
   handleClick,
+  handleAddNoteModal
 }) {
   const [open, setOpen] = useState(null);
 
@@ -32,6 +33,10 @@ export default function CommonTableRow({
 
   const handleCloseMenu = () => {
     setOpen(null);
+  };
+  const addNoteMenu = () => {
+    setOpen(null);
+    handleAddNoteModal(true)
   };
 
   return (
@@ -81,6 +86,10 @@ export default function CommonTableRow({
           <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
           Edit
         </MenuItem>
+        <MenuItem onClick={addNoteMenu}>
+          <Iconify icon="eva:file-outline" sx={{ mr: 2 }} />
+          Add Note
+        </MenuItem>
 
         <MenuItem onClick={handleCloseMenu} sx={{ color: 'error.main' }}>
           <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
@@ -94,6 +103,7 @@ export default function CommonTableRow({
 CommonTableRow.propTypes = {
   company: PropTypes.any,
   handleClick: PropTypes.func,
+  handleAddNoteModal: PropTypes.func,
   name: PropTypes.any,
   validity: PropTypes.any,
   role: PropTypes.any,

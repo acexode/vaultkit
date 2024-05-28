@@ -12,6 +12,7 @@ export const AnalyticsPage = lazy(() => import('src/pages/analytics'));
 export const OtpPage = lazy(() => import('src/pages/otp'));
 export const DownloadViewPage = lazy(() => import('src/pages/download-view'));
 export const NotificationsPage = lazy(() => import('src/pages/notifications'));
+export const SettingsPagePage = lazy(() => import('src/pages/settings'));
 
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 
@@ -34,6 +35,7 @@ export default function Router() {
         { path: 'analytics', element: <AnalyticsPage /> },
         { path: 'download-view', element: <DownloadViewPage /> },
         { path: 'notifications', element: <NotificationsPage /> },
+        { path: 'settings', element: <SettingsPagePage /> },
         {
           path: 'shared-data-history',
           element: <SharedDataPage />,

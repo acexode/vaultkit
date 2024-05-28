@@ -15,12 +15,15 @@ import CommonTableRow from 'src/sections/table/user-table-row';
 import CommonTableHead from 'src/sections/table/user-table-head';
 import TableEmptyRows from 'src/sections/table/table-empty-rows';
 
+// import AlertDialog from '../modal/modal';
+import AddNotes from './AddNotes';
 import { emptyRows, applyFilter, getComparator } from '../user/utils';
 
 // ----------------------------------------------------------------------
 
 export default function RequestTableView({filterName, selected, setSelected}) {
   const [page, setPage] = useState(0);
+  const [showAddNote, setshowAddNote] = useState(false)
 
 
 
@@ -75,6 +78,9 @@ export default function RequestTableView({filterName, selected, setSelected}) {
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
   };
+  const handleAddNoteModal = () => {
+    setshowAddNote(!showAddNote);
+  };
 
 
 
@@ -121,6 +127,7 @@ export default function RequestTableView({filterName, selected, setSelected}) {
                     validity={row.validity}
                     selected={selected.indexOf(row.name) !== -1}
                     handleClick={(event) => handleClick(event, row.name)}
+                    handleAddNoteModal={handleAddNoteModal}
                   />
                 ))}
 
@@ -141,6 +148,8 @@ export default function RequestTableView({filterName, selected, setSelected}) {
         rowsPerPageOptions={[5, 10, 25]}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      <AddNotes open={showAddNote} setOpen={handleAddNoteModal} />
+            {/* <AlertDialog  maxWidth="lg" title="Generate Access Code" component={<SavedSuccessModal handleCloseModal={handleSharedModal} />} open={showAddNote} /> */}
     </>
   );
 }

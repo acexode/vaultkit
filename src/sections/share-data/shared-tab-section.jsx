@@ -79,7 +79,7 @@ export default function SharedTabSection() {
           scrollButtons="auto"
           aria-label="basic tabs example"
         >
-          <Tab label="Requested Data" {...a11yProps(0)} />
+          <Tab label="Data Requests" {...a11yProps(0)} />
           <Tab label="Shared Data" {...a11yProps(1)} />
           <Tab label="Saved Categories" {...a11yProps(2)} />
 
