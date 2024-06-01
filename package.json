@@ -27,6 +27,7 @@
     "@iconify/react": "^4.1.1",
     "@mui/lab": "^5.0.0-alpha.147",
     "@mui/material": "^5.14.12",
+    "@react-oauth/google": "^0.12.1",
     "apexcharts": "^3.43.0",
     "date-fns": "^2.30.0",
     "formik": "^2.4.5",
