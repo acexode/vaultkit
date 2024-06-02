@@ -8,6 +8,7 @@ export const SharedDataPage = lazy(() => import('src/pages/shared-data-history')
 export const UserPage = lazy(() => import('src/pages/user'));
 export const FormPage = lazy(() => import('src/pages/form'));
 export const LoginPage = lazy(() => import('src/pages/login'));
+export const SignupPage = lazy(() => import('src/pages/signup'));
 export const AnalyticsPage = lazy(() => import('src/pages/analytics'));
 export const OtpPage = lazy(() => import('src/pages/otp'));
 export const DownloadViewPage = lazy(() => import('src/pages/download-view'));
@@ -45,6 +46,10 @@ export default function Router() {
     {
       path: 'login',
       element: <LoginPage />,
+    },
+    {
+      path: 'signup',
+      element: <SignupPage />,
     },
     {
       path: 'otp',
