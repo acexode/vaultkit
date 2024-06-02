@@ -9,12 +9,13 @@ import App from './app';
 // ----------------------------------------------------------------------
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const clientId = process.env.GOOGLE_CLIENT_ID;
 
 root.render(
   <HelmetProvider>
     <BrowserRouter>
       <Suspense>
-        <GoogleOAuthProvider clientId="845258127557-nqsjnhjjgat99hvdudotug5ote6vqp1h.apps.googleusercontent.com">
+        <GoogleOAuthProvider clientId={clientId}>
           <App />
         </GoogleOAuthProvider>
       </Suspense>
