@@ -14,6 +14,7 @@ import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { useRouter } from 'src/routes/hooks';
+import { RouterLink } from 'src/routes/components';
 
 import { bgGradient } from 'src/theme/css';
 
@@ -56,7 +57,7 @@ export default function LoginView() {
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }}>
-        <Link variant="subtitle2" underline="hover">
+        <Link variant="subtitle2" component={RouterLink} href="/reset-password" underline="hover">
           Forgot password?
         </Link>
       </Stack>
@@ -103,7 +104,7 @@ export default function LoginView() {
 
           <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
             Don’t have an account?
-            <Link variant="subtitle2" sx={{ ml: 0.5 }}>
+            <Link component={RouterLink} href="/signup" variant="subtitle2" sx={{ ml: 0.5 }}>
               Get started
             </Link>
           </Typography>

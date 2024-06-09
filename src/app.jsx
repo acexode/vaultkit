@@ -7,6 +7,7 @@ import Router from 'src/routes/sections';
 import ThemeProvider from 'src/theme';
 import { SnackbarProvider } from 'notistack';
 import { GlobalProvider } from './context/context';
+import { AuthProvider } from './context/authContext';
 
 // ----------------------------------------------------------------------
 
@@ -17,7 +18,10 @@ export default function App() {
     <GlobalProvider>
       <SnackbarProvider>
       <ThemeProvider>
+        <AuthProvider>
+
         <Router />
+        </AuthProvider>
       </ThemeProvider>
 
       </SnackbarProvider>

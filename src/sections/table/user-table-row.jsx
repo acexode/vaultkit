@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import { Badge } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Popover from '@mui/material/Popover';
 import TableRow from '@mui/material/TableRow';
@@ -23,7 +24,8 @@ export default function CommonTableRow({
   validity,
   status,
   handleClick,
-  handleAddNoteModal
+  handleAddNoteModal,
+  notificationCount
 }) {
   const [open, setOpen] = useState(null);
 
@@ -67,10 +69,13 @@ export default function CommonTableRow({
 
         <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>
+          <Badge badgeContent={notificationCount} color="primary">
             <Iconify icon="eva:more-vertical-fill" />
+            </Badge>
           </IconButton>
         </TableCell>
       </TableRow>
+      
 
       <Popover
         open={!!open}
@@ -96,6 +101,7 @@ export default function CommonTableRow({
           Revoke
         </MenuItem>
       </Popover>
+
     </>
   );
 }
@@ -105,6 +111,7 @@ CommonTableRow.propTypes = {
   handleClick: PropTypes.func,
   handleAddNoteModal: PropTypes.func,
   name: PropTypes.any,
+  notificationCount: PropTypes.number,
   validity: PropTypes.any,
   role: PropTypes.any,
   selected: PropTypes.any,

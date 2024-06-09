@@ -82,7 +82,7 @@ export default function RequestTableView({filterName, selected, setSelected}) {
     setshowAddNote(!showAddNote);
   };
 
-
+console.log(users);
 
   const dataFiltered = applyFilter({
     inputData: users,
@@ -128,6 +128,7 @@ export default function RequestTableView({filterName, selected, setSelected}) {
                     selected={selected.indexOf(row.name) !== -1}
                     handleClick={(event) => handleClick(event, row.name)}
                     handleAddNoteModal={handleAddNoteModal}
+                    notificationCount={row.notificationCount}
                   />
                 ))}
 

@@ -1,43 +1,54 @@
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
-import { useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import closeFill from '@iconify/icons-eva/close-fill';
 // import options2Fill from '@iconify/icons-eva/options-2-fill';
 
 // material
 import {
   Box,
-  List,
   Paper,
   Stack,
-  Button,
   Divider,
   Backdrop,
-  ListItem,
   useTheme,
-  TextField,
   Container,
   Typography,
   IconButton,
   useMediaQuery,
 } from '@mui/material';
 
+import { chatConversation } from 'src/_mock/chatdata';
+
 import Scrollbar from 'src/components/scrollbar';
+
+import ChatMessageInput from './ChatInput';
+import ChatMessageItem from './ChatMessageItem';
+
 //
-
-// ----------------------------------------------------------------------
-
-
 
 AddNotes.propTypes = {
   open: PropTypes.bool,
   setOpen: PropTypes.func,
 };
 export default function AddNotes({ open, setOpen }) {
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
+  const [conversation, setconversation] = useState(chatConversation);
   const themes = useTheme();
   const isMobile = useMediaQuery(themes.breakpoints.down('sm'));
+  const scrollRef = useRef();
+
+  useEffect(() => {
+    const scrollMessagesToBottom = () => {
+      if (scrollRef.current) {
+        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      }
+    };
+    scrollMessagesToBottom();
+  }, [conversation.messages]);
+
+  // const images = conversation.messages
+  //   .filter((msg) => messages.contentType === 'image')
+  //   .map((msg) => messages.body);
 
   useEffect(() => {
     if (open) {
@@ -47,15 +58,28 @@ export default function AddNotes({ open, setOpen }) {
     }
   }, [open]);
 
-  const handleSendMessage = () => {
-    if (input.trim() !== '') {
-      setMessages([...messages, input]);
-      setInput('');
-    }
-  };
-
   const handleClose = () => {
     setOpen(false);
+  };
+  const handleConversartion = (value) => {
+    const { conversationId, message } = value;
+
+    const newMessage = {
+      conversationId,
+      messageId: Math.floor(Math.random() * 1000000),
+      body: message,
+      contentType: 'text',
+      attachments: [],
+      createdAt: new Date(),
+      senderId: '8864c717-587d-472a-929a-8e5f298024da-0',
+    };
+    console.log(newMessage);
+    setconversation({
+      ...conversation,
+      messages: [...conversation.messages, newMessage],
+    });
+
+    // state.conversations.byId[conversationId].messages.push(newMessage);
   };
 
   return (
@@ -97,58 +121,33 @@ export default function AddNotes({ open, setOpen }) {
               <Icon icon={closeFill} width={20} height={20} />
             </IconButton>
           </Stack>
+
           <Divider />
 
           <Scrollbar sx={{ height: 1 }}>
             <Stack spacing={4} sx={{ pt: 3, px: 3, pb: 15 }}>
               <Container maxWidth="lg">
                 <Box display="flex" flexDirection="column" height="65vh">
-                  <Box flexGrow={1} component={Paper} elevation={3} p={2} overflow="auto" mb={2}>
-                    <List>
-                      {messages.map((message, index) => (
-                        <ListItem key={index} disableGutters>
-                          <Box
-                            sx={{
-                              p: 2,
-                              bgcolor: 'primary.lighter',
-                              borderRadius: '10px',
-                              maxWidth: '75%',
-                              ml: 'auto',
-                              mr: 0,
-                              boxShadow: 1,
-                            }}
-                          >
-                            <Typography variant="body1" color="common.white">
-                              {message}
-                            </Typography>
-                          </Box>
-                        </ListItem>
-                      ))}
-                    </List>
-                  </Box>
-                  <Box display="flex" mt="auto">
-                    <TextField
-                      label="Type a message"
-                      variant="outlined"
-                      fullWidth
-                      value={input}
-                      onChange={(e) => setInput(e.target.value)}
-                      onKeyPress={(e) => {
-                        if (e.key === 'Enter') {
-                          handleSendMessage();
-                        }
-                      }}
-                    />
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={handleSendMessage}
-                      sx={{ ml: 1 }}
+                  <Box flexGrow={1}  overflow="auto" mb={2}>
+                    {conversation.messages.map((message) => (
+                      <ChatMessageItem
+                        key={message.id}
+                        message={message}
+                        conversation={conversation}
+                        handleConversartion={handleConversartion}
+                      />
+                    ))}
+                    </Box>
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      justifyContent="space-between"
+                      sx={{ py: 2, pr: 1, pl: 2.5 }}
                     >
-                      Send
-                    </Button>
+                      <ChatMessageInput onSend={handleConversartion} conversationId={conversation.id} />
+                    </Stack>
                   </Box>
-                </Box>
+                
               </Container>
             </Stack>
           </Scrollbar>

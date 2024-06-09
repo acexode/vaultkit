@@ -36,7 +36,6 @@ export default function IndividualSignupView() {
   const renderForm = (
     <>
       <Stack spacing={3}>
-        <TextField name="name" label="Name" />
         <TextField name="email" label="Email address" />
 
         <TextField

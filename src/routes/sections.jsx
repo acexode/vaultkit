@@ -11,6 +11,7 @@ export const LoginPage = lazy(() => import('src/pages/login'));
 export const SignupPage = lazy(() => import('src/pages/signup'));
 export const AnalyticsPage = lazy(() => import('src/pages/analytics'));
 export const OtpPage = lazy(() => import('src/pages/otp'));
+export const ResetPasswordPage = lazy(() => import('src/pages/resetPassword'));
 export const DownloadViewPage = lazy(() => import('src/pages/download-view'));
 export const NotificationsPage = lazy(() => import('src/pages/notifications'));
 export const SettingsPagePage = lazy(() => import('src/pages/settings'));
@@ -50,6 +51,10 @@ export default function Router() {
     {
       path: 'signup',
       element: <SignupPage />,
+    },
+    {
+      path: 'reset-password',
+      element: <ResetPasswordPage />,
     },
     {
       path: 'otp',
