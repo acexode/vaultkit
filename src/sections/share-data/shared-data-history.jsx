@@ -24,7 +24,7 @@ export default function SharedDataView() {
   const { openDialog, closeDialog, isDialogOpen } = useDialogState();
   const card = {
     name: 'lorem ipsum dolor',
-     description: 'Duis condimentum lacus finibus felis pellentesque, ac auctor nibh fermentum. Duis sed dui ante. Phasellus id eros tincidunt, dictum lorem vitae, pellentesque sem. Aenean eu enim sit amet mauris rhoncus mollis. Sed enim turpis, porta a felis et, luctus faucibus nisi. Phasellus et metus fermentum, ultrices arcu aliquam, facilisis justo. Cras nunc nunc, elementum sed euismod ut, maximus eget nibh. Phasellus condimentum lorem neque. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Fusce sagittis pharetra eleifend. Suspendisse potenti.',
+     description: 'Basic Info, Contact Info, Employment Info, Education Info',
      assignee: [
       {
           "id": "473d2720-341c-49bf-94ed-556999cf6ef7",

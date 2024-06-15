@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
-import plusFill from '@iconify/icons-eva/plus-fill';
 // material
 
 import checkmarkFill from '@iconify/icons-eva/checkmark-fill';
@@ -109,13 +108,7 @@ export default function DataDetails({ card, isOpen, onClose,  }) {
                   sx={{ m: 0.5, width: 36, height: 36 }}
                 />
               ))}
-              <Tooltip title="Add assignee">
-                <MIconButton
-                  sx={{ p: 1, ml: 0.5, border: (theme) => `dashed 1px ${theme.palette.divider}` }}
-                >
-                  <Icon icon={plusFill} width={20} height={20} />
-                </MIconButton>
-              </Tooltip>
+              
             </Stack>
           </Stack>
 
