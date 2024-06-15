@@ -1683,6 +1683,13 @@
     "tiny-warning" "^1.0.2"
     "tslib" "^2.0.0"
 
+"framer-motion@^11.2.10":
+  "integrity" "sha512-/gr3PLZUVFCc86a9MqCUboVrALscrdluzTb3yew+2/qKBU8CX6nzs918/SRBRCqaPbx0TZP10CB6yFgK2C5cYQ=="
+  "resolved" "https://registry.npmjs.org/framer-motion/-/framer-motion-11.2.10.tgz"
+  "version" "11.2.10"
+  dependencies:
+    "tslib" "^2.4.0"
+
 "fs-extra@^11.1.0":
   "integrity" "sha512-MGIE4HOvQCeUCzmlHs0vXpih4ysz4wg9qiSAu6cd42lVwPbTM1TjV7RusoyQqMmk/95gdQZX72u+YW+c3eEpFQ=="
   "resolved" "https://registry.npmjs.org/fs-extra/-/fs-extra-11.1.1.tgz"

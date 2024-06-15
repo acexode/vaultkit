@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
 
 import { Box, Button, styled, Container, Typography } from '@mui/material';
 
@@ -7,7 +8,7 @@ import { RouterLink } from 'src/routes/components';
 
 import SentIcon from 'src/assets/sentIcon';
 
-import { ResetPasswordView } from 'src/sections/reset-pwd';
+import { NewPasswordView, ResetPasswordView } from 'src/sections/reset-pwd';
 
 // ----------------------------------------------------------------------
 const RootStyle = styled(Container)(({ theme }) => ({
@@ -19,6 +20,8 @@ const RootStyle = styled(Container)(({ theme }) => ({
   }));
 
 export default function ResetPage() {
+  const route = useLocation()
+  console.log(route.search.split("="));
     const [email, setEmail] = useState('');
     const [sent, setSent] = useState(false);
   return (
@@ -27,6 +30,9 @@ export default function ResetPage() {
         <title> Reset Password | Vaultkit App </title>
       </Helmet>
       <RootStyle>
+        {route.search.includes('token') ? 
+        <NewPasswordView />
+        :
         <Box sx={{ maxWidth: 480, mx: 'auto' }}>
           {!sent ? (
             <>
@@ -64,6 +70,8 @@ export default function ResetPage() {
             </Box>
           )}
         </Box>
+
+      }
       </RootStyle>
     </>
   );

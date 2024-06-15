@@ -88,7 +88,7 @@ export default function CommonTableRow({
         }}
       >
         <MenuItem onClick={handleCloseMenu}>
-          <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
+          <Iconify icon="eva:eye-outline" sx={{ mr: 2 }} />
           Edit
         </MenuItem>
         <MenuItem onClick={addNoteMenu}>

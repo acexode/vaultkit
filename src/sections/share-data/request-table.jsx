@@ -11,17 +11,17 @@ import { users } from 'src/_mock/user';
 import Scrollbar from 'src/components/scrollbar';
 
 import TableNoData from 'src/sections/table/table-no-data';
-import CommonTableRow from 'src/sections/table/user-table-row';
 import CommonTableHead from 'src/sections/table/user-table-head';
 import TableEmptyRows from 'src/sections/table/table-empty-rows';
 
 // import AlertDialog from '../modal/modal';
 import AddNotes from './AddNotes';
+import RequestDataTRows from '../table/common/request-data-trows';
 import { emptyRows, applyFilter, getComparator } from '../user/utils';
 
 // ----------------------------------------------------------------------
 
-export default function RequestTableView({filterName, selected, setSelected}) {
+export default function RequestTableView({filterName, selected, setSelected, handleViewDetails}) {
   const [page, setPage] = useState(0);
   const [showAddNote, setshowAddNote] = useState(false)
 
@@ -117,7 +117,7 @@ console.log(users);
               {dataFiltered
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => (
-                  <CommonTableRow
+                  <RequestDataTRows
                     key={row.id}
                     name={row.name}
                     role={row.role}
@@ -129,6 +129,7 @@ console.log(users);
                     handleClick={(event) => handleClick(event, row.name)}
                     handleAddNoteModal={handleAddNoteModal}
                     notificationCount={row.notificationCount}
+                    handleViewDetails={handleViewDetails}
                   />
                 ))}
 
@@ -159,4 +160,5 @@ RequestTableView.propTypes = {
     filterName: PropTypes.string,
     selected: PropTypes.array,
     setSelected: PropTypes.func,
+    handleViewDetails: PropTypes.func,
   };

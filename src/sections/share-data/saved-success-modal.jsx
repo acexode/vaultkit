@@ -32,7 +32,7 @@ const SavedSuccessModal = ({ handleCloseModal }) => {
       </Typography>
       {!showField && (
         <Stack direction="row" justifyContent="center" spacing={3}>
-          <Button onClick={handleCloseModal} variant="outlined">
+          <Button onClick={() => handleCloseModal('success-view')} variant="outlined">
             No, Dismiss
           </Button>
           <Button onClick={() => setshowField(!showField)} variant="contained" mx={3}>

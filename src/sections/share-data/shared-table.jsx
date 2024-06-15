@@ -11,15 +11,15 @@ import { users } from 'src/_mock/user';
 import Scrollbar from 'src/components/scrollbar';
 
 import TableNoData from 'src/sections/table/table-no-data';
-import CommonTableRow from 'src/sections/table/user-table-row';
 import CommonTableHead from 'src/sections/table/user-table-head';
 import TableEmptyRows from 'src/sections/table/table-empty-rows';
 
+import SharedDataTRows from '../table/common/shared-data-trows';
 import { emptyRows, applyFilter, getComparator } from '../user/utils';
 
 // ----------------------------------------------------------------------
 
-export default function SharedTableView({filterName, selected, setSelected}) {
+export default function SharedTableView({filterName, selected, setSelected, handleViewDetails}) {
   const [page, setPage] = useState(0);
 
 
@@ -112,7 +112,7 @@ export default function SharedTableView({filterName, selected, setSelected}) {
               {dataFiltered
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => (
-                  <CommonTableRow
+                  <SharedDataTRows
                     key={row.id}
                     name={row.name}
                     role={row.role}
@@ -122,6 +122,7 @@ export default function SharedTableView({filterName, selected, setSelected}) {
                     validity={row.validity}
                     selected={selected.indexOf(row.name) !== -1}
                     handleClick={(event) => handleClick(event, row.name)}
+                    handleViewDetails={handleViewDetails}
                   />
                 ))}
 
@@ -150,4 +151,5 @@ SharedTableView.propTypes = {
     filterName: PropTypes.string,
     selected: PropTypes.array,
     setSelected: PropTypes.func,
+    handleViewDetails: PropTypes.func,
   };

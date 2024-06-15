@@ -60,7 +60,7 @@ export default function RequestDataView({ handleClose }) {
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 3 }}>
         <Button
-          onClick={handleClose}
+          onClick={() => handleClose('request-data-view')}
           variant="outlined"
           fullWidth
           color="secondary"
