@@ -2,6 +2,8 @@
 import PropTypes from 'prop-types';
 import { useEffect, useReducer, createContext } from 'react';
 
+import { authEndpoints } from 'src/configs/endpoints';
+
 // utils
 import axios from '../utils/axios';
 import { setSession, isValidToken } from '../utils/jwt';
@@ -109,7 +111,7 @@ function AuthProvider({ children }) {
   }, []);
 
   const login = async (email, password) => {
-    const response = await axios.post('/api/account/login', {
+    const response = await axios.post(authEndpoints.login, {
       email,
       password
     });
@@ -125,7 +127,7 @@ function AuthProvider({ children }) {
   };
 
   const register = async (email, password, firstName, lastName) => {
-    const response = await axios.post('/api/account/register', {
+    const response = await axios.post(authEndpoints.signupUser, {
       email,
       password,
       firstName,

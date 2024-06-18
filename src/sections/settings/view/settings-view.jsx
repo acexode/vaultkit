@@ -1,6 +1,7 @@
 import {  useState } from 'react';
 import { Icon } from '@iconify/react';
 import roundReceipt from '@iconify/icons-eva/email-fill'
+import auditTrail from '@iconify/icons-eva/file-text-fill'
 import roundAccountBox from '@iconify/icons-eva/person-fill'
 
 // material
@@ -35,6 +36,11 @@ export default function SettingsView() {
     {
       value: 'Email',
       icon: <Icon icon={roundReceipt} width={20} height={20} />,
+      component: <Emails />
+    },
+    {
+      value: 'Audit Trail',
+      icon: <Icon icon={auditTrail} width={20} height={20} />,
       component: <Emails />
     },
   ];

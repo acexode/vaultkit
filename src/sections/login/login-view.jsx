@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -21,6 +20,7 @@ import { bgGradient } from 'src/theme/css';
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 
+import GoogleLoginComponent from './google-login-component';
 
 // ----------------------------------------------------------------------
 
@@ -33,6 +33,30 @@ export default function LoginView() {
 
   const handleClick = () => {
     router.push('/otp');
+  };
+
+  const handleLoginSuccess = (tokenResponse) => {
+    // Send the token response to server
+    // fetch('http://localhost:3001/auth/google_oauth2/callback', {
+    fetch('http://localhost:3001/google_auth', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      body: JSON.stringify(tokenResponse),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('Server response:', data);
+      })
+      .catch((error) => {
+        console.log('Error:', error);
+      });
+  };
+
+  const handleLoginFailure = (error) => {
+    console.log('Login failed: error:', error);
   };
 
   const renderForm = (
@@ -62,13 +86,7 @@ export default function LoginView() {
         </Link>
       </Stack>
 
-      <LoadingButton
-        fullWidth
-        size="large"
-        type="submit"
-        variant="contained"
-        onClick={handleClick}
-      >
+      <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={handleClick}>
         Login
       </LoadingButton>
     </>
@@ -110,35 +128,7 @@ export default function LoginView() {
           </Typography>
 
           <Stack direction="row" spacing={2}>
-            <Button
-              fullWidth
-              size="large"
-              color="inherit"
-              variant="outlined"
-              sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
-            >
-              <Iconify icon="eva:google-fill" color="#DF3E30" />
-            </Button>
-
-            <Button
-              fullWidth
-              size="large"
-              color="inherit"
-              variant="outlined"
-              sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
-            >
-              <Iconify icon="eva:facebook-fill" color="#1877F2" />
-            </Button>
-
-            <Button
-              fullWidth
-              size="large"
-              color="inherit"
-              variant="outlined"
-              sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
-            >
-              <Iconify icon="eva:twitter-fill" color="#1C9CEA" />
-            </Button>
+            <GoogleLoginComponent onSuccess={handleLoginSuccess} onFailure={handleLoginFailure} />
           </Stack>
 
           <Divider sx={{ my: 3 }}>
