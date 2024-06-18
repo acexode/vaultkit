@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
 
-import { Grid, Card, Stack, Button, MenuItem, TextField, Typography } from '@mui/material';
+import { Grid, Card, Stack, Button, Divider, MenuItem, TextField, Typography } from '@mui/material';
 
 import { useRouter } from 'src/routes/hooks';
 
@@ -122,7 +122,7 @@ const MyFormComponent = ({ fields, title, url }) => {
       <Stack alignItems="center" justifyContent="center" sx={{ height: 1, mx: 3 }}>
         <Card
           sx={{
-            p: 5,
+            p: 3,
             // width: 720,
             maxWidth: 720,
           }}
@@ -132,6 +132,8 @@ const MyFormComponent = ({ fields, title, url }) => {
           </Typography>
           <Grid container spacing={2} mt={2}>
             {fields.map((field) => (
+              <>
+              {field.isForm ? 
               <Grid
                 key={field.name}
                 mb={3}
@@ -141,7 +143,14 @@ const MyFormComponent = ({ fields, title, url }) => {
                 mx={3}
               >
                 {renderField(field)}
+              </Grid>: 
+              <Grid md={12} mb={3} mx={3}>
+                <Divider />
+                <Typography mt={2} variant="p" component="h5">{field.label}</Typography>
               </Grid>
+              
+            }
+              </>
             ))}
           </Grid>
           <Grid item xs={12} justifyContent="center">
