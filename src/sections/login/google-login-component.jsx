@@ -5,7 +5,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 import Button from '@mui/material/Button';
 import { alpha, useTheme } from '@mui/material/styles';
 
-import Iconify from 'src/components/iconify';
+import google from 'src/assets/google.svg';
 
 const GoogleLoginComponent = ({ onSuccess, onFailure }) => {
   const theme = useTheme();
@@ -18,15 +18,16 @@ const GoogleLoginComponent = ({ onSuccess, onFailure }) => {
 
   return (
     <Button
-      onClick={login}
-      fullWidth
-      size="large"
-      color="inherit"
-      variant="outlined"
-      sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
-    >
-      <Iconify icon="eva:google-fill" color="#DF3E30" />
-    </Button>
+    fullWidth
+    onClick={login}
+    size="large"
+    color="inherit"
+    variant="outlined"
+    sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
+  >
+    <img src={google} width="24" alt="google logo" />
+  </Button>
+
   );
 };
 

@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -17,13 +16,11 @@ import { useRouter } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
 
 import { bgGradient } from 'src/theme/css';
-import google from 'src/assets/google.svg';
 
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 
 import GoogleLoginComponent from './google-login-component';
-
 
 // ----------------------------------------------------------------------
 
@@ -89,13 +86,7 @@ export default function LoginView() {
         </Link>
       </Stack>
 
-      <LoadingButton
-        fullWidth
-        size="large"
-        type="submit"
-        variant="contained"
-        onClick={handleClick}
-      >
+      <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={handleClick}>
         Login
       </LoadingButton>
     </>
@@ -137,20 +128,7 @@ export default function LoginView() {
           </Typography>
 
           <Stack direction="row" spacing={2}>
-          <GoogleLoginComponent
-            onSuccess={handleLoginSuccess}
-            onFailure={handleLoginFailure}
-          />
-
-            <Button
-              fullWidth
-              size="large"
-              color="inherit"
-              variant="outlined"
-              sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
-            >
-              <img src={google} width="24" alt="google logo" />
-            </Button>
+            <GoogleLoginComponent onSuccess={handleLoginSuccess} onFailure={handleLoginFailure} />
           </Stack>
 
           <Divider sx={{ my: 3 }}>

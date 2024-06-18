@@ -9,7 +9,8 @@ import App from './app';
 // ----------------------------------------------------------------------
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const clientId = process.env.GOOGLE_CLIENT_ID;
+const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+console.log(clientId);
 
 root.render(
   <HelmetProvider>
