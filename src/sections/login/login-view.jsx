@@ -22,6 +22,8 @@ import google from 'src/assets/google.svg';
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 
+import GoogleLoginComponent from './google-login-component';
+
 
 // ----------------------------------------------------------------------
 
@@ -34,6 +36,30 @@ export default function LoginView() {
 
   const handleClick = () => {
     router.push('/otp');
+  };
+
+  const handleLoginSuccess = (tokenResponse) => {
+    // Send the token response to server
+    // fetch('http://localhost:3001/auth/google_oauth2/callback', {
+    fetch('http://localhost:3001/google_auth', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      body: JSON.stringify(tokenResponse),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('Server response:', data);
+      })
+      .catch((error) => {
+        console.log('Error:', error);
+      });
+  };
+
+  const handleLoginFailure = (error) => {
+    console.log('Login failed: error:', error);
   };
 
   const renderForm = (
@@ -111,7 +137,12 @@ export default function LoginView() {
           </Typography>
 
           <Stack direction="row" spacing={2}>
-          <Button
+          <GoogleLoginComponent
+            onSuccess={handleLoginSuccess}
+            onFailure={handleLoginFailure}
+          />
+
+            <Button
               fullWidth
               size="large"
               color="inherit"
@@ -120,7 +151,6 @@ export default function LoginView() {
             >
               <img src={google} width="24" alt="google logo" />
             </Button>
-           
           </Stack>
 
           <Divider sx={{ my: 3 }}>
