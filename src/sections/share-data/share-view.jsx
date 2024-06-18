@@ -80,7 +80,7 @@ export default function ShareView({handleCloseModal}) {
   };
   const handleClose = (event, newValue) => {
     console.log(newValue);
-    handleCloseModal(true)
+    handleCloseModal('share-data-view')
   };
   const handleSelectAll = (ev, field) => {
     console.log(ev, field);

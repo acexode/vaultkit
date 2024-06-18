@@ -1,4 +1,3 @@
-import { useState } from 'react';
 
 import { Box } from '@mui/material';
 import Card from '@mui/material/Card';
@@ -7,11 +6,14 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
+import useDialogState from 'src/routes/hooks/useSharedData';
+
 import Iconify from 'src/components/iconify';
 
 import AlertDialog from 'src/sections/modal/modal';
 
 import ShareView from './share-view';
+import DataDetails from './view-data';
 import SharedTabSection from './shared-tab-section';
 import SavedSuccessModal from './saved-success-modal';
 import RequestDataView from '../access/request-data-view';
@@ -19,27 +21,18 @@ import RequestDataView from '../access/request-data-view';
 // ----------------------------------------------------------------------
 
 export default function SharedDataView() {
-  const [open, setOpen] = useState(false);
-  const [requestModalOpen, setrequestModalOpen] = useState(false);
-  const [sharedSuccessfully, setsharedSuccessfully] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleRequestModalOpen = () => {
-    setrequestModalOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-    setsharedSuccessfully(true);
-  };
-  const handleRequestModalClose = () => {
-    setrequestModalOpen(false);
-  };
-  const handleSharedModal = () => {
-    console.log('close modal');
-    setsharedSuccessfully(false);
-  };
+  const { openDialog, closeDialog, isDialogOpen } = useDialogState();
+  const card = {
+    name: 'lorem ipsum dolor',
+     description: 'Basic Info, Contact Info, Employment Info, Education Info',
+     assignee: [
+      {
+          "id": "473d2720-341c-49bf-94ed-556999cf6ef7",
+          "avatar": "/static/mock-images/avatars/avatar_2.jpg",
+          "name": "Soren Durham"
+      }
+  ],
+  }
 
   return (
     <Container>
@@ -49,7 +42,7 @@ export default function SharedDataView() {
         <Box>
           <Button
             variant="contained"
-            onClick={handleClickOpen}
+            onClick={() => openDialog('share-data-view')}
             // color="inherit"
             startIcon={<Iconify icon="eva:share-fill" />}
           >
@@ -57,7 +50,7 @@ export default function SharedDataView() {
           </Button>
           <Button
             variant="contained"
-            onClick={handleRequestModalOpen}
+            onClick={() => openDialog('request-data-view')}
             color="inherit"
             sx={{ mx: 2 }}
             startIcon={<Iconify icon="eva:plus-fill" />}
@@ -68,26 +61,27 @@ export default function SharedDataView() {
       </Stack>
 
       <Card>
-        <SharedTabSection />
+        <SharedTabSection handleViewDetails={openDialog} />
       </Card>
       <AlertDialog
         fullWidth
         // maxWidth="lg"
-        component={<RequestDataView handleClose={handleRequestModalClose} />}
-        open={requestModalOpen}
+        component={<RequestDataView handleClose={closeDialog} />}
+        open={isDialogOpen('request-data-view')}
       />
       <AlertDialog
         fullWidth
         maxWidth="lg"
-        component={<ShareView handleCloseModal={handleClose} />}
-        open={open}
+        component={<ShareView handleCloseModal={closeDialog} />}
+        open={isDialogOpen('share-data-view')}
       />
       <AlertDialog
         maxWidth="lg"
         title="Generate Access Code"
-        component={<SavedSuccessModal handleCloseModal={handleSharedModal} />}
-        open={sharedSuccessfully}
+        component={<SavedSuccessModal handleCloseModal={closeDialog} />}
+        open={isDialogOpen('success-view')}
       />
+      <DataDetails isOpen={isDialogOpen('data-details')} card={card} onClose={closeDialog} />
     </Container>
   );
 }

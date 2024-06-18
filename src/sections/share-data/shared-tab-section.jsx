@@ -39,6 +39,9 @@ CustomTabPanel.propTypes = {
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
 };
+SharedTabSection.propTypes = {
+  handleViewDetails: PropTypes.func,
+};
 
 function a11yProps(index) {
     return {
@@ -47,7 +50,7 @@ function a11yProps(index) {
     };
   }
 
-export default function SharedTabSection() {
+export default function SharedTabSection({handleViewDetails}) {
   const [value, setValue] = useState(0);
   const [selected, setSelected] = useState([]);
   const [filterName, setFilterName] = useState('');
@@ -79,20 +82,20 @@ export default function SharedTabSection() {
           scrollButtons="auto"
           aria-label="basic tabs example"
         >
-          <Tab label="Requested Data" {...a11yProps(0)} />
+          <Tab label="Data Requests" {...a11yProps(0)} />
           <Tab label="Shared Data" {...a11yProps(1)} />
           <Tab label="Saved Categories" {...a11yProps(2)} />
 
         </Tabs>
 
         <CustomTabPanel value={value} index={0}>
-            <RequestTableView filterName={filterName} selected={selected} setSelected={setSelected} />
+            <RequestTableView filterName={filterName} selected={selected} setSelected={setSelected} handleViewDetails={handleViewDetails} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-        <SharedTableView filterName={filterName} selected={selected} setSelected={setSelected} />
+        <SharedTableView filterName={filterName} selected={selected} setSelected={setSelected} handleViewDetails={handleViewDetails} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
-        <SharedTableView filterName={filterName} selected={selected} setSelected={setSelected} />
+        <SharedTableView filterName={filterName} selected={selected} setSelected={setSelected} handleViewDetails={handleViewDetails} />
         </CustomTabPanel>
 
        

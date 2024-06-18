@@ -1,3 +1,4 @@
+import { profileEndpoint } from "src/configs/endpoints"
 
 
 export const BasicInfo = [
@@ -5,130 +6,131 @@ export const BasicInfo = [
         "label": "First name",
         "name": "first_name",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Last name",
         "name": "last_name",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Middle name",
         "name": "middle_name",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Email",
         "name": "email",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Social insurance number",
         "name": "social_insurance_number",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Date of birth",
         "name": "date_of_birth",
         "type": "date",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Gender",
         "name": "gender",
         "type": "select",
         "options": [{label: 'Male', value: 'male'}, {label: 'Female', value: 'female'}, {label: 'Other', value: 'other'}, {label: 'Prefer not to say', value: 'prefer_not_to_say'}],
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Phone number",
         "name": "phone_number",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Mailing address",
         "name": "mailing_address",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Nationality",
         "name": "nationality",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Preferred language",
         "name": "preferred_language",
         "type": "select",
         "options": [{label: 'English', value: 'english'}, {label: 'French', value: 'french'}],
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Social media links",
         "name": "social_media_links",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Short bio",
         "name": "short_bio",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Last login at",
         "name": "last_login_at",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Account status",
         "name": "account_status",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Account creation date",
         "name": "account_creation_date",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Is private",
         "name": "is_private",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Work authorization",
         "name": "work_authorization",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     
     {
         "label": "Residency status",
         "name": "residency_status",
-        "type": "text",
-        "defaultValue": ""
+        "type": "select",
+        "options": [],
+        "defaultValue": "",
     },
     {
         "label": "Profile picture",
         "name": "profile_picture_url",
         "type": "upload",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Work permit",
         "name": "work_permit_upload_url",
         "type": "upload",
-        "defaultValue": ""
+        "defaultValue": "",
     },
 ]
 
@@ -137,80 +139,87 @@ export const ContactInfo = [
         "label": "Home address",
         "name": "home_address",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Phone number",
         "name": "phone_number",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
+    },
+    {
+        "label": "City",
+        "name": "city",
+        "type": "text",
+        "defaultValue": "",
+    },
+    {
+        "label": "Province",
+        "name": "province",
+        "type": "text",
+        "defaultValue": "",
+    },
+    {
+        "label": "Postal code",
+        "name": "postal_code",
+        "type": "text",
+        "defaultValue": "",
+    },
+    {
+        "label": "Postal code",
+        "name": "postal_code",
+        "type": "line",
+        "defaultValue": "",
     },
     {
         "label": "Emergency contact name",
         "name": "emergency_contact_name",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Emergency contact phone",
         "name": "emergency_contact_phone",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Emergency contact email",
         "name": "emergency_contact_email",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Emergency contact address",
         "name": "emergency_contact_address",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Emergency contact relationship",
         "name": "emergency_contact_relationship",
         "type": "select",
         "options": [{label: 'Spouse', value: 'spouse'}, {label: 'Parent', value: 'parent'}, {label: 'Sibling', value: 'sibling'}, {label: 'Friend', value: 'friend'}, {label: 'Other', value: 'other'}],
-        "defaultValue": ""
+        "defaultValue": "",
     },
-    {
-        "label": "City",
-        "name": "city",
-        "type": "text",
-        "defaultValue": ""
-    },
-    {
-        "label": "Province",
-        "name": "province",
-        "type": "text",
-        "defaultValue": ""
-    },
-    {
-        "label": "Postal code",
-        "name": "postal_code",
-        "type": "text",
-        "defaultValue": ""
-    },
+
     {
         "label": "Emergency contact city",
         "name": "emergency_contact_city",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Emergency contact province",
         "name": "emergency_contact_province",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Emergency contact postal code",
         "name": "Emergency_contact_postal_code",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     }
 ]
 
@@ -220,31 +229,31 @@ export const EmployeeInfo = [
         "name": "employment_status",
         "type": "select",
         "options": [{label: 'Employed', value: 'employed'}, {label: 'Unemployed', value: 'unemployed'}, {label: 'Self employed', value: 'self-employed'}],
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Current employer",
         "name": "current_employer",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Current job title",
         "name": "current_job_title",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Current start date",
         "name": "current_start_date",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Current end date",
         "name": "current_end_date",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Employment type",
@@ -255,85 +264,85 @@ export const EmployeeInfo = [
         {label: 'Freelance', value: 'freelance'},
         {label: 'Other', value: 'other'},
     ],
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Current salary",
         "name": "current_salary",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Salary history",
         "name": "salary_history",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Office address",
         "name": "office_address",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Supervisor name",
         "name": "supervisor_name",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Supervisor email",
         "name": "supervisor_email",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Job responsibilities",
         "name": "job_responsibilities",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Benefits package",
         "name": "benefits_package",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Professional memberships",
         "name": "professional_memberships",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Training programs",
         "name": "training_programs",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Certifications",
         "name": "certifications",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Income verification document 1",
         "name": "income_verification_document_1",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Income verification document 2",
         "name": "income_verification_document_2",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Previous employment history",
         "name": "Previous_employment_history",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     }
 ]
 
@@ -342,37 +351,37 @@ export const EducationInfo = [
         "label": "Institution name",
         "name": "institution_name",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Degree",
         "name": "degree",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Field of study",
         "name": "field_of_study",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Certificate",
         "name": "certificate_url",
         "type": "upload",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Graduation year",
         "name": "graduation_year",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Additional notes",
         "name": "additional_notes",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Institution type",
@@ -382,62 +391,62 @@ export const EducationInfo = [
         {label: 'Trade School', value: 'trade_school'},
         {label: 'Other', value: 'other'},
     ],
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Start date",
         "name": "start_date",
         "type": "date",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "End date",
         "name": "end_date",
         "type": "date",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Current status",
         "name": "current_status",
         "type": "select",
         "options": [{label: 'Ongoing', value: 'ongoing'},  {label: 'Completed', value: 'completed'}],
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Institution address",
         "name": "institution_address",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Institution city",
         "name": "institution_city",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Institution state",
         "name": "institution_state",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Institution country",
         "name": "institution_country",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Institution postal code",
         "name": "institution_postal_code",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Cgpa",
         "name": "Cgpa",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     }
 ]
 
@@ -446,38 +455,38 @@ export const FinancialInfo = [
         "label": "Monthly income",
         "name": "monthly_income",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Sources of income",
         "name": "sources_of_income",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Bank account number",
         "name": "bank_account_number",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Bank account type",
         "name": "bank_account_type",
         "type": "select",
         "options": [{label: 'Checking', value: 'checking'}, {label: 'savings', value: 'savings'}, {label: 'Other Account', value: 'other_account'}],
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Bank account balance",
         "name": "bank_account_balance",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Investment portfolio value",
         "name": "investment_portfolio_value",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Property ownership",
@@ -488,43 +497,43 @@ export const FinancialInfo = [
         {label: 'Family Owned', value: 'family_owned'},
         {label: 'Investment Property', value: 'investment_property'},
     ],
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Life insurance policy number",
         "name": "life_insurance_policy_number",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Health insurance provider",
         "name": "health_insurance_provider",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Annual income",
         "name": "annual_income",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Tax return amount",
         "name": "tax_return_amount",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Credit score",
         "name": "credit_score",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Credit history",
         "name": "Credit_history",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     }
 ]
 
@@ -538,43 +547,43 @@ export const IdentificationInfo = [
         {label: 'Provincial ID Card', value: 'provincial_id_card'},
         {label: 'Other', value: 'other'},
     ],
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Document number",
         "name": "document_number",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Issuing country",
         "name": "issuing_country",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Date of issue",
         "name": "date_of_issue",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Date of expiry",
         "name": "date_of_expiry",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Additional notes",
         "name": "additional_notes",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Document",
         "name": "Document_url",
         "type": "upload",
-        "defaultValue": ""
+        "defaultValue": "",
     }
 ]
 
@@ -588,56 +597,56 @@ export const RealEstateInfo = [
         {label: 'Sole Ownership', value: 'sole_ownership'},
         {label: 'Joint Ownership', value: 'joint_ownership'},
     ],
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Property addresses",
         "name": "property_addresses",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Mortgage details",
         "name": "mortgage_details",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Property value",
         "name": "property_value",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Ownership history",
         "name": "ownership_history",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Property type",
         "name": "property_type",
         "type": "select",
         "options": [{label: 'Residential', value: 'Residential'}, {label: 'Commercial', value: 'commercial'}],
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Rental income",
         "name": "rental_income",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Property expenses",
         "name": "property_expenses",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Additional comments",
         "name": "Additional_comments",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     }
 ]
 
@@ -646,37 +655,37 @@ export const ResidentialHistory = [
         "label": "Last address",
         "name": "last_address",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Landlord name",
         "name": "landlord_name",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Landlord contact",
         "name": "landlord_contact",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Start date",
         "name": "start_date",
         "type": "date",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "End date",
         "name": "end_date",
         "type": "date",
-        "defaultValue": ""
+        "defaultValue": "",
     },
     {
         "label": "Reason for leaving",
         "name": "reason_for_leaving",
         "type": "text",
-        "defaultValue": ""
+        "defaultValue": "",
     }
 ]
 
@@ -686,28 +695,28 @@ export const getFormFields = (slug) => {
     let data = {}
     switch (slug) {
         case 'personal-info':
-            data = {form: BasicInfo, title: 'Personal Info' }
+            data = {form: BasicInfo, title: 'Personal Information', url: profileEndpoint.basic }
             break;
         case 'contact-info':
-            data = {form: ContactInfo, title: 'Contact Info' }
+            data = {form: ContactInfo, title: 'Contact Info',  url: profileEndpoint.contact }
             break;
         case 'education-info':
-            data = {form: EducationInfo, title: 'Education Info' }
+            data = {form: EducationInfo, title: 'Education Info',  url: profileEndpoint.eduInfo }
             break;
         case 'employment-info':
-            data = {form: EmployeeInfo, title: 'Employment Info' }
+            data = {form: EmployeeInfo, title: 'Employment Info',  url: profileEndpoint.empInfo }
             break;
         case 'financial-info':
-            data = {form: FinancialInfo, title: 'Financial Info' }
+            data = {form: FinancialInfo, title: 'Financial Info',  url: profileEndpoint.finInfo }
             break;
         case 'identification-info':
-            data = {form: IdentificationInfo, title: 'Identification Info' }
+            data = {form: IdentificationInfo, title: 'Identification Info',  url: profileEndpoint.idInfo }
             break;
         case 'realestate-info':
-            data = {form: RealEstateInfo, title: 'Real Estate Info' }
+            data = {form: RealEstateInfo, title: 'Real Estate Info',  url: profileEndpoint.reInfo }
             break;
         case 'residential-info':
-            data = {form: ResidentialHistory, title: 'Residential History' }
+            data = {form: ResidentialHistory, title: 'Residential History',  url: profileEndpoint.resInfo }
             break;
         case 'field-labels':
             data = {

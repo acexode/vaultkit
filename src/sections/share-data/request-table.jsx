@@ -11,16 +11,19 @@ import { users } from 'src/_mock/user';
 import Scrollbar from 'src/components/scrollbar';
 
 import TableNoData from 'src/sections/table/table-no-data';
-import CommonTableRow from 'src/sections/table/user-table-row';
 import CommonTableHead from 'src/sections/table/user-table-head';
 import TableEmptyRows from 'src/sections/table/table-empty-rows';
 
+// import AlertDialog from '../modal/modal';
+import AddNotes from './AddNotes';
+import RequestDataTRows from '../table/common/request-data-trows';
 import { emptyRows, applyFilter, getComparator } from '../user/utils';
 
 // ----------------------------------------------------------------------
 
-export default function RequestTableView({filterName, selected, setSelected}) {
+export default function RequestTableView({filterName, selected, setSelected, handleViewDetails}) {
   const [page, setPage] = useState(0);
+  const [showAddNote, setshowAddNote] = useState(false)
 
 
 
@@ -75,8 +78,11 @@ export default function RequestTableView({filterName, selected, setSelected}) {
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
   };
+  const handleAddNoteModal = () => {
+    setshowAddNote(!showAddNote);
+  };
 
-
+console.log(users);
 
   const dataFiltered = applyFilter({
     inputData: users,
@@ -111,7 +117,7 @@ export default function RequestTableView({filterName, selected, setSelected}) {
               {dataFiltered
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => (
-                  <CommonTableRow
+                  <RequestDataTRows
                     key={row.id}
                     name={row.name}
                     role={row.role}
@@ -121,6 +127,9 @@ export default function RequestTableView({filterName, selected, setSelected}) {
                     validity={row.validity}
                     selected={selected.indexOf(row.name) !== -1}
                     handleClick={(event) => handleClick(event, row.name)}
+                    handleAddNoteModal={handleAddNoteModal}
+                    notificationCount={row.notificationCount}
+                    handleViewDetails={handleViewDetails}
                   />
                 ))}
 
@@ -141,6 +150,8 @@ export default function RequestTableView({filterName, selected, setSelected}) {
         rowsPerPageOptions={[5, 10, 25]}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      <AddNotes open={showAddNote} setOpen={handleAddNoteModal} />
+            {/* <AlertDialog  maxWidth="lg" title="Generate Access Code" component={<SavedSuccessModal handleCloseModal={handleSharedModal} />} open={showAddNote} /> */}
     </>
   );
 }
@@ -149,4 +160,5 @@ RequestTableView.propTypes = {
     filterName: PropTypes.string,
     selected: PropTypes.array,
     setSelected: PropTypes.func,
+    handleViewDetails: PropTypes.func,
   };

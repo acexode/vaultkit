@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import { Badge } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Popover from '@mui/material/Popover';
 import TableRow from '@mui/material/TableRow';
@@ -23,6 +24,8 @@ export default function CommonTableRow({
   validity,
   status,
   handleClick,
+  handleAddNoteModal,
+  notificationCount
 }) {
   const [open, setOpen] = useState(null);
 
@@ -32,6 +35,10 @@ export default function CommonTableRow({
 
   const handleCloseMenu = () => {
     setOpen(null);
+  };
+  const addNoteMenu = () => {
+    setOpen(null);
+    handleAddNoteModal(true)
   };
 
   return (
@@ -62,10 +69,13 @@ export default function CommonTableRow({
 
         <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>
+          <Badge badgeContent={notificationCount} color="primary">
             <Iconify icon="eva:more-vertical-fill" />
+            </Badge>
           </IconButton>
         </TableCell>
       </TableRow>
+      
 
       <Popover
         open={!!open}
@@ -78,8 +88,12 @@ export default function CommonTableRow({
         }}
       >
         <MenuItem onClick={handleCloseMenu}>
-          <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
+          <Iconify icon="eva:eye-outline" sx={{ mr: 2 }} />
           Edit
+        </MenuItem>
+        <MenuItem onClick={addNoteMenu}>
+          <Iconify icon="eva:file-outline" sx={{ mr: 2 }} />
+          Add Note
         </MenuItem>
 
         <MenuItem onClick={handleCloseMenu} sx={{ color: 'error.main' }}>
@@ -87,6 +101,7 @@ export default function CommonTableRow({
           Revoke
         </MenuItem>
       </Popover>
+
     </>
   );
 }
@@ -94,7 +109,9 @@ export default function CommonTableRow({
 CommonTableRow.propTypes = {
   company: PropTypes.any,
   handleClick: PropTypes.func,
+  handleAddNoteModal: PropTypes.func,
   name: PropTypes.any,
+  notificationCount: PropTypes.number,
   validity: PropTypes.any,
   role: PropTypes.any,
   selected: PropTypes.any,

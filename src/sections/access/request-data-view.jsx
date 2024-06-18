@@ -7,7 +7,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 // import Button from '@mui/material/Button';
-import { Grid, Button, Container } from '@mui/material';
+import {  Button, Container } from '@mui/material';
 
 import { getFormFields } from 'src/_mock/formData';
 
@@ -29,24 +29,7 @@ RequestDataView.propTypes = {
 };
 export default function RequestDataView({ handleClose }) {
   const [selectedCategory, setselectedCategory] = useState([]);
-  const [categoryField, setcategoryField] = useState({
-    basic: [],
-    contact: [],
-    empInfo: [],
-    eduInfo: [],
-    finInfo: [],
-    idInfo: [],
-    reInfo: [],
-    resInfo: [],
-  })
-  const handleNested = (field, data) => {
-    const val = {
-      ...categoryField,
-      [field]: data
-    }
-    setcategoryField(val)
-    console.log(selectedCategory);
-  };
+
   const handleClick = () => {
     console.log(selectedCategory);
   };
@@ -55,39 +38,7 @@ export default function RequestDataView({ handleClose }) {
   }, [selectedCategory]);
 
   const fieldData = getFormFields('field-labels');
-  const getCategoryField = (key) => {
-    let val = '';
-    switch (key) {
-      case categories[0]:
-        val = 'basic';
-        break;
-      case categories[1]:
-        val = 'contact';
-        break;
-      case categories[2]:
-        val = 'eduInfo';
-        break;
-      case categories[3]:
-        val = 'empInfo';
-        break;
-      case categories[4]:
-        val = 'finInfo';
-        break;
-      case categories[5]:
-        val = 'idInfo';
-        break;
-      case categories[6]:
-        val = 'reInfo';
-        break;
-      case categories[7]:
-        val = 'resInfo';
-        break;
 
-      default:
-        break;
-    }
-    return val;
-  };
   console.log(fieldData);
 
   const renderForm = (
@@ -96,23 +47,8 @@ export default function RequestDataView({ handleClose }) {
         <CategorySelectCheckmarks
           handleSelected={setselectedCategory}
           list={categories}
-          isChild={false}
           title="Category of data"
         />
-        <Grid container>
-          {setselectedCategory.length > 0 &&
-            selectedCategory.map((e) => (
-              <Grid xs={12} md={6} sx={{ pr: 1 }}>
-                <CategorySelectCheckmarks
-                  handleNested={handleNested}
-                  childName={getCategoryField(e)}
-                  list={fieldData[getCategoryField(e)]}
-                  isChild
-                  title={e}
-                />
-              </Grid>
-            ))}
-        </Grid>
 
         <TextField
           sx={{ mt: 0 }}
@@ -124,7 +60,7 @@ export default function RequestDataView({ handleClose }) {
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 3 }}>
         <Button
-          onClick={handleClose}
+          onClick={() => handleClose('request-data-view')}
           variant="outlined"
           fullWidth
           color="secondary"

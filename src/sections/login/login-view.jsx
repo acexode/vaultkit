@@ -14,8 +14,10 @@ import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { useRouter } from 'src/routes/hooks';
+import { RouterLink } from 'src/routes/components';
 
 import { bgGradient } from 'src/theme/css';
+import google from 'src/assets/google.svg';
 
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
@@ -82,7 +84,7 @@ export default function LoginView() {
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }}>
-        <Link variant="subtitle2" underline="hover">
+        <Link variant="subtitle2" component={RouterLink} href="/reset-password" underline="hover">
           Forgot password?
         </Link>
       </Stack>
@@ -129,7 +131,7 @@ export default function LoginView() {
 
           <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
             Don’t have an account?
-            <Link variant="subtitle2" sx={{ ml: 0.5 }}>
+            <Link component={RouterLink} href="/signup" variant="subtitle2" sx={{ ml: 0.5 }}>
               Get started
             </Link>
           </Typography>
@@ -147,17 +149,7 @@ export default function LoginView() {
               variant="outlined"
               sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
             >
-              <Iconify icon="eva:facebook-fill" color="#1877F2" />
-            </Button>
-
-            <Button
-              fullWidth
-              size="large"
-              color="inherit"
-              variant="outlined"
-              sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
-            >
-              <Iconify icon="eva:twitter-fill" color="#1C9CEA" />
+              <img src={google} width="24" alt="google logo" />
             </Button>
           </Stack>
 

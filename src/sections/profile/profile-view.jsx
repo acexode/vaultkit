@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
-import { Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
+import { Alert, Stack, Button } from '@mui/material';
 
 import BasicInfo from './basic-info';
 import ContactInfo from './contact-info';
@@ -49,7 +49,10 @@ function a11yProps(index) {
   };
 }
 
-export default function ProfileView() {
+ProfileView.propTypes = {
+  handleVerificationModal: PropTypes.func,
+};
+export default function ProfileView({handleVerificationModal}) {
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -58,6 +61,16 @@ export default function ProfileView() {
 
   return (
     <Box sx={{ width: '100%' }}>
+      <Alert
+                severity="primary"
+                action={
+                  <Button onClick={handleVerificationModal} color="primary" size="small" variant="outlined">
+                    Verify Data
+                  </Button>
+                }
+              >
+                Your data is not yet verified — start verification!
+              </Alert>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">Sir Abubakar</Typography>
       </Stack>
