@@ -14,6 +14,7 @@ import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { useRouter } from 'src/routes/hooks';
+import { RouterLink } from 'src/routes/components';
 
 import google from 'src/assets/google.svg'
 import { bgGradient } from 'src/theme/css';
@@ -56,14 +57,12 @@ export default function OrganizationSignupView() {
         />
       </Stack>
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 3 }}>
-        <Link variant="subtitle2" underline="hover">
-          Forgot password?
-        </Link>
+      <Stack direction="row" alignItems="center" justifyContent="en" sx={{ my: 3 }}>
+
       <Typography variant="body2" >
           Already have an account?
-            <Link variant="subtitle2" sx={{ ml: 0.5 }}>
-              Signup
+            <Link component={RouterLink} href="/login" variant="subtitle2" sx={{ ml: 0.5 }}>
+              Login
             </Link>
           </Typography>
       </Stack>
