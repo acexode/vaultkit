@@ -58,7 +58,7 @@ export const BasicInfo = [
   {
     label: 'Mailing address',
     name: 'mailing_address',
-    type: 'text',
+    type: 'autocomplete',
     defaultValue: '',
   },
   {
@@ -160,7 +160,7 @@ export const ContactInfo = [
   {
     label: 'Home address',
     name: 'home_address',
-    type: 'text',
+    type: 'autocomplete',
     defaultValue: '',
   },
   {
@@ -238,7 +238,7 @@ export const ContactInfo = [
   {
     label: 'Emergency contact city',
     name: 'emergency_contact_city',
-    type: 'text',
+    type: 'autocomplete',
     defaultValue: '',
   },
   {
