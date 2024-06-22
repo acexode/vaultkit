@@ -69,13 +69,14 @@ const MyFormComponent = ({ fields, title, url }) => {
       // Handle form submission
     },
   });
-
-  const handlePlaceSelected = (place, setFieldValue) => {
+  
+  const handlePlaceSelected = (place, setFieldValue, fieldName) => {
     const address = place.formatted_address;
-    setFieldValue('emergency_contact_address', address);
+    setFieldValue(fieldName, address);
   };
 
   const renderField = (field) => {
+    console.log(field)
     switch (field.type) {
       case 'upload':
         return <UploadSingleFile label={field.label} />;
@@ -149,15 +150,29 @@ const MyFormComponent = ({ fields, title, url }) => {
      />
      case 'autocomplete':
         return (
-          <ReactAutocomplete
+          <TextField
             key={field.name}
-            apiKey={import.meta.env.VITE_GOOGLE_LOCATION_API}
-            onPlaceSelected={(place) => handlePlaceSelected(place, formik.setFieldValue)}
-            options={{
-              types: "geometry.location",
-              componentRestrictions: { country: 'us' },
+            fullWidth
+            id={field.name}
+            name={field.name}
+            label={field.label}
+            value={formik.values[field.name]}
+            onChange={formik.handleChange}
+            error={formik.touched[field.name] && Boolean(formik.errors[field.name])}
+            helperText={formik.touched[field.name] && formik.errors[field.name]}
+            InputProps={{
+              inputComponent: (props) => (
+                <ReactAutocomplete
+                  {...props}
+                  apiKey={import.meta.env.VITE_GOOGLE_LOCATION_API}
+                  onPlaceSelected={(place) => handlePlaceSelected(place, formik.setFieldValue, field.name)}
+                  options={{
+                    types: ['address'],
+                    // componentRestrictions: { country: 'us' },
+                  }}
+                />
+              ),
             }}
-            style={{ width: '100%', height: '40px', marginTop: '10px' }}
           />
         );
       case 'email':

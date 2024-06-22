@@ -66,7 +66,7 @@ export const BasicInfo = [
   {
     label: 'Mailing address',
     name: 'mailing_address',
-    type: 'text',
+    type: 'autocomplete',
     defaultValue: '',
     "isForm": true
   },
@@ -178,11 +178,11 @@ export const BasicInfo = [
 
 export const ContactInfo = [
   {
-      "label": "Home address",
-      "name": "home_address",
-      "type": "text",
-      "defaultValue": "",
-      "isForm": true
+    label: 'Home address',
+    name: 'home_address',
+    type: 'autocomplete',
+    defaultValue: '',
+    "isForm": true
   },
   {
       "label": "Phone number",
@@ -257,11 +257,11 @@ export const ContactInfo = [
   },
 
   {
-      "label": "Emergency contact city",
-      "name": "emergency_contact_city",
-      "type": "text",
-      "defaultValue": "",
-      "isForm": true
+    label: 'Emergency contact city',
+    name: 'emergency_contact_city',
+    type: 'autocomplete',
+    defaultValue: '',
+    "isForm": true
   },
   {
       "label": "Emergency contact province",
