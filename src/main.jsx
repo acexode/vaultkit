@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
@@ -10,7 +11,6 @@ import App from './app';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-console.log(clientId);
 
 root.render(
   <HelmetProvider>

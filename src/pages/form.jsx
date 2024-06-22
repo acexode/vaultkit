@@ -13,7 +13,7 @@ export default function LoginPage() {
     // const {state} = useGlobalContext()
     const route = useSearchParams()
     const {form, title, url} = getFormFields(route[0].get("tag"));
-
+    console.log(url)
   return (
     <>
       <Helmet>
