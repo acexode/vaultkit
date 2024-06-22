@@ -26,17 +26,19 @@ const SignupOverView = () => {
     <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" minHeight="100vh">
       <Box width="420px" padding="16px" >
           <Tabs value={tabIndex} onChange={handleTabChange} variant="fullWidth">
-            <Tab label="Organization" />
             <Tab label="Individual" />
+            <Tab label="Organization" />
           </Tabs>
 
-        <TabPanel value={tabIndex} index={0}>
-            <OrganizationSignupView />
+          <TabPanel value={tabIndex} index={0}>
+            <IndividualSignupView />
         </TabPanel>
 
         <TabPanel value={tabIndex} index={1}>
-            <IndividualSignupView />
+            <OrganizationSignupView />
         </TabPanel>
+
+        
 
       </Box>
     </Box>

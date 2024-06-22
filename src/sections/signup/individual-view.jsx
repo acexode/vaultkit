@@ -12,6 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
+import { Checkbox, FormControlLabel } from '@mui/material';
 
 import { useRouter } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
@@ -54,20 +55,28 @@ export default function IndividualSignupView() {
           }}
         />
       </Stack>
+      
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 3 }}>
        
-        <Typography variant="body2">
-          Already have an account?
-          <Link component={RouterLink} href="/login" variant="subtitle2" sx={{ ml: 0.5 }}>
-            Login
-          </Link>
-        </Typography>
+      <FormControlLabel
+                control={<Checkbox   />}
+                label=" Terms and Conditions"
+              />
       </Stack>
 
       <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={handleClick}>
         Signup
       </LoadingButton>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 1 }}>
+       
+       <Typography variant="body2">
+         Already have an account?
+         <Link component={RouterLink} href="/login" variant="subtitle2" sx={{ ml: 0.5 }}>
+           Login
+         </Link>
+       </Typography>
+     </Stack>
     </>
   );
 

@@ -5,7 +5,7 @@ import { useFormik } from 'formik';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import ReactAutocomplete from "react-google-autocomplete";
 
-import { Grid, Card, Stack, Button, MenuItem, TextField, Typography, Autocomplete  } from '@mui/material';
+import { Grid, Card, Stack, Button, Divider, MenuItem, TextField, Typography, Autocomplete  } from '@mui/material';
 
 import { useRouter } from 'src/routes/hooks';
 
@@ -200,7 +200,7 @@ const MyFormComponent = ({ fields, title, url }) => {
       <Stack alignItems="center" justifyContent="center" sx={{ height: 1, mx: 3 }}>
         <Card
           sx={{
-            p: 5,
+            p: 3,
             // width: 720,
             maxWidth: 720,
           }}
@@ -209,7 +209,9 @@ const MyFormComponent = ({ fields, title, url }) => {
             {title}
           </Typography>
           <Grid container spacing={2} mt={2}>
-            {fields?.map((field) => (
+            {fields.map((field) => (
+              <>
+              {field.isForm ? 
               <Grid
                 key={field.name}
                 mb={3}
@@ -219,7 +221,14 @@ const MyFormComponent = ({ fields, title, url }) => {
                 mx={3}
               >
                 {renderField(field)}
+              </Grid>: 
+              <Grid md={12} mb={3} mx={3}>
+                <Divider />
+                <Typography mt={2} variant="p" component="h5">{field.label}</Typography>
               </Grid>
+              
+            }
+              </>
             ))}
           </Grid>
           <Grid item xs={12} justifyContent="center">

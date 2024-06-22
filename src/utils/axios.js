@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 // axiosInstance.js
 import axios from 'axios';
 import { setupCache } from 'axios-cache-adapter';
