@@ -93,6 +93,7 @@ export const BasicInfo = [
     name: 'social_media_links',
     type: 'text',
     defaultValue: "",  
+    "isForm": true
   },
   {
     label: 'Short bio',
@@ -243,7 +244,7 @@ export const ContactInfo = [
   {
       "label": "Emergency contact address",
       "name": "emergency_contact_address",
-      "type": "text",
+      "type": "autocomplete",
       "defaultValue": "",
       "isForm": true
   },

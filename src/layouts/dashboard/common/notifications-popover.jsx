@@ -30,7 +30,7 @@ import Scrollbar from 'src/components/scrollbar';
 
 const NOTIFICATIONS = [
   {
-    id: 1,
+    id: '1',
     title: 'Nnamdi Viewed Your Profile ',
     description: '',
     avatar: null,
@@ -39,7 +39,7 @@ const NOTIFICATIONS = [
     isUnRead: true,
   },
   {
-    id: 2,
+    id: '2',
     title: 'Nnamdi request access to your profile',
     description: '',
     avatar: '/assets/images/avatars/avatar_2.jpg',
