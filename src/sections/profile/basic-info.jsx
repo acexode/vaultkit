@@ -4,9 +4,13 @@ import React from 'react';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
-import {  Box, Button, Container, Typography, ListItemText } from '@mui/material';
+import { Box, Button, Container, Typography, ListItemText } from '@mui/material';
+
+import { convertToSentenceCase } from 'src/utils/common-utils';
 
 import { useGlobalContext } from 'src/context/context';
+
+import EmptyContent from 'src/components/common/EmptyContent';
 
 const ListItemRoot = styled('div')(({ theme }) => ({
   display: 'block',
@@ -31,42 +35,13 @@ const Item = styled('div')(({ theme }) => ({
 }));
 const BasicInfo = () => {
   console.log(console.log('basic info'));
-  const {handleCurrentForm} = useGlobalContext()
-  const data = {
-    first_name: 'Abubakar',
-    last_name: 'Abdulwahab',
-    middle_name: 'Adamu',
-    email: 'abu@gmail.com',
-    social_insurance_number: '302938288482',
-    date_of_birth: '18/06/1992',
-    gender: 'Male',
-    phone_number: '070584585848',
-    mailing_address: 'Kubwa Abuja',
-    nationality: 'Nigeria',
-    preferred_language: 'English',
-    profile_picture_url: '',
-    social_media_links: '',
-    short_bio: '',
-    last_login_at: '',
-    account_status: '',
-    account_creation_date: '',
-    is_private: '',
-    work_authorization: '',
-    work_permit_upload_url: '',
-    residency_status: '',
-  };
+  const { handleCurrentForm } = useGlobalContext();
+  const data = null
 
-  function convertToSentenceCase(str) {
-    // Replace underscores with spaces
-    str = str.replace(/_/g, ' ');
-
-    // Convert to sentence case
-    console.log(str.toLowerCase().replace(/(^|[.!?])(\w)/g, (match, p1, p2) => p1 + p2.toUpperCase()));
-    return str.toLowerCase().replace(/(^|[.!?])(\w)/g, (match, p1, p2) => p1 + p2.toUpperCase());
-  }
   return (
     <Container>
       <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
+      {data ? 
         <Card
           sx={{
             p: 2,
@@ -74,45 +49,41 @@ const BasicInfo = () => {
             maxWidth: 520,
           }}
         >
+         
           <Stack>
-          <Box sx={{mb: 3}}>
-             
-             <Item>
-               <ListItemText sx={{minWidth: '84px'}}>Personal Info</ListItemText>
-               <ListItemText sx={{textAlign: 'right'}}>
-                 <Button variant="outlined" onClick={() => handleCurrentForm('personal-info')}>Edit Info</Button>
-               </ListItemText>
-             </Item>
-
-      
-         </Box>
-                {Object.keys(data).map(e => (
-            <ListItemRoot>
-             
+            <Box sx={{ mb: 3 }}>
+              <Item>
+                <ListItemText sx={{ minWidth: '84px' }}>Personal Info</ListItemText>
+                <ListItemText sx={{ textAlign: 'right' }}>
+                  <Button variant="outlined" onClick={() => handleCurrentForm('personal-info')}>
+                    Edit Info
+                  </Button>
+                </ListItemText>
+              </Item>
+            </Box>
+            {Object.keys(data).map((e) => (
+              <ListItemRoot>
                 <Item>
-                  <ListItemText sx={{minWidth: '84px'}}>{convertToSentenceCase(e)}</ListItemText>
-                  <ListItemText sx={{textAlign: 'right'}}>
-                    <Typography sx={{fontWeight: '700'}}>{data[e]}</Typography>
+                  <ListItemText sx={{ minWidth: '84px' }}>{convertToSentenceCase(e)}</ListItemText>
+                  <ListItemText sx={{ textAlign: 'right' }}>
+                    <Typography sx={{ fontWeight: '700' }}>{data[e]}</Typography>
                   </ListItemText>
                 </Item>
-
-         
-            </ListItemRoot>
-                ))}
+              </ListItemRoot>
+            ))}
           </Stack>
-          {/* <List
-            sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
-            subheader={<ListSubheader>Basic Info</ListSubheader>}
-          >
-            <ListItem sx={{display: 'flex', justifyContent: 'space-around'}}>
-              <ListItemText primary="Wi-Fi">Name</ListItemText>
-              <ListItemText>Abubakar</ListItemText>
-            </ListItem>
-            <ListItem>
-              <ListItemText id="switch-list-label-bluetooth" primary="Bluetooth" />
-            </ListItem>
-          </List> */}
-        </Card>
+          
+          
+        </Card>:
+        <>
+        <EmptyContent
+        title="You havent added any data"
+        description="Click the button below to start adding your data"
+      />
+           <Button onClick={()=> handleCurrentForm('personal-info', false)} variant='outlined' size='lg' color='inherit'>Add Data</Button>
+        
+        </>
+          }
       </Stack>
     </Container>
   );

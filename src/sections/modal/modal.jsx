@@ -1,7 +1,11 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import styled from '@emotion/styled';
+import { Icon } from '@iconify/react';
+import closeFill from '@iconify/icons-eva/close-circle-fill';
 
 import Dialog from '@mui/material/Dialog';
+import { IconButton } from '@mui/material';
 import DialogContent from '@mui/material/DialogContent';
 
 AlertDialog.propTypes = {
@@ -9,18 +13,25 @@ AlertDialog.propTypes = {
   open: PropTypes.number,
   maxWidth: PropTypes.string,
   fullWidth: PropTypes.bool,
+  showClose: PropTypes.bool,
   component: PropTypes.node,
+  handleClose: PropTypes.func,
 };
-export default function AlertDialog({title, component, open, fullWidth= false, maxWidth="md"}) {
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+  '& .MuiDialogContent-root': {
+    paddingTop: theme.spacing(5),
+  },
+  '& .MuiDialogActions-root': {
+    padding: theme.spacing(1),
+  },
+}));
+
+export default function AlertDialog({title, component, open, fullWidth= false, maxWidth="md", handleClose, showClose= false}) {
   // const [open, setOpen] = React.useState(false);
 
 
-  const handleClose = () => {
-    console.log(false);
-  };
-
   return (
-    <Dialog
+    <BootstrapDialog
         open={open}
         onClose={handleClose}
         fullWidth={fullWidth}
@@ -28,10 +39,25 @@ export default function AlertDialog({title, component, open, fullWidth= false, m
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogContent>
+        {showClose && 
+         <IconButton
+          aria-label="close"
+          onClick={handleClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <Icon width={40} icon={closeFill} />
+        </IconButton>
+        
+        }
+        <DialogContent sx={{'&::-webkit-scrollbar': {display: 'none'}}}>
             {component}
         </DialogContent>
   
-      </Dialog>
+      </BootstrapDialog>
   );
 }

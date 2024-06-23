@@ -1,9 +1,8 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
+import React, { useState } from 'react';
 import eyeFill from '@iconify/icons-eva/eye-fill';
 import editFill from '@iconify/icons-eva/edit-2-fill';
-import closeFill from '@iconify/icons-eva/plus-circle-outline';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -13,23 +12,15 @@ import {
   Grid,
   Button,
   Tooltip,
-  Typography,
   IconButton,
   CardActions,
   ListItemText,
 } from '@mui/material';
 
-const ListItemRoot = styled('div')(({ theme }) => ({
-  display: 'block',
-  borderRadius: '8px',
-  alignItems: 'center',
-  marginBottom: ' 12px',
-  padding: '12px 16px',
-  outlineOffset: '-1px',
-  outline: 'rgb(242, 242, 242) solid 1px',
-  wordBreak: 'break-word',
-  backgroundColor: 'rgb(250, 250, 250)',
-}));
+import AddDataCard from './AddDataCard';
+import AlertDialog from '../modal/modal';
+import ListCardContent from './ListCardContent';
+
 const Item = styled('div')(({ theme }) => ({
   display: 'flex',
   justifyContent: 'flex-start',
@@ -50,15 +41,19 @@ const NewButton = styled(IconButton)(({ theme, width, height }) => ({
 }));
 
 const ListCard = ({ data, handleCurrentForm, path, title }) => {
-  function convertToSentenceCase(str) {
-    str = str.replace(/_/g, ' ');
+  const [open, setopen] = useState(false);
+  const [selectedData, setselectedData] = useState(null);
 
-    // Convert to sentence case
-    console.log(
-      str.toLowerCase().replace(/(^|[.!?])(\w)/g, (match, p1, p2) => p1 + p2.toUpperCase())
-    );
-    return str.toLowerCase().replace(/(^|[.!?])(\w)/g, (match, p1, p2) => p1 + p2.toUpperCase());
-  }
+  const handleViewDataModal = (d) => {
+    if (d) {
+      setselectedData(d);
+    }
+    setopen(!open);
+  };
+  const closeModal = (d) => {
+    setopen(false);
+  };
+
   return (
     <Grid container alignItems="stretch" justifyContent="space-around">
       {data.map((d) => (
@@ -75,74 +70,66 @@ const ListCard = ({ data, handleCurrentForm, path, title }) => {
             <Box sx={{ mb: 3 }}>
               <Item>
                 <ListItemText sx={{ minWidth: '84px' }}>{title}</ListItemText>
-                <ListItemText sx={{ textAlign: 'right', pr:2 }}>
-                <Tooltip title="Edit Info">
-                  <NewButton
-                    width={40}
-                    height={40}
-                    edge="end"
-                    variant="contained"
-                    size="medium"
-                    onClick={() => handleCurrentForm(path)}
-                  >
-                    <Icon width={40} icon={editFill} />
-                  </NewButton>
-                </Tooltip>
+                <ListItemText sx={{ textAlign: 'right', pr: 2 }}>
+                  <Tooltip title="Edit Info">
+                    <NewButton
+                      width={40}
+                      height={40}
+                      edge="end"
+                      variant="contained"
+                      size="medium"
+                      onClick={() => handleCurrentForm(path)}
+                    >
+                      <Icon width={40} icon={editFill} />
+                    </NewButton>
+                  </Tooltip>
                 </ListItemText>
               </Item>
             </Box>
             {Object.keys(d)
               .slice(0, 3)
-              .map((e) => (
-                <ListItemRoot>
-                  <Item>
-                    <ListItemText sx={{ minWidth: '84px' }}>
-                      {convertToSentenceCase(e)}
-                    </ListItemText>
-                    <ListItemText sx={{ textAlign: 'right' }}>
-                      <Typography sx={{ fontWeight: '700' }}>{d[e]}</Typography>
-                    </ListItemText>
-                  </Item>
-                </ListItemRoot>
+              .map((e, i) => (
+                <ListCardContent key={i.toString()} field={e} data={d} />
               ))}
           </Stack>
           <CardActions disableSpacing>
             <Button
               edge="end"
-              variant="contained"
+              variant="outlined"
               size="medium"
               color="inherit"
-              onClick={() => handleCurrentForm(path)}
+              onClick={() => handleViewDataModal(d)}
               startIcon={<Icon icon={eyeFill} />}
             >
-              Show full data
+              View full data
             </Button>
           </CardActions>
         </Card>
       ))}
-      <Card
-        sx={{
-          p: 2,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: 1,
-          maxWidth: 520,
-          height: '380px',
-          mt: 2,
-        }}
-      >
-        <NewButton
-             width={80}
-             height={80}
-          edge="end"
-          variant="contained"
-          size="medium"
-          onClick={() => handleCurrentForm(path)}
-        >
-          <Icon width={40} icon={closeFill} />
-        </NewButton>
-      </Card>
+      <AddDataCard handleCurrentForm={handleCurrentForm} path={path} />
+      <AlertDialog
+        fullWidth
+        showClose
+        maxWidth="sm"
+        title="Data Verification"
+        handleClose={closeModal}
+        component={
+          <Card
+            sx={{
+              p: 2,
+              width: 1,
+              height: 'auto',
+              mt: 2,
+            }}
+          >
+            {selectedData &&
+              Object.keys(selectedData).map((e, i) => (
+                <ListCardContent key={i.toString()} field={e} data={selectedData} />
+              ))}
+          </Card>
+        }
+        open={open}
+      />
     </Grid>
   );
 };

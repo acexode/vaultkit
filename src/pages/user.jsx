@@ -18,7 +18,7 @@ export default function UserPage() {
       </Helmet>
 
       <ProfileView handleVerificationModal={handleVerificationModal} />
-      <AlertDialog fullWidth maxWidth="md" title="Data Verification" component={<VerificationView handleCloseModal={handleVerificationModal} />} open={open} />
+      <AlertDialog handleClose={handleVerificationModal} fullWidth maxWidth="md" title="Data Verification" component={<VerificationView handleCloseModal={handleVerificationModal} />} open={open} />
     </>
   );
 }
