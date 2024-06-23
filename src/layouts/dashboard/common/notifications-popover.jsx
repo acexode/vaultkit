@@ -66,6 +66,7 @@ export default function NotificationsPopover() {
     setOpen(null);
   };
   const handleNavigate = () => {
+    handleClose()
     router.push('/notifications');
   };
 
