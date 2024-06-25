@@ -17,13 +17,13 @@ const useGoogleAutocomplete = () => {
            input,
            types: ['geocode'],
          };
-         console.log(request);
+        //  console.log(request);
          getPlacePredictions(request, (res)=> {
             console.log('logging result');
          });
        };
     
-       fetchPredictions();
+      fetchPredictions();
 
    }
 

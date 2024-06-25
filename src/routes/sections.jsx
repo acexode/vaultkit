@@ -18,6 +18,8 @@ export const SettingsPagePage = lazy(() => import('src/pages/settings'));
 
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 
+export const ProtectedRoute = lazy(() => import('src/pages/protected-route'))
+
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -31,17 +33,22 @@ export default function Router() {
         </DashboardLayout>
       ),
       children: [
-        { element: <IndexPage />, index: true },
-        { path: 'user', element: <UserPage /> },
-        { path: 'form', element: <FormPage /> },
-        { path: 'analytics', element: <AnalyticsPage /> },
-        { path: 'download-view', element: <DownloadViewPage /> },
-        { path: 'notifications', element: <NotificationsPage /> },
-        { path: 'settings', element: <SettingsPagePage /> },
         {
-          path: 'shared-data-history',
-          element: <SharedDataPage />,
-        },
+          element: <ProtectedRoute />,
+          children: [
+            { element: <IndexPage />, index: true },
+            { path: 'user', element: <UserPage /> },
+            { path: 'form', element: <FormPage /> },
+            { path: 'analytics', element: <AnalyticsPage /> },
+            { path: 'download-view', element: <DownloadViewPage /> },
+            { path: 'notifications', element: <NotificationsPage /> },
+            { path: 'settings', element: <SettingsPagePage /> },
+            {
+              path: 'shared-data-history',
+              element: <SharedDataPage />,
+            },
+          ]
+        }
       ],
     },
     {
