@@ -59,7 +59,7 @@ export const BasicInfo = [
   {
     label: 'Phone number',
     name: 'phone_number',
-    type: 'text',
+    type: 'number',
     defaultValue: '',
     "isForm": true
   },
@@ -134,12 +134,12 @@ export const BasicInfo = [
     label: 'Work authorization',
     name: 'work_authorization',
     type: 'select',
-    options: [
+    options: 
         [
           { label: 'Yes', value: 'yes' },
           { label: 'No', value: 'no' },
         ],
-      ],
+      
     defaultValue: '',
     "isForm": true
   },
@@ -149,14 +149,13 @@ export const BasicInfo = [
     name: 'residency_status',
     type: 'select',
     options: [
-      [
+
         { label: 'Citizen', value: 'citizen' },
         { label: 'Permanent Resident', value: 'permanent resident' },
         { label: 'Non-Citizen Resident', value: 'non-citizen resident' },
         { label: 'Temporary Resident', value: 'temporary resident' },
         { label: 'Visitor/Tourist', value: 'visitor/tourist' },
         { label: 'Other', value: 'other' },
-      ],
     ],
     defaultValue: '',
     "isForm": true
@@ -188,7 +187,7 @@ export const ContactInfo = [
   {
       "label": "Phone number",
       "name": "phone_number",
-      "type": "text",
+      "type": "number",
       "defaultValue": "",
       "isForm": true
   },
@@ -230,7 +229,7 @@ export const ContactInfo = [
   {
       "label": "Emergency contact phone",
       "name": "emergency_contact_phone",
-      "type": "text",
+      "type": "number",
       "defaultValue": "",
       "isForm": true
   },

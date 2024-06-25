@@ -92,7 +92,7 @@ const MyFormComponent = ({ fields, title, url }) => {
       setInput('');
     }
   };
-
+  console.log(fields);
   const renderField = (field) => {
     switch (field.type) {
       case 'upload':

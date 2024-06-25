@@ -1,4 +1,8 @@
+import axios from 'axios';
+import * as Yup from 'yup';
 import { useState } from 'react';
+import { useFormik } from 'formik';
+import { useSnackbar } from 'notistack';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -16,58 +20,94 @@ import { useRouter } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
 
 import { bgGradient } from 'src/theme/css';
+import { authEndpoints } from 'src/configs/endpoints';
 
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 
-import GoogleLoginComponent from './google-login-component';
+
+// import GoogleLoginComponent from './google-login-component';
 
 // ----------------------------------------------------------------------
 
 export default function LoginView() {
   const theme = useTheme();
-
+  const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
-
-  const handleClick = () => {
-    router.push('/otp');
-  };
-
-  const handleLoginSuccess = (tokenResponse) => {
-    // Send the token response to server
-    // fetch('http://localhost:3001/auth/google_oauth2/callback', {
-    fetch('http://localhost:3001/google_auth', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest',
-      },
-      body: JSON.stringify(tokenResponse),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log('Server response:', data);
-      })
-      .catch((error) => {
-        console.log('Error:', error);
-      });
-  };
-
-  const handleLoginFailure = (error) => {
-    console.log('Login failed: error:', error);
-  };
-
+  const [isSubmtting, setisSubmtting] = useState(false)
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email('Invalid email address').required('Email is required'),
+      password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
+    }),
+    onSubmit: async (values) => {
+      setisSubmtting(true);
+      const user = { user: {email: values.email, password: values.password} };
+      
+      try {
+        const response = await axios.post(authEndpoints.login, user);
+        const token = response.headers.authorization;
+        if(token) {
+          sessionStorage.setItem("authToken", token)
+          router.push('/');
+          enqueueSnackbar("Logged in successfully", { 
+            autoHideDuration: 1000,
+            anchorOrigin: {
+              vertical: "top",
+              horizontal: "right"
+            },
+            variant: "success"
+          })
+          setisSubmtting(false);
+        }else {
+          console.log('Login failed:', response.message);
+        }
+        
+      } catch (error) {
+        if(error?.response?.status === 401){
+          enqueueSnackbar("Invalid email or password", { 
+            autoHideDuration: 3000,
+            anchorOrigin: {
+              vertical: "top",
+              horizontal: "right"
+            },
+            variant: "error"
+          })
+        }
+        setisSubmtting(false);
+      } finally {
+        setisSubmtting(false);
+      }
+    },
+  });
   const renderForm = (
-    <>
+    <form onSubmit={formik.handleSubmit}>
       <Stack spacing={3}>
-        <TextField name="email" label="Email address" />
+      <TextField
+          name="email"
+          label="Email address"
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.email && Boolean(formik.errors.email)}
+          helperText={formik.touched.email && formik.errors.email}
+      />
 
-        <TextField
+      <TextField
           name="password"
           label="Password"
           type={showPassword ? 'text' : 'password'}
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.password && Boolean(formik.errors.password)}
+          helperText={formik.touched.password && formik.errors.password}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -86,10 +126,10 @@ export default function LoginView() {
         </Link>
       </Stack>
 
-      <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={handleClick}>
-        Login
+      <LoadingButton fullWidth size="large" type="submit" variant="contained">
+         {isSubmtting ? "Loading.." : "Login"}
       </LoadingButton>
-    </>
+    </form>
   );
 
   return (
@@ -128,7 +168,7 @@ export default function LoginView() {
           </Typography>
 
           <Stack direction="row" spacing={2}>
-            <GoogleLoginComponent onSuccess={handleLoginSuccess} onFailure={handleLoginFailure} />
+            {/* <GoogleLoginComponent onSuccess={handleLoginSuccess} onFailure={handleLoginFailure} /> */}
           </Stack>
 
           <Divider sx={{ my: 3 }}>
