@@ -212,7 +212,7 @@ const MyFormComponent = ({ fields, title, url }) => {
         );
     }
   };
-  const fullwidthFields = ['upload', 'textarea'];
+  const fullwidthFields = ['upload', 'textarea', 'social_media'];
 
   return (
     <form onSubmit={formik.handleSubmit}>
