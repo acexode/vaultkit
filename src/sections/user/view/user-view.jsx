@@ -179,7 +179,7 @@ export default function UserPage() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Card>
-      <AlertDialog title="Generate Access Code" component={<AccessView handleClose={handleClose} />} open={open} />
+      <AlertDialog handleClose={handleClose} title="Generate Access Code" component={<AccessView handleClose={handleClose} />} open={open} />
     </Container>
   );
 }

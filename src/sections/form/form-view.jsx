@@ -24,6 +24,8 @@ import axiosInstance from 'src/utils/axios';
 
 import { UploadSingleFile } from 'src/components/uploads';
 
+import SocialMediaInput from './socialMediaInput';
+
 const MyFormComponent = ({ fields, title, url }) => {
   const router = useRouter();
   const initialValues = {};
@@ -95,6 +97,8 @@ const MyFormComponent = ({ fields, title, url }) => {
     switch (field.type) {
       case 'upload':
         return <UploadSingleFile label={field.label} />;
+      case 'social_media':
+        return <SocialMediaInput touched={formik.touched} values={formik.values} handleChange={formik.handleChange} error={formik.errors} />;
       case 'select':
         return (
           <TextField

@@ -1,12 +1,12 @@
 // import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import Card from '@mui/material/Card';
+// import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 // import Button from '@mui/material/Button';
-import { MenuItem, Checkbox, Container, FormControlLabel } from '@mui/material';
+import { Box, MenuItem, Checkbox, FormControlLabel } from '@mui/material';
 
 
 
@@ -60,23 +60,17 @@ export default function DataConfigView({handleClose}) {
 
         </TextField>
          
-        <TextField name="email" label="Enter Receipient Email" helperText="Do you want anyone to view this code?" />
-        <FormControlLabel  control={<Checkbox />} label="Can the recipient download your information ?" />
+        <TextField name="email" label="Enter Receipient Email"  />
+        <FormControlLabel   control={<Checkbox />} label={<Typography sx={{fontSize: '12px'}}>Can the recipient download your information ?</Typography>} />
     </Stack>
   );
 
   return (
-    <Container>
+    <Box px={2}>
       
 
       <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
-        <Card
-          sx={{
-            p: 1,
-            width: 1,
-            maxWidth: 620,
-          }}
-        >
+        
           <Typography variant="h4" sx={{textAlign: 'center', my:2 }}>Data Sharing Settings</Typography>
 
 
@@ -85,8 +79,8 @@ export default function DataConfigView({handleClose}) {
         
 
           {renderForm}
-        </Card>
+        
       </Stack>
-    </Container>
+    </Box>
   );
 }

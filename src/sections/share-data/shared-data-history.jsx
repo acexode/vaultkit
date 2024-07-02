@@ -65,6 +65,7 @@ export default function SharedDataView() {
       </Card>
       <AlertDialog
         fullWidth
+        showClose={false}
         // maxWidth="lg"
         component={<RequestDataView handleClose={closeDialog} />}
         open={isDialogOpen('request-data-view')}
@@ -72,12 +73,15 @@ export default function SharedDataView() {
       <AlertDialog
         fullWidth
         maxWidth="lg"
+        handleClose={() =>closeDialog('share-data-view')}
         component={<ShareView handleCloseModal={closeDialog} />}
         open={isDialogOpen('share-data-view')}
       />
       <AlertDialog
         maxWidth="lg"
+        showClose={false}
         title="Generate Access Code"
+        handleClose={closeDialog}
         component={<SavedSuccessModal handleCloseModal={closeDialog} />}
         open={isDialogOpen('success-view')}
       />

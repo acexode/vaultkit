@@ -12,21 +12,18 @@ import {
   Button,
   Avatar,
   styled,
-  Tooltip,
   Divider,
   Typography,
   OutlinedInput,
 } from '@mui/material';
 
 import Scrollbar from 'src/components/scrollbar';
-import MHidden from 'src/components/common/MHidden';
+// import MHidden from 'src/components/common/MHidden';
 import MIconButton from 'src/components/common/MIconButton';
 
 //
 
 // ----------------------------------------------------------------------
-
-
 
 DataDetails.propTypes = {
   isOpen: PropTypes.bool,
@@ -44,16 +41,15 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function DataDetails({ card, isOpen, onClose,  }) {
+export default function DataDetails({ card, isOpen, onClose }) {
   const [taskCompleted, setTaskCompleted] = useState(card.completed);
 
-  const { name, description, assignee,  } = card;
+  const { name, description, assignee } = card;
 
   const handleToggleCompleted = () => {
     setTaskCompleted((prev) => !prev);
   };
   console.log(isOpen);
-
 
   return (
     <Drawer
@@ -62,14 +58,12 @@ export default function DataDetails({ card, isOpen, onClose,  }) {
       anchor="right"
       PaperProps={{ sx: { width: { xs: 1, sm: 480 } } }}
     >
-      <Stack p={2.5} direction="row" alignItems="center">
-        <MHidden width="smUp">
-          <Tooltip title="Back">
-            <MIconButton onClick={()=> onClose('data-details')} sx={{ mr: 1 }}>
-              <Icon icon={arrowIosBackFill} width={20} height={20} />
-            </MIconButton>
-          </Tooltip>
-        </MHidden>
+      <Stack p={2.5} direction="row" alignItems="space-between">
+        
+          <MIconButton onClick={() => onClose('data-details')} sx={{ mr: 1 }}>
+            <Icon icon={arrowIosBackFill} width={30} height={30} />
+          </MIconButton>
+       
 
         <Button
           size="small"
@@ -108,7 +102,6 @@ export default function DataDetails({ card, isOpen, onClose,  }) {
                   sx={{ m: 0.5, width: 36, height: 36 }}
                 />
               ))}
-              
             </Stack>
           </Stack>
 
@@ -116,7 +109,6 @@ export default function DataDetails({ card, isOpen, onClose,  }) {
             <LabelStyle> Due date</LabelStyle>
             <LabelStyle> 21 - 22 Jun</LabelStyle>
           </Stack>
-
 
           <Stack direction="row">
             <LabelStyle sx={{ mt: 2 }}>Description</LabelStyle>
@@ -134,16 +126,13 @@ export default function DataDetails({ card, isOpen, onClose,  }) {
           <Stack direction="row">
             <LabelStyle sx={{ mt: 2 }}>Attachments</LabelStyle>
             <Stack direction="row" flexWrap="wrap">
-            <LabelStyle sx={{ mt: 2 }}>No Attachments</LabelStyle>
+              <LabelStyle sx={{ mt: 2 }}>No Attachments</LabelStyle>
             </Stack>
           </Stack>
         </Stack>
-
-        
       </Scrollbar>
 
       <Divider />
-
     </Drawer>
   );
 }

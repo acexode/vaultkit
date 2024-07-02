@@ -26,7 +26,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export default function AlertDialog({title, component, open, fullWidth= false, maxWidth="md", handleClose, showClose= false}) {
+export default function AlertDialog({title, component, open, fullWidth= false, maxWidth="md", handleClose, showClose= true}) {
   // const [open, setOpen] = React.useState(false);
 
 
@@ -45,8 +45,8 @@ export default function AlertDialog({title, component, open, fullWidth= false, m
           onClick={handleClose}
           sx={{
             position: 'absolute',
-            right: 8,
-            top: 8,
+            right: 2,
+            top: 0,
             color: (theme) => theme.palette.grey[500],
           }}
         >
@@ -54,7 +54,7 @@ export default function AlertDialog({title, component, open, fullWidth= false, m
         </IconButton>
         
         }
-        <DialogContent sx={{'&::-webkit-scrollbar': {display: 'none'}}}>
+        <DialogContent sx={{padding: '10px', '&::-webkit-scrollbar': {display: 'none'}}}>
             {component}
         </DialogContent>
   

@@ -105,6 +105,7 @@ export default function NotificationsView() {
                   headLabel={[
                     { id: 'title', label: 'Title' },
                     { id: 'description', label: 'Description' },
+                    { id: 'medium', label: 'Medium' },
                     { id: 'createdAt', label: 'Time' },
                     { id: '' },
                   ]}

@@ -91,8 +91,8 @@ export const BasicInfo = [
   {
     label: 'Social media links',
     name: 'social_media_links',
-    type: 'text',
-    defaultValue: "",  
+    type: 'social_media',
+    defaultValue: "",
     "isForm": true
   },
   {

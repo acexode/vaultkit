@@ -6,6 +6,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 import App from './app';
+import { AuthProvider } from './context/authContext';
 
 // ----------------------------------------------------------------------
 
@@ -16,9 +17,11 @@ root.render(
   <HelmetProvider>
     <BrowserRouter>
       <Suspense>
-        <GoogleOAuthProvider clientId={clientId}>
-          <App />
-        </GoogleOAuthProvider>
+        <AuthProvider>
+          <GoogleOAuthProvider clientId={clientId}>
+            <App />
+          </GoogleOAuthProvider>
+        </AuthProvider>
       </Suspense>
     </BrowserRouter>
   </HelmetProvider>

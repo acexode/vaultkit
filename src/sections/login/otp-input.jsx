@@ -23,7 +23,7 @@ const OTPInput = ({ length = 4, onComplete }) => {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push('/');
+    router.push('/dashboard');
   };
   const inputRef = useRef(Array(length).fill(null));
   const [OTP, setOTP] = useState(Array(length).fill(''));

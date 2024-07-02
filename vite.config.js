@@ -6,6 +6,11 @@ import checker from 'vite-plugin-checker';
 // ----------------------------------------------------------------------
 
 export default defineConfig({
+  // optimizeDeps: {
+  //   include: [
+  //     "@mui/material/Box",
+  //   ],
+  // },
   plugins: [
     react(),
     checker({

@@ -63,7 +63,7 @@ export default function RequestDataView({ handleClose }) {
           onClick={() => handleClose('request-data-view')}
           variant="outlined"
           fullWidth
-          color="secondary"
+          color="inherit"
           size="large"
           sx={{ marginRight: '10px' }}
         >

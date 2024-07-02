@@ -19,5 +19,6 @@ export const notifications = [...Array(24)].map((_, index) => ({
   avatarUrl: `/assets/images/avatars/avatar_${index + 1}.jpg`,
   title: faker.commerce.productAdjective(),
   description: faker.lorem.sentence(),
+  medium: sample(['Email', 'SMS']),
   createdAt: faker.date.weekday(),
 }));

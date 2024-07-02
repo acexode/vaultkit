@@ -41,7 +41,7 @@ export const GlobalProvider = ({ children }) => {
   const handleCurrentForm = useCallback(
     (value, isEdit=true) => {
       dispatch({ type: CURRENT_FORM, value });
-      router.push(`/form?tag=${  value}&isEdit=${isEdit}`);
+      router.push(`dashboard/form?tag=${  value}&isEdit=${isEdit}`);
     },
     [router]
   );

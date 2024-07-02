@@ -83,14 +83,14 @@ export default function ProfileView({handleVerificationModal}) {
           scrollButtons="auto"
           aria-label="basic tabs example"
         >
-          <Tab label="Basic Info" {...a11yProps(0)} />
-          <Tab label="Contact Info" {...a11yProps(1)} />
-          <Tab label="Employment Info" {...a11yProps(2)} />
-          <Tab label="Education Info" {...a11yProps(3)} />
-          <Tab label="Financial Info" {...a11yProps(4)} />
-          <Tab label="Identification Info" {...a11yProps(5)} />
-          <Tab label="Real Estate Infos" {...a11yProps(6)} />
-          <Tab label="Residential Histories" {...a11yProps(7)} />
+          <Tab label="Basic Data" {...a11yProps(0)} />
+          <Tab label="Contact Data" {...a11yProps(1)} />
+          <Tab label="Employment History" {...a11yProps(2)} />
+          <Tab label="Educational Background" {...a11yProps(3)} />
+          <Tab label="Financial Data" {...a11yProps(4)} />
+          <Tab label="Identification Data" {...a11yProps(5)} />
+          <Tab label="Real Estate Data" {...a11yProps(6)} />
+          <Tab label="Residential History" {...a11yProps(7)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>

@@ -14,17 +14,17 @@ const navConfig = [
   },
   {
     title: 'profile',
-    path: '/user',
+    path: '/dashboard/user',
     icon: icon('ic_user'),
   },
   {
     title: 'Shared Data history',
-    path: '/shared-data-history',
+    path: '/dashboard/shared-data-history',
     icon: icon('ic_lock'),
   },
   {
     title: 'Analytics',
-    path: '/analytics',
+    path: '/dashboard/analytics',
     icon: icon('ic_analytics'),
   },
 ];

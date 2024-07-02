@@ -79,8 +79,8 @@ export default function AppWelcome({ displayName }) {
           margin: { xs: 'auto', md: 'inherit' }
         }}
       />
-      <AlertDialog fullWidth maxWidth="lg" title="Generate Access Code" component={<ShareView handleCloseModal={handleClose} />} open={open} />
-      <AlertDialog  maxWidth="lg" title="Generate Access Code" component={<SavedSuccessModal handleCloseModal={handleSharedModal} />} open={sharedSuccessfully} />
+      <AlertDialog handleClose={handleClose} fullWidth maxWidth="lg" title="Generate Access Code" component={<ShareView handleCloseModal={handleClose} />} open={open} />
+      <AlertDialog handleClose={handleSharedModal} maxWidth="lg" title="Generate Access Code" component={<SavedSuccessModal handleCloseModal={handleSharedModal} />} open={sharedSuccessfully} />
     </RootStyle>
   );
 }
