@@ -1,15 +1,14 @@
 import React from 'react';
 
-import { Grid, Container, Typography } from '@mui/material';
-import { Info, Work, Home, School, ContactMail, AccountBalance } from '@mui/icons-material';
+import { Grid, Icon, Container, Typography } from '@mui/material';
 
 const features = [
-  { icon: <Info />, title: 'Personal Info', description: 'Manage and verify your personal details' },
-  { icon: <ContactMail />, title: 'Contact Info', description: 'Store and share your contact information' },
-  { icon: <School />, title: 'Educational Background', description: 'Keep your education history updated' },
-  { icon: <Work />, title: 'Employment Info', description: 'Track your employment history' },
-  { icon: <AccountBalance />, title: 'Financial Info', description: 'Securely share financial data' },
-  { icon: <Home />, title: 'Residential Histories', description: 'Record and manage your residential history' }
+  { icon: <Icon>Info</Icon>, title: 'Personal Info', description: 'Manage and verify your personal details' },
+  { icon: <Icon>ContactMail</Icon>, title: 'Contact Info', description: 'Store and share your contact information' },
+  { icon: <Icon>School</Icon>, title: 'Educational Background', description: 'Keep your education history updated' },
+  { icon: <Icon>Info</Icon>, title: 'Employment Info', description: 'Track your employment history' },
+  { icon: <Icon>AccountBalance</Icon>, title: 'Financial Info', description: 'Securely share financial data' },
+  { icon: <Icon>Home</Icon>, title: 'Residential Histories', description: 'Record and manage your residential history' }
 ];
 
 const Features = () => (

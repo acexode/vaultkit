@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
-import { Share, Settings, BarChart, Visibility, VerifiedUser, AccountCircle  } from '@mui/icons-material';
+
 // material
-import { Box, Grid, Card, alpha, styled, useTheme, Container, Typography, useMediaQuery } from '@mui/material';
+import { Box, Grid, Card, Icon, alpha, styled, useTheme, Container, Typography, useMediaQuery } from '@mui/material';
 
 import MotionInView from 'src/components/common/MotionInView';
 import { varFadeInUp, varFadeInDown } from 'src/components/common/animate/variants/actions';
@@ -9,32 +9,32 @@ import { varFadeInUp, varFadeInDown } from 'src/components/common/animate/varian
 const steps = [
   {
     title: 'Sign Up and Complete Your Profile',
-    icon: <AccountCircle />,
+    icon: <Icon>AccountCircle</Icon>,
     description: 'Create an account and fill in your personal, contact, educational, employment, financial, and residential history information.',
   },
   {
     title: 'Verify Your Data',
-    icon: <VerifiedUser />,
+    icon: <Icon>VerifiedUser</Icon>,
     description: 'Ensure the accuracy of your data through our verification process, making it trustworthy and secure for sharing.',
   },
   {
     title: 'Set Permissions and Share',
-    icon: <Settings />,
+    icon: <Icon>Settings</Icon>,
     description: 'Control what data you want to share, with whom, and for how long. Set permissions for view-only or view and download access.',
   },
   {
     title: 'Respond to Data Requests',
-    icon: <Share />,
+    icon: <Icon>Share</Icon>,
     description: 'Receive and review data requests from other users or organizations. Approve or decline requests based on your preference.',
   },
   {
     title: 'Manage and Track Data Sharing',
-    icon: <Visibility />,
+    icon: <Icon>Visibility</Icon>,
     description: 'Keep track of who has access to your data, monitor sharing activity, and revoke permissions as needed.',
   },
   {
     title: 'Analyze Data Usage',
-    icon: <BarChart />,
+    icon: <Icon>BarChart</Icon>,
     description: 'Get insights into how your data is being used with detailed analytics and reports.',
   }
 ];
@@ -115,12 +115,12 @@ export default function HowItWorks() {
         <Box sx={{ mb: { xs: 10, md: 25 } }}>
           <MotionInView variants={varFadeInUp}>
             <Typography component="p" variant="overline" sx={{ mb: 2, color: 'text.secondary', textAlign: 'center' }}>
-              Minimal
+              VaultKit
             </Typography>
           </MotionInView>
           <MotionInView variants={varFadeInDown}>
             <Typography variant="h2" sx={{ textAlign: 'center' }}>
-              What minimal helps you?
+              What Vaultkit helps you?
             </Typography>
           </MotionInView>
         </Box>
