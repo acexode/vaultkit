@@ -21,7 +21,7 @@ const RootStyle = styled(Page)({
   }));
 
 const LandingView = () => (
-    <RootStyle title="The starting point for your next project | Minimal-UI" id="move_top">
+    <RootStyle title="The starting point for your next project | Vault Kit" id="move_top">
       <Header />
       <Hero />
       <ContentStyle>
