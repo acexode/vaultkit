@@ -1,10 +1,10 @@
 
 /** BASE URL */
-export const serverBaseUrl = '';
+export const serverBaseUrl = 'https://vaultkit-1.onrender.com';
 
 
 export const baseEndpoints = {
-  auth: `${serverBaseUrl  }/proxyauthentication`,
+  auth: `${serverBaseUrl  }/`,
   profile: `${serverBaseUrl  }/profile`,
   share: `${serverBaseUrl  }/share`,
 };
@@ -12,8 +12,8 @@ export const baseEndpoints = {
 
 
 export const authEndpoints = {
-  login: `${baseEndpoints.auth  }/signin`,
-  signupUser: `${baseEndpoints.auth  }/signin`,
+  login: `${baseEndpoints.auth  }login`,
+  signupUser: `${baseEndpoints.auth  }signup`,
   signupCompany: `${baseEndpoints.auth  }/signin`,
   activate: `${baseEndpoints.auth  }/register/activate`,
   forgotPasswordInitiate: `${baseEndpoints.auth  }/forgot-password/initiate`,

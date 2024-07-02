@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { SnackbarProvider } from 'notistack';
 
 import Box from '@mui/material/Box';
 
@@ -31,7 +32,9 @@ export default function Main({ children, sx, ...other }) {
       }}
       {...other}
     >
-      {children}
+      <SnackbarProvider maxSnack={3}>
+        {children}
+      </SnackbarProvider>
     </Box>
   );
 }
