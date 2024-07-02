@@ -1,4 +1,8 @@
+import axios from 'axios';
+import * as Yup from 'yup';
 import { useState } from 'react';
+import { useFormik } from 'formik';
+import { useSnackbar } from 'notistack';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -18,6 +22,7 @@ import { RouterLink } from 'src/routes/components';
 
 import google from 'src/assets/google.svg'
 import { bgGradient } from 'src/theme/css';
+import { authEndpoints } from 'src/configs/endpoints';
 
 import Iconify from 'src/components/iconify';
 
@@ -27,24 +32,105 @@ import Iconify from 'src/components/iconify';
 export default function OrganizationSignupView() {
   const theme = useTheme();
 
+  const [isSubmtting, setisSubmtting] = useState(false)
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleClick = () => {
-    router.push('/otp');
-  };
+  const formik = useFormik({
+    initialValues: {
+      companyName: '',
+      companyEmail: '',
+      password: '',
+      
+    },
+    validationSchema: Yup.object({
+      companyName: Yup.string().required("Company name is required"),
+      companyEmail: Yup.string().email('Invalid email address').required('Company email is required'),
+      password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
+    }),
+    onSubmit: async (values) => {
+      setisSubmtting(true);
+      const user = { user: {email: values.email, password: values.password} };
+      
+      try {
+        const response = await axios.post(authEndpoints.signupUser, user);
+        const token = response.headers.authorization;
+        if(token && response?.status.code === 200) {
+          sessionStorage.setItem("authToken", token)
+          router.push('/');
+          enqueueSnackbar(response?.status.message, { 
+            autoHideDuration: 1000,
+            anchorOrigin: {
+              vertical: "top",
+              horizontal: "right"
+            },
+            variant: "success"
+          })
+          setisSubmtting(false);
+        }else {
+          console.log('Login failed:', response.message);
+        }
+        
+      } catch (error) {
+        
+        if(error.response) {
+          // console.log(error?.response?.status);
+          if (error?.response?.status === 422) {
+            enqueueSnackbar(error?.response?.data?.status?.message, { 
+              autoHideDuration: 3000,
+              anchorOrigin: {
+                vertical: "top",
+                horizontal: "right"
+              },
+              variant: "error"
+            })
+          } else {
+            console.error('Login error:', error.response.data);
+          }
+        } else {
+          console.error('Network or server error:', error.message);
+        }
+        console.error('Login error:', error);
+        setisSubmtting(false);
+      } finally {
+        setisSubmtting(false);
+      }
+    },
+  });
 
   const renderForm = (
-    <>
+    <form  onSubmit={formik.handleSubmit}>
       <Stack spacing={3}>
-        <TextField name="email" label="Company Name" />
-        <TextField name="email" label="Company Email address" />
+      <TextField
+          name="companyName"
+          label="Company Name"
+          value={formik.values.companyName}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.companyName && Boolean(formik.errors.companyName)}
+          helperText={formik.touched.companyName && formik.errors.companyName}
+      />
+        <TextField
+          name="companyEmail"
+          label="Company Email Address"
+          value={formik.values.companyEmail}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.companyEmail && Boolean(formik.errors.companyEmail)}
+          helperText={formik.touched.companyEmail && formik.errors.companyEmail}
+      />
 
         <TextField
           name="password"
           label="Password"
           type={showPassword ? 'text' : 'password'}
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.password && Boolean(formik.errors.password)}
+          helperText={formik.touched.password && formik.errors.password}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -72,11 +158,10 @@ export default function OrganizationSignupView() {
         size="large"
         type="submit"
         variant="contained"
-        onClick={handleClick}
       >
-        Signup
+         {isSubmtting ? "Loading" : "Signup"}
       </LoadingButton>
-    </>
+    </form>
   );
 
   return (

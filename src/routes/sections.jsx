@@ -7,6 +7,8 @@ import LoadingScreen from 'src/components/common/LoadingScreen';
 
 
 
+export const ProtectedRoute = lazy(() => import('src/pages/protected-route'))
+
 // ----------------------------------------------------------------------
 const Loadable = (Component) => (props) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -65,17 +67,22 @@ export default function Router() {
         </DashboardLayout>
       ),
       children: [
-        { element: <IndexPage />, index: true },
-        { path: 'user', element: <UserPage /> },
-        { path: 'form', element: <FormPage /> },
-        { path: 'analytics', element: <AnalyticsPage /> },
-        { path: 'download-view', element: <DownloadViewPage /> },
-        { path: 'notifications', element: <NotificationsPage /> },
-        { path: 'settings', element: <SettingsPagePage /> },
         {
-          path: 'shared-data-history',
-          element: <SharedDataPage />,
-        },
+          element: <ProtectedRoute />,
+          children: [
+            { element: <IndexPage />, index: true },
+            { path: 'user', element: <UserPage /> },
+            { path: 'form', element: <FormPage /> },
+            { path: 'analytics', element: <AnalyticsPage /> },
+            { path: 'download-view', element: <DownloadViewPage /> },
+            { path: 'notifications', element: <NotificationsPage /> },
+            { path: 'settings', element: <SettingsPagePage /> },
+            {
+              path: 'shared-data-history',
+              element: <SharedDataPage />,
+            },
+          ]
+        }
       ],
     },
     {

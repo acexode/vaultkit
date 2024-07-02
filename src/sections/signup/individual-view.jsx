@@ -1,4 +1,8 @@
+import axios from 'axios';
+import * as Yup from 'yup';
 import { useState } from 'react';
+import { useFormik } from 'formik';
+import { useSnackbar } from 'notistack';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -12,13 +16,14 @@ import IconButton from '@mui/material/IconButton';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
-import { Checkbox, FormControlLabel } from '@mui/material';
+import { Checkbox, FormControlLabel  } from '@mui/material';
 
 import { useRouter } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
 
 import google from 'src/assets/google.svg';
 import { bgGradient } from 'src/theme/css';
+import { authEndpoints } from 'src/configs/endpoints';
 
 import Iconify from 'src/components/iconify';
 
@@ -26,24 +31,96 @@ import Iconify from 'src/components/iconify';
 
 export default function IndividualSignupView() {
   const theme = useTheme();
-
+  const [isSubmtting, setisSubmtting] = useState(false)
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleClick = () => {
-    router.push('/otp');
-  };
+
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+      terms: false,
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email('Invalid email address').required('Email is required'),
+      password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
+      terms: Yup.boolean().oneOf([true], 'You must accept the Terms and Conditions').required('You must accept the Terms and Conditions'),
+    }),
+    onSubmit: async (values) => {
+      setisSubmtting(true);
+      const user = { user: {email: values.email, password: values.password} };
+      
+      try {
+        const response = await axios.post(authEndpoints.signupUser, user);
+        const token = response.headers.authorization;
+        if(token && response?.status.code === 200) {
+          sessionStorage.setItem("authToken", token)
+          router.push('/');
+          enqueueSnackbar(response?.status.message, { 
+            autoHideDuration: 1000,
+            anchorOrigin: {
+              vertical: "top",
+              horizontal: "right"
+            },
+            variant: "success"
+          })
+          setisSubmtting(false);
+        }else {
+          console.log('Login failed:', response.message);
+        }
+        
+      } catch (error) {
+        
+        if(error.response) {
+          // console.log(error?.response?.status);
+          if (error?.response?.status === 422) {
+            enqueueSnackbar(error?.response?.data?.status?.message, { 
+              autoHideDuration: 3000,
+              anchorOrigin: {
+                vertical: "top",
+                horizontal: "right"
+              },
+              variant: "error"
+            })
+          } else {
+            console.error('Login error:', error.response.data);
+          }
+        } else {
+          console.error('Network or server error:', error.message);
+        }
+        console.error('Login error:', error);
+        setisSubmtting(false);
+      } finally {
+        setisSubmtting(false);
+      }
+    },
+  });
 
   const renderForm = (
-    <>
+    <form onSubmit={formik.handleSubmit}>
       <Stack spacing={3}>
-        <TextField name="email" label="Email address" />
+      <TextField
+          name="email"
+          label="Email address"
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.email && Boolean(formik.errors.email)}
+          helperText={formik.touched.email && formik.errors.email}
+      />
 
         <TextField
           name="password"
           label="Password"
           type={showPassword ? 'text' : 'password'}
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.password && Boolean(formik.errors.password)}
+          helperText={formik.touched.password && formik.errors.password}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -57,16 +134,25 @@ export default function IndividualSignupView() {
       </Stack>
       
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 3 }}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mt: 3 }}>
        
       <FormControlLabel
-                control={<Checkbox   />}
-                label=" Terms and Conditions"
-              />
+        control={
+          <Checkbox
+            name="terms"
+            checked={formik.values.terms}
+            onChange={formik.handleChange}
+          />
+        }
+        label="Terms and Conditions"
+      />
       </Stack>
+      {formik.touched.terms && formik.errors.terms && (
+        <div style={{display: "block", fontSize: "13px", color: "red"}}>{formik.errors.terms}</div>
+      )}
 
-      <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={handleClick}>
-        Signup
+      <LoadingButton fullWidth size="large" type="submit" variant="contained" sx={{ mt: 3 }}>
+         {isSubmtting ? "Loading" : "Signup"}
       </LoadingButton>
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 1 }}>
        
@@ -77,7 +163,7 @@ export default function IndividualSignupView() {
          </Link>
        </Typography>
      </Stack>
-    </>
+    </form>
   );
 
   return (

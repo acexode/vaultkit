@@ -31,7 +31,8 @@ const MyFormComponent = ({ fields, title, url }) => {
   const initialValues = {};
   const validationSchema = {};
   const { predictions, setInput } = useGoogleAutocomplete();
-  const [value, setValue] = useState(null);
+  
+  const [autocompleteValues, setAutocompleteValues] = useState({});
   console.log(predictions);
   fields.forEach((field) => {
     initialValues[field.name] = field.defaultValue || '';
@@ -86,7 +87,8 @@ const MyFormComponent = ({ fields, title, url }) => {
 
   const handlePlaceSelected = (event, newValue, name) => {
     console.log('CALLED', newValue);
-    setValue(newValue);
+    setAutocompleteValues((prev) => ({ ...prev, [name]: newValue }));
+    console.log(autocompleteValues);
     formik.setFieldValue(name, newValue);
     if (newValue) {
       setInput('');
@@ -177,7 +179,7 @@ const MyFormComponent = ({ fields, title, url }) => {
             name={field.name}
             label={field.label}
             id={field.name}
-            value={value}
+            value={autocompleteValues[field.name] || ''}
             onChange={(evt, val) => handlePlaceSelected(evt, val, field.name)}
             options={predictions.map((prediction) => ({
               label: prediction.description,
