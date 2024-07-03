@@ -1,12 +1,15 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useEffect, useReducer, createContext } from 'react';
+
+import axiosInstance from 'src/utils/axios';
+import { setSession, isValidToken, cacheOfficer } from 'src/utils/jwt';
 
 import { authEndpoints } from 'src/configs/endpoints';
 
 // utils
-import axios from '../utils/axios';
-import { setSession, isValidToken } from '../utils/jwt';
+
 
 // ----------------------------------------------------------------------
 
@@ -72,12 +75,11 @@ function AuthProvider({ children }) {
     const initialize = async () => {
       try {
         const accessToken = window.localStorage.getItem('accessToken');
+        const officer = window.localStorage.getItem('officer');
 
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
-
-          const response = await axios.get('/api/account/my-account');
-          const { user } = response.data;
+          const user = JSON.parse(officer);
 
           dispatch({
             type: 'INITIALIZE',
@@ -110,18 +112,16 @@ function AuthProvider({ children }) {
     initialize();
   }, []);
 
-  const login = async (email, password) => {
-    const response = await axios.post(authEndpoints.login, {
-      email,
-      password
-    });
-    const { accessToken, user } = response.data;
-
-    setSession(accessToken);
+  const login = async (values) => {
+    const response = await axiosInstance.post(authEndpoints.login, values);
+    const { token, data } = response.data;
+    console.log(response);
+    cacheOfficer(data)
+    setSession(token.token);
     dispatch({
       type: 'LOGIN',
       payload: {
-        user
+        user: data
       }
     });
   };

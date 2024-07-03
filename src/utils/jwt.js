@@ -43,4 +43,13 @@ const setSession = (accessToken) => {
   }
 };
 
-export {  setSession, isValidToken };
+const cacheOfficer = (officer) => {
+  if (officer) {
+    localStorage.setItem('officer', JSON.stringify(officer));
+  } else {
+    localStorage.removeItem('officer');
+  }
+};
+
+export {  setSession, cacheOfficer, isValidToken };
+
