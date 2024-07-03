@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable prefer-destructuring */
 export const convertToStringParamsObject = (object = {}) => {
   if (typeof object !== 'object') return {};
@@ -11,6 +12,17 @@ export const convertToStringParamsObject = (object = {}) => {
   });
 
   return strParamsObject;
+};
+
+export const queryParamsToObject = (queryString) => {
+  const params = new URLSearchParams(queryString);
+  const result = {};
+
+  for (const [key, value] of params.entries()) {
+    result[key] = value;
+  }
+
+  return result;
 };
 
 export const getErrorMessage = (error) => {
@@ -54,5 +66,3 @@ export const getApiOptions = (method, extraOptions = {}, extraHeaderOptions = {}
   headers: { ...extraHeaderOptions, 'Content-Type': 'application/json; charset=UTF-8' },
   ...extraOptions,
 });
-
-
