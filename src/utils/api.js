@@ -6,7 +6,7 @@ const handleError = (error) => {
   if (error.response) {
     return {
       status: error.response.status,
-      data: {
+      error: {
         name: 'Response Error',
         message: error.response.data.message || 'An error occurred',
         detail: error.response.data.detail || 'No additional details available',
@@ -15,7 +15,7 @@ const handleError = (error) => {
   } else if (error.request) {
     return {
       status: 0,
-      data: {
+      error: {
         name: 'Request Error',
         message: 'No response received from the server',
         detail: 'Please check your network connection and try again',
@@ -24,7 +24,7 @@ const handleError = (error) => {
   } else {
     return {
       status: 0,
-      data: {
+      error: {
         name: 'General Error',
         message: error.message,
         detail: 'An unexpected error occurred',
@@ -34,13 +34,14 @@ const handleError = (error) => {
 };
 
 export class API {
-  constructor(type, url, methods = 'MCRUD') {
+  constructor(type, url, methods = 'MCRUDP') {
     this._url = url;
     if (methods.includes('M')) this[`read${type}s`] = this._readMany.bind(this);
     if (methods.includes('C')) this[`create${type}`] = this._create.bind(this);
     if (methods.includes('R')) this[`read${type}`] = this._read.bind(this);
     if (methods.includes('U')) this[`update${type}`] = this._update.bind(this);
     if (methods.includes('D')) this[`delete${type}`] = this._delete.bind(this);
+    if (methods.includes('P')) this[`patch${type}`] = this._patch.bind(this);
   }
 
   async _readMany(params = {}, extraOptions = {}, extraHeaderOptions = {}) {
@@ -57,13 +58,15 @@ export class API {
   }
 
   async _create(body, extraOptions = {}) {
+    // eslint-disable-next-line no-unused-vars
     const options = getApiOptions(Method.post, {
-      data: JSON.stringify(body),
+      // data: JSON.stringify(body),
       ...extraOptions,
     });
 
     try {
-      const res = await axiosInstance.post(this._url, options.data, options);
+      console.log(body)
+      const res = await axiosInstance.post(this._url, body);
       return formatResponse(res);
     } catch (error) {
       return handleError(error);
@@ -89,6 +92,21 @@ export class API {
 
     try {
       const res = await axiosInstance.put(`${this._url}/${id}`, options.data, options);
+      return formatResponse(res);
+    } catch (error) {
+      return handleError(error);
+    }
+  }
+
+  
+  async _patch(id, body, extraOptions = {}) {
+    const options = getApiOptions(Method.patch, {
+      data: JSON.stringify(body),
+      ...extraOptions,
+    });
+
+    try {
+      const res = await axiosInstance.patch(`${this._url}/${id}`, options.data, options);
       return formatResponse(res);
     } catch (error) {
       return handleError(error);

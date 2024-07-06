@@ -6,6 +6,8 @@ import { Box, Paper, alpha, styled, Typography } from '@mui/material';
 
 // import { fData } from 'src/utils/format-number';
 
+import { useCallback } from 'react';
+
 import UploadIllustration from 'src/assets/illustration_upload';
 // material
 
@@ -39,6 +41,8 @@ const DropZoneStyle = styled('div')(({ theme }) => ({
 UploadSingleFile.propTypes = {
   error: PropTypes.bool,
   label: PropTypes.string,
+  setFieldValue: PropTypes.func,
+  name: PropTypes.string,
   file: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   sx: PropTypes.object,
 };
@@ -83,10 +87,14 @@ ShowRejectionItems.propTypes = {
 
   fileRejections: PropTypes.array,
 };
-export default function UploadSingleFile({ error, file, sx, label,  ...other }) {
+export default function UploadSingleFile({ error, file, sx, label, setFieldValue, name,  ...other }) {
+  const onDrop = useCallback(acceptedFiles => {
+    setFieldValue(name, acceptedFiles[0])
+    console.log(acceptedFiles)
+  }, [setFieldValue, name])
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
     multiple: false,
-    ...other,
+    onDrop,
   });
 
   return (

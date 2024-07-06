@@ -48,7 +48,6 @@ export const formatResponse = async (response) => {
       };
     }
   }
-  console.log(data.data);
   return { status: response.status, data: data.data };
 };
 
@@ -57,6 +56,7 @@ export const Method = {
   post: 'POST',
   put: 'PUT',
   delete: 'DELETE',
+  patch: 'PATCH',
 };
 
 export const getApiOptions = (method, extraOptions = {}, extraHeaderOptions = {}) => ({

@@ -98,6 +98,10 @@ export default function Router() {
       element: <ResetPasswordPage />,
     },
     {
+      path: 'password/edit',
+      element: <ResetPasswordPage />,
+    },
+    {
       path: 'otp',
       element: <OtpPage />,
     },

@@ -9,55 +9,56 @@ import { Grid, TextField, InputAdornment } from '@mui/material';
 
 import Iconify from 'src/components/iconify';
 
-const SocialMediaInput = ({ values, handleChange, touched, errors }) => {
-  console.log(values);
+const SocialMediaInput = ({ values = {}, handleChange, touched = {}, errors = {} }) => {
+  const socialMediaLinks = values.social_media_links || {}; // Ensure it's always an object
+
   return (
-    <Grid container  mt={1}>
+    <Grid container mt={1}>
       <Grid mb={3} xs={12} md={5} lg={5} mx={2}>
         <TextField
           name="social_media_links.instagram"
           label="Instagram"
           fullWidth
-          value={values.social_media_links.instagram}
+          value={socialMediaLinks.instagram || ''}
           onChange={handleChange}
-          error={touched.socialMedia?.instagram && Boolean(errors.socialMedia?.instagram)}
-          helperText={touched.socialMedia?.instagram && errors.socialMedia?.instagram}
+          error={touched.social_media_links?.instagram && Boolean(errors.social_media_links?.instagram)}
+          helperText={touched.social_media_links?.instagram && errors.social_media_links?.instagram}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <Iconify  icon="mdi:instagram" />
+                <Iconify icon="mdi:instagram" />
               </InputAdornment>
             ),
           }}
         />
       </Grid>
-      <Grid  mb={3} xs={12} md={5} lg={5} mx={2}>
+      <Grid mb={3} xs={12} md={5} lg={5} mx={2}>
         <TextField
           name="social_media_links.facebook"
           label="Facebook"
           fullWidth
-          value={values.social_media_links.facebook}
+          value={socialMediaLinks.facebook || ''}
           onChange={handleChange}
-          error={touched.socialMedia?.facebook && Boolean(errors.socialMedia?.facebook)}
-          helperText={touched.socialMedia?.facebook && errors.socialMedia?.facebook}
+          error={touched.social_media_links?.facebook && Boolean(errors.social_media_links?.facebook)}
+          helperText={touched.social_media_links?.facebook && errors.social_media_links?.facebook}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <Iconify  icon={FacebookIcon} />
+                <Iconify icon={FacebookIcon} />
               </InputAdornment>
             ),
           }}
         />
       </Grid>
-      <Grid  mb={3} xs={12} md={5} lg={5} mx={2}>
+      <Grid mb={3} xs={12} md={5} lg={5} mx={2}>
         <TextField
           name="social_media_links.twitter"
           label="X"
           fullWidth
-          value={values.social_media_links.twitter}
+          value={socialMediaLinks.twitter || ''}
           onChange={handleChange}
-          error={touched.socialMedia?.twitter && Boolean(errors.socialMedia?.twitter)}
-          helperText={touched.socialMedia?.twitter && errors.socialMedia?.twitter}
+          error={touched.social_media_links?.twitter && Boolean(errors.social_media_links?.twitter)}
+          helperText={touched.social_media_links?.twitter && errors.social_media_links?.twitter}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -67,15 +68,15 @@ const SocialMediaInput = ({ values, handleChange, touched, errors }) => {
           }}
         />
       </Grid>
-      <Grid  mb={3} xs={12} md={5} lg={5} mx={2}>
+      <Grid mb={3} xs={12} md={5} lg={5} mx={2}>
         <TextField
           name="social_media_links.linkedin"
           label="LinkedIn"
           fullWidth
-          value={values.social_media_links.linkedin}
+          value={socialMediaLinks.linkedin || ''}
           onChange={handleChange}
-          error={touched.socialMedia?.linkedin && Boolean(errors.socialMedia?.linkedin)}
-          helperText={touched.socialMedia?.linkedin && errors.socialMedia?.linkedin}
+          error={touched.social_media_links?.linkedin && Boolean(errors.social_media_links?.linkedin)}
+          helperText={touched.social_media_links?.linkedin && errors.social_media_links?.linkedin}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -88,10 +89,12 @@ const SocialMediaInput = ({ values, handleChange, touched, errors }) => {
     </Grid>
   );
 };
+
 SocialMediaInput.propTypes = {
   values: PropTypes.object,
   handleChange: PropTypes.func,
   touched: PropTypes.object,
   errors: PropTypes.object,
 };
+
 export default SocialMediaInput;

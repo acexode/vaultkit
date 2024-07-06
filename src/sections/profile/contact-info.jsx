@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 // import { useState } from 'react';
+
+
+import { useSnackbar } from 'notistack';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import { Box, Button, Container, Typography, ListItemText } from '@mui/material';
 
+import { contactAPI } from 'src/apis';
 import { useGlobalContext } from 'src/context/context';
+
+import EmptyContent from 'src/components/common/EmptyContent';
 
 const ListItemRoot = styled('div')(({ theme }) => ({
   display: 'block',
@@ -30,38 +36,52 @@ const Item = styled('div')(({ theme }) => ({
   boxSizing: 'border-box',
 }));
 const ContactInfo = () => {
-  console.log(console.log('contact info'));
-  const {handleCurrentForm} = useGlobalContext()
-  const data = {
-    home_address: 'Kubwa FCT',
-    phone_number: '07069598686',
-    emergency_contact_name: 'Wife',
-    emergency_contact_phone: '08033737737',
-    emergency_contact_email: 'wife@gmail.com',
-    emergency_contact_address: 'Kubwa FCT Abuja',
-    emergency_contact_relationship: 'Wfie',
-    city: 'Abuja',
-    province: 'Kubwa',
-    postal_code: '901101',
-    // emergency_contact_city: '',
-    // emergency_contact_province: '',
-    // Emergency_contact_postal_code: '',
-  };
+  const {handleCurrentForm} = useGlobalContext();
+  const [data, setData] = useState(null)
+ 
+  const { enqueueSnackbar } = useSnackbar();
+
+useEffect(() => {
+  const fetchData = async () => {
+   try {
+    const response = await contactAPI._readMany()
+    
+    if(response.data) {
+      setData(response.data)
+    }
+    if(response.error){
+      enqueueSnackbar(response.error.message, { 
+        autoHideDuration: 1000,
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right"
+        },
+        variant: "error"
+      })
+    }
+   
+   } catch (error) {
+    console.log(error)
+   }
+  }
+  fetchData()
+ },[enqueueSnackbar])
+  
 
   function convertToSentenceCase(str) {
     // Replace underscores with spaces
     str = str.replace(/_/g, ' ');
 
     // Convert to sentence case
-    console.log(
-      str.toLowerCase().replace(/(^|[.!?])(\w)/g, (match, p1, p2) => p1 + p2.toUpperCase())
-    );
+    // console.log(
+    //   str.toLowerCase().replace(/(^|[.!?])(\w)/g, (match, p1, p2) => p1 + p2.toUpperCase())
+    // );
     return str.toLowerCase().replace(/(^|[.!?])(\w)/g, (match, p1, p2) => p1 + p2.toUpperCase());
   }
   return (
     <Container>
       <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
-        <Card
+        {data ? <Card
           sx={{
             p: 2,
             width: 1,
@@ -73,22 +93,32 @@ const ContactInfo = () => {
               <Item>
                 <ListItemText sx={{ minWidth: '84px' }}>Contact Info</ListItemText>
                 <ListItemText sx={{ textAlign: 'right' }}>
-                  <Button variant="outlined" onClick={() => handleCurrentForm('contact-info')}>Edit Info</Button>
+                  <Button variant="outlined" onClick={() => handleCurrentForm('contact-info', data?.id)}>Edit Info</Button>
                 </ListItemText>
               </Item>
             </Box>
-            {Object.keys(data).map((e) => (
-              <ListItemRoot>
-                <Item>
-                  <ListItemText sx={{ minWidth: '84px' }}>{convertToSentenceCase(e)}</ListItemText>
-                  <ListItemText sx={{ textAlign: 'right' }}>
-                    <Typography sx={{ fontWeight: '700' }}>{data[e]}</Typography>
-                  </ListItemText>
-                </Item>
-              </ListItemRoot>
-            ))}
+            
+            {Object.keys(data)
+                .filter(e => e !== 'id') 
+                .map((e) => (
+                  <ListItemRoot key={e}>
+                    <Item>
+                      <ListItemText sx={{ minWidth: '84px' }}>{convertToSentenceCase(e)}</ListItemText>
+                      <ListItemText sx={{ textAlign: 'right' }}>
+                        <Typography sx={{ fontWeight: '700' }}>{data[e]}</Typography>
+                      </ListItemText>
+                    </Item>
+                  </ListItemRoot>
+                ))}
           </Stack>
-        </Card>
+        </Card>: <>
+        <EmptyContent
+        title="You havent added any data"
+        description="Click the button below to start adding your data"
+      />
+           <Button onClick={()=> handleCurrentForm('contact-info', false)} variant='outlined' size='lg' color='inherit'>Add Data</Button>
+        </>}
+        
       </Stack>
     </Container>
   );

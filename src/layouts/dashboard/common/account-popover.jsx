@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useState } from 'react';
 
 import Box from '@mui/material/Box';
@@ -12,6 +13,7 @@ import IconButton from '@mui/material/IconButton';
 import { useRouter } from 'src/routes/hooks';
 
 import { account } from 'src/_mock/account';
+import { serverBaseUrl } from 'src/configs/endpoints';
 
 // ----------------------------------------------------------------------
 
@@ -47,8 +49,28 @@ export default function AccountPopover() {
     setOpen(null);
     router.push(path)
   };
-  const handleLogout = () => {
-    router.push('/login')
+  const handleLogout = async () => {
+    try {
+      const token = sessionStorage.getItem('authToken').split(" ")[1];
+      const response = await axios.delete(`${serverBaseUrl}/logout`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      if(response?.data.status === 200){
+        sessionStorage.removeItem("authToken")
+        router.push('/login')
+      }else {
+        throw new Error(`Unexpected response status: ${response?.status}`);
+      }
+    } catch (error) {
+      if (error.response.status === 500) {
+        console.error('Server error. Please try again later.');
+      } else {
+        console.error(`Unexpected response status: ${error.response.status}`);
+      }
+      console.log('Error fetching contact data:', error.response);
+    }
   };
 
   return (

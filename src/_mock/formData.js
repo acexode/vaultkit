@@ -1,34 +1,34 @@
 import { profileEndpoint } from 'src/configs/endpoints';
 
 export const BasicInfo = [
-  {
-    label: 'First name',
-    name: 'first_name',
-    type: 'text',
-    defaultValue: '',
-    isForm: true,
-  },
-  {
-    label: 'Last name',
-    name: 'last_name',
-    type: 'text',
-    defaultValue: '',
-    isForm: true,
-  },
-  {
-    label: 'Middle name',
-    name: 'middle_name',
-    type: 'text',
-    defaultValue: '',
-    isForm: true,
-  },
-  {
-    label: 'Email',
-    name: 'email',
-    type: 'text',
-    defaultValue: '',
-    isForm: true,
-  },
+  // {
+  //   label: 'First name',
+  //   name: 'first_name',
+  //   type: 'text',
+  //   defaultValue: '',
+  //   isForm: true,
+  // },
+  // {
+  //   label: 'Last name',
+  //   name: 'last_name',
+  //   type: 'text',
+  //   defaultValue: '',
+  //   isForm: true,
+  // },
+  // {
+  //   label: 'Middle name',
+  //   name: 'middle_name',
+  //   type: 'text',
+  //   defaultValue: '',
+  //   isForm: true,
+  // },
+  // {
+  //   label: 'Email',
+  //   name: 'email',
+  //   type: 'text',
+  //   defaultValue: '',
+  //   isForm: true,
+  // },
   {
     label: 'Social insurance number',
     name: 'social_insurance_number',
@@ -95,20 +95,20 @@ export const BasicInfo = [
     defaultValue: '',
     isForm: true,
   },
-  {
-    label: 'Account status',
-    name: 'account_status',
-    type: 'text',
-    defaultValue: '',
-    isForm: true,
-  },
-  {
-    label: 'Account creation date',
-    name: 'account_creation_date',
-    type: 'text',
-    defaultValue: '',
-    isForm: true,
-  },
+  // {
+  //   label: 'Account status',
+  //   name: 'account_status',
+  //   type: 'text',
+  //   defaultValue: '',
+  //   isForm: true,
+  // },
+  // {
+  //   label: 'Account creation date',
+  //   name: 'account_creation_date',
+  //   type: 'text',
+  //   defaultValue: '',
+  //   isForm: true,
+  // },
   {
     label: 'Is private',
     name: 'is_private',
@@ -183,7 +183,7 @@ export const ContactInfo = [
   {
     label: 'Home address',
     name: 'home_address',
-    type: 'autocomplete',
+    type: 'autocomplete', //
     defaultValue: '',
     isForm: true,
   },
@@ -191,7 +191,7 @@ export const ContactInfo = [
     label: 'Phone number',
     name: 'phone_number',
     type: 'number',
-    defaultValue: '',
+    defaultValue: '14378371086',
     isForm: true,
   },
   {
@@ -233,7 +233,7 @@ export const ContactInfo = [
     label: 'Emergency contact phone',
     name: 'emergency_contact_phone',
     type: 'number',
-    defaultValue: '',
+    defaultValue: '14378371086',
     isForm: true,
   },
   {
@@ -246,7 +246,7 @@ export const ContactInfo = [
   {
     label: 'Emergency contact address',
     name: 'emergency_contact_address',
-    type: 'autocomplete',
+    type: 'autocomplete', //
     defaultValue: '',
     isForm: true,
   },
@@ -268,7 +268,7 @@ export const ContactInfo = [
   {
     label: 'Emergency contact city',
     name: 'emergency_contact_city',
-    type: 'autocomplete',
+    type: 'autocomplete', //
     defaultValue: '',
     isForm: true,
   },
@@ -281,9 +281,9 @@ export const ContactInfo = [
   },
   {
     label: 'Emergency contact postal code',
-    name: 'Emergency_contact_postal_code',
+    name: 'emergency_contact_postal_code',
     type: 'text',
-    defaultValue: '',
+    defaultValue: 'K0M 9Z9',
     isForm: true,
   },
 ];
@@ -303,28 +303,28 @@ export const EmployeeInfo = [
   },
   {
     label: 'Current employer',
-    name: 'current_employer',
+    name: 'employer',
     type: 'text',
     defaultValue: '',
     isForm: true,
   },
   {
     label: 'Current job title',
-    name: 'current_job_title',
+    name: 'job_title',
     type: 'text',
     defaultValue: '',
     isForm: true,
   },
   {
     label: 'Current start date',
-    name: 'current_start_date',
+    name: 'start_date',
     type: 'date',
     defaultValue: '',
     isForm: true,
   },
   {
     label: 'Current end date',
-    name: 'current_end_date',
+    name: 'end_date',
     type: 'date',
     defaultValue: '',
     isForm: true,
@@ -347,18 +347,18 @@ export const EmployeeInfo = [
   },
   {
     label: 'Current salary',
-    name: 'current_salary',
+    name: 'salary',
     type: 'text',
     defaultValue: '',
     isForm: true,
   },
-  {
-    label: 'Salary history',
-    name: 'salary_history',
-    type: 'text',
-    defaultValue: '',
-    isForm: true,
-  },
+  // {
+  //   label: 'Salary history',
+  //   name: 'salary_history',
+  //   type: 'text',
+  //   defaultValue: '',
+  //   isForm: true,
+  // },
   {
     label: 'Office address',
     name: 'office_address',
@@ -368,14 +368,14 @@ export const EmployeeInfo = [
   },
   {
     label: 'Supervisor name',
-    name: 'supervisor_name',
+    name: 'name_of_reference',
     type: 'text',
     defaultValue: '',
     isForm: true,
   },
   {
     label: 'Supervisor email',
-    name: 'supervisor_email',
+    name: 'email_of_reference',
     type: 'text',
     defaultValue: '',
     isForm: true,
@@ -412,7 +412,7 @@ export const EmployeeInfo = [
       },
       { title: 'Other', value: 'other' },
     ],
-    defaultValue: '',
+    defaultValue: 'health insurance',
     isForm: true,
   },
   {
@@ -430,33 +430,40 @@ export const EmployeeInfo = [
     isForm: true,
   },
   {
-    label: 'Certifications',
-    name: 'certifications',
+    label: 'Work mode',
+    name: 'work_mode',
     type: 'text',
     defaultValue: '',
     isForm: true,
   },
+  // {
+  //   label: 'Certifications',
+  //   name: 'certifications',
+  //   type: 'text',
+  //   defaultValue: '',
+  //   isForm: true,
+  // },
+  // {
+  //   label: 'Previous employment history',
+  //   name: 'Previous_employment_history',
+  //   type: 'text',
+  //   defaultValue: '',
+  //   isForm: true,
+  // },
   {
-    label: 'Previous employment history',
-    name: 'Previous_employment_history',
-    type: 'text',
-    defaultValue: '',
-    isForm: true,
-  },
-  {
-    label: 'Income verification document 1',
-    name: 'income_verification_document_1',
+    label: 'Income verification document',
+    name: 'income_verification_document',
     type: 'upload',
     defaultValue: '',
     isForm: true,
   },
-  {
-    label: 'Income verification document 2',
-    name: 'income_verification_document_2',
-    type: 'upload',
-    defaultValue: '',
-    isForm: true,
-  },
+  // {
+  //   label: 'Income verification document 2',
+  //   name: 'income_verification_document_2',
+  //   type: 'upload',
+  //   defaultValue: '',
+  //   isForm: true,
+  // },
 ];
 
 export const EducationInfo = [
@@ -771,7 +778,7 @@ export const RealEstateInfo = [
   },
   {
     label: 'Property addresses',
-    name: 'property_addresses',
+    name: 'property_address',
     type: 'text',
     defaultValue: '',
     isForm: true,
@@ -823,8 +830,36 @@ export const RealEstateInfo = [
     isForm: true,
   },
   {
+    label: 'City',
+    name: 'city',
+    type: 'text',
+    defaultValue: '',
+    isForm: true,
+  },
+  {
+    label: 'State',
+    name: 'state',
+    type: 'text',
+    defaultValue: '',
+    isForm: true,
+  },
+  {
+    label: 'Postal code',
+    name: 'postal_code',
+    type: 'text',
+    defaultValue: 'Z2Y9K4',
+    isForm: true,
+  },
+  {
+    label: 'Country',
+    name: 'country',
+    type: 'autocomplete',
+    defaultValue: '',
+    isForm: true,
+  },
+  {
     label: 'Additional comments',
-    name: 'Additional_comments',
+    name: 'additional_comments',
     type: 'text',
     defaultValue: '',
     isForm: true,
@@ -833,8 +868,43 @@ export const RealEstateInfo = [
 
 export const ResidentialHistory = [
   {
+    label: 'Country',
+    name: 'country',
+    type: 'autocomplete',
+    defaultValue: '',
+    isForm: true,
+  },
+  {
+    label: 'State',
+    name: 'state',
+    type: 'text',
+    defaultValue: '',
+    isForm: true,
+  },
+  {
+    label: 'City',
+    name: 'city',
+    type: 'text',
+    defaultValue: '',
+    isForm: true,
+  },
+  {
+    label: 'Postal code',
+    name: 'postal_code',
+    type: 'text',
+    defaultValue: '',
+    isForm: true,
+  },
+  {
     label: 'Last address',
     name: 'last_address',
+    type: 'autocomplete',
+    defaultValue: '',
+    isForm: true,
+  },
+  {
+    label: 'Tenure',
+    name: 'tenure',
     type: 'text',
     defaultValue: '',
     isForm: true,

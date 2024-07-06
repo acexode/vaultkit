@@ -43,7 +43,7 @@ const NewButton = styled(IconButton)(({ theme, width, height }) => ({
 const ListCard = ({ data, handleCurrentForm, path, title }) => {
   const [open, setopen] = useState(false);
   const [selectedData, setselectedData] = useState(null);
-
+ 
   const handleViewDataModal = (d) => {
     if (d) {
       setselectedData(d);
@@ -56,7 +56,7 @@ const ListCard = ({ data, handleCurrentForm, path, title }) => {
 
   return (
     <Grid container alignItems="stretch" justifyContent="space-around">
-      {data.map((d) => (
+      {data && data.map((d) => (
         <Card
           sx={{
             p: 2,
@@ -78,7 +78,7 @@ const ListCard = ({ data, handleCurrentForm, path, title }) => {
                       edge="end"
                       variant="contained"
                       size="medium"
-                      onClick={() => handleCurrentForm(path)}
+                      onClick={() => handleCurrentForm(path, d?.id)}
                     >
                       <Icon width={40} icon={editFill} />
                     </NewButton>
@@ -87,6 +87,7 @@ const ListCard = ({ data, handleCurrentForm, path, title }) => {
               </Item>
             </Box>
             {Object.keys(d)
+              .filter(e => !['id', 'user_id'].includes(e))
               .slice(0, 3)
               .map((e, i) => (
                 <ListCardContent key={i.toString()} field={e} data={d} />
@@ -123,7 +124,7 @@ const ListCard = ({ data, handleCurrentForm, path, title }) => {
             }}
           >
             {selectedData &&
-              Object.keys(selectedData).map((e, i) => (
+              Object.keys(selectedData).filter(e => !['id', 'user_id', 'created_at', 'updated_at'].includes(e)).map((e, i) => (
                 <ListCardContent key={i.toString()} field={e} data={selectedData} />
               ))}
           </Card>

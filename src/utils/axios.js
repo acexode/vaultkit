@@ -1,20 +1,20 @@
 // axiosInstance.js
 import axios from 'axios';
-import { setupCache } from 'axios-cache-adapter';
+// import { setupCache } from 'axios-cache-adapter';
 
 import { serverBaseUrl } from 'src/configs/endpoints';
 
 import { history } from './history';
 
 // Create `axios-cache-adapter` instance
-const cache = setupCache({
-  maxAge: 15 * 60 * 1000,
-  exclude: { query: false }
-});
+// const cache = setupCache({
+//   maxAge: 15 * 60 * 1000,
+//   exclude: { query: false }
+// });
 
 // Create axios instance
 const axiosInstance = axios.create({
-  adapter: cache.adapter,
+  // adapter: cache.adapter,
   baseURL: serverBaseUrl,
   timeout: 10000
 });
@@ -22,7 +22,7 @@ const axiosInstance = axios.create({
 // Request interceptor to add Bearer token
 axiosInstance.interceptors.request.use(
   config => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('authToken').split(" ")[1];
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
