@@ -11,7 +11,7 @@ import ListCard from './ListCard';
 const ResidentialHistory = () => {
 
   const {handleCurrentForm} = useGlobalContext()
-  const [data, setData] = useState([])
+  const [data, setData] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
 
 useEffect(() => {

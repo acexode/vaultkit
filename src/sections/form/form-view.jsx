@@ -46,20 +46,15 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
   const {id} = queryParamsToObject(location.search)
  
   const [autocompleteValues, setAutocompleteValues] = useState({});
-  // console.log(predictions);
+ 
   
   useEffect(() => {
     const vals = {}
     fields.forEach((field) => {
       vals[field.name] = field.defaultValue || '';
       
-      if (['mailing_address', 'emergency_contact_city', 'emergency_contact_address', 'country', 'last_address'].includes(field.name)) {
-        validationSchema[field.name] = Yup.string()
-          .transform((value, originalValue) => 
-             typeof originalValue === 'object' ? originalValue.value : originalValue
-          )
-          .required(`${field.label} is required`);
-      } else if (field.name === "phone_number") {
+      
+      if (field.name === "phone_number") {
         validationSchema[field.name] = Yup.string()
           .matches(/^\d+$/, 'Phone number must be digits only')
           .required('Phone number is required');
@@ -77,17 +72,17 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
       }
     });
     setinitialValues(vals)
-    const singleUrl = getSingleProfileUrl(tag, id, user.id)
+    const singleUrl = getSingleProfileUrl(tag, id, user?.id)
     if(id){
       const getData = async () => {
         const response = await axiosInstance.get(singleUrl)
-        console.log(response.data.data)
+    
         setinitialValues(response.data.data)
       }
       getData()
     }
     
-  }, [id, tag, user.id])
+  }, [id, tag, user?.id])
 
   const handleProfileDataSubmit = async (values) => {
     const api = profileRequestMapper(tag)
@@ -99,7 +94,7 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
         formData.append(`contact_information[${val}]`, values[val])
       })
       if(id){
-        console.log(formData)
+       
        response = await await axiosInstance.patch(singleUrl, formData)
        if(response.status === 200){
           router.push("/dashboard/user")
@@ -109,7 +104,7 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
       }
 
     }else if(tag === 'education-info'){
-      console.log("my education")
+      
       const formData = new FormData();
       Object.keys(values).forEach((val) => {
         formData.append(`education_data[${val}]`, values[val])
@@ -140,7 +135,12 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
     }else if(tag === 'personal-info'){
       const formData = new FormData();
       Object.keys(values).forEach((val) => {
-        formData.append(val, values[val])
+        if(val === 'social_media_links'){
+          formData.append(val, JSON.stringify(values[val]))
+        }else {
+
+          formData.append(val, values[val])
+        }
       })
       if(id){
         response = await await axiosInstance.patch(singleUrl, formData)
@@ -210,12 +210,12 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
       
     },
   });
-  console.log(formik)
+
   const handlePlaceSelected = (event, newValue, name) => {
-    console.log('CALLED', newValue);
-    setAutocompleteValues((prev) => ({ ...prev, [name]: newValue }));
-    console.log(autocompleteValues);
-    formik.setFieldValue(name, newValue);
+   
+    setAutocompleteValues((prev) => ({ ...prev, [name]: newValue.value }));
+   
+    formik.setFieldValue(name, newValue.value);
     if (newValue) {
       setInput('');
     }

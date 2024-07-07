@@ -40,7 +40,7 @@ const BasicInfo = () => {
   const { handleCurrentForm } = useGlobalContext();
   const [data, setData] = useState(null);
   const { enqueueSnackbar } = useSnackbar();
-
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -72,20 +72,26 @@ const BasicInfo = () => {
     fetchData();
   }, [enqueueSnackbar]);
 
-  const renderValue = (key, value) => {
-    if (key === 'work_permit_upload_url') {
-      return value.url || 'N/A'; // Display the URL value or 'N/A' if null
+  const renderItem = (item) => {
+    
+    if (typeof item === 'string') {
+       if(item.startsWith('http')){
+
+         return <a href={item}>Link</a>;
+       }
+        return item
+       
+    } if (typeof item === 'object' && item != null) {
+      // Assuming the object has a single key-value pair
+      console.log(item)
+      const value = Object.keys(item)[0];
+     
+      if (typeof item[value] === 'string' && item[value].startsWith('http')) {
+        return <a href={value}>Link</a>;
+      }
+      return value;
     }
-    if (value === null) {
-      return 'N/A'; // Default message for null values
-    }
-    if (typeof value === 'object' && value.url === null) {
-      return 'N/A'; // Handle nested objects with null url
-    }
-    if (typeof value === 'object') {
-      return JSON.stringify(value); // Handle other nested objects
-    }
-    return value;
+    return '';
   };
 
   return (
@@ -117,7 +123,7 @@ const BasicInfo = () => {
                     <Item>
                       <ListItemText sx={{ minWidth: '84px' }}>{convertToSentenceCase(e)}</ListItemText>
                       <ListItemText sx={{ textAlign: 'right' }}>
-                        <Typography sx={{ fontWeight: '700' }}>{renderValue(e, data[e])}</Typography>
+                        <Typography sx={{ fontWeight: '700' }}>{renderItem(data[e])}</Typography>
                       </ListItemText>
                     </Item>
                   </ListItemRoot>

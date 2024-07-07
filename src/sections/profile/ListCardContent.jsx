@@ -11,6 +11,19 @@ import {
 
 import { convertToSentenceCase } from 'src/utils/common-utils';
 
+const renderItem = (item) => {
+  if (typeof item === 'string' && item.startsWith('http')) {
+     return <a href={item}>Link</a>;
+  } if (typeof item === 'object') {
+    // Assuming the object has a single key-value pair
+    const value = Object.values(item)[0];
+    if (typeof value === 'string' && value.startsWith('http')) {
+      return <a href={value}>Link</a>;
+    }
+    return value;
+  }
+  return '';
+};
 
 const ListItemRoot = styled('div')(({ theme }) => ({
   display: 'block',
@@ -33,6 +46,7 @@ const Item = styled('div')(({ theme }) => ({
   textAlign: 'left',
   boxSizing: 'border-box',
 }));
+
 const ListCardContent = ({data, field}) => (
     <ListItemRoot>
     <Item>
@@ -40,7 +54,7 @@ const ListCardContent = ({data, field}) => (
         {convertToSentenceCase(field)}
       </ListItemText>
       <ListItemText sx={{ textAlign: 'right' }}>
-        <Typography sx={{ fontWeight: '700' }}>{data[field]}</Typography>
+        <Typography sx={{ fontWeight: '700' }}>{renderItem(data[field])}</Typography>
       </ListItemText>
     </Item>
   </ListItemRoot>
