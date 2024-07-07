@@ -1,4 +1,3 @@
-import axios from 'axios';
 import * as Yup from 'yup';
 import { useState } from 'react';
 import { useFormik } from 'formik';
@@ -20,9 +19,10 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { useRouter } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
 
+import useAuth from 'src/hooks/useAuth';
+
 import google from 'src/assets/google.svg'
 import { bgGradient } from 'src/theme/css';
-import { authEndpoints } from 'src/configs/endpoints';
 
 import Iconify from 'src/components/iconify';
 
@@ -31,52 +31,50 @@ import Iconify from 'src/components/iconify';
 
 export default function OrganizationSignupView() {
   const theme = useTheme();
+  const {registerOrganization} = useAuth()
 
-  const [isSubmtting, setisSubmtting] = useState(false)
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-
+  
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const formik = useFormik({
     initialValues: {
-      companyName: '',
-      companyEmail: '',
+      email: '',
       password: '',
+      password_confirmation: '',
+      name: '',
+      business_type: '',
+      description: ''
       
     },
     validationSchema: Yup.object({
-      companyName: Yup.string().required("Company name is required"),
-      companyEmail: Yup.string().email('Invalid email address').required('Company email is required'),
+      name: Yup.string().required("Company name is required"),
+      email: Yup.string().email('Invalid email address').required('Company email is required'),
       password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
+      business_type: Yup.string().required("Business type is required"),
+      description: Yup.string().required("Description is required"),
+      password_confirmation: Yup.string()
+      .oneOf([Yup.ref('password'), null], 'Passwords must match')
+      .required('Password confirmation is required') 
     }),
-    onSubmit: async (values) => {
-      setisSubmtting(true);
-      const user = { user: {email: values.email, password: values.password} };
-      
+    onSubmit: async (values, { setErrors, setSubmitting }) => {
+     
       try {
-        const response = await axios.post(authEndpoints.signupUser, user);
-        const token = response.headers.authorization;
-        if(token && response?.status.code === 200) {
-          sessionStorage.setItem("authToken", token)
-          router.push('/');
-          enqueueSnackbar(response?.status.message, { 
-            autoHideDuration: 1000,
-            anchorOrigin: {
-              vertical: "top",
-              horizontal: "right"
-            },
-            variant: "success"
-          })
-          setisSubmtting(false);
-        }else {
-          console.log('Login failed:', response.message);
-        }
-        
+        const response = await registerOrganization(values)
+        router.push('/login');
+        enqueueSnackbar(response?.data.status.message, { 
+          autoHideDuration: 3000,
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right"
+          },
+          variant: "success"
+        })
       } catch (error) {
         
         if(error.response) {
-          // console.log(error?.response?.status);
           if (error?.response?.status === 422) {
             enqueueSnackbar(error?.response?.data?.status?.message, { 
               autoHideDuration: 3000,
@@ -93,33 +91,53 @@ export default function OrganizationSignupView() {
           console.error('Network or server error:', error.message);
         }
         console.error('Login error:', error);
-        setisSubmtting(false);
+        setSubmitting(false);
       } finally {
-        setisSubmtting(false);
+        setSubmitting(false);
       }
     },
   });
+
+  const {  isSubmitting } = formik;
 
   const renderForm = (
     <form  onSubmit={formik.handleSubmit}>
       <Stack spacing={3}>
       <TextField
-          name="companyName"
+          name="name"
           label="Company Name"
-          value={formik.values.companyName}
+          value={formik.values.name}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.companyName && Boolean(formik.errors.companyName)}
-          helperText={formik.touched.companyName && formik.errors.companyName}
+          error={formik.touched.name && Boolean(formik.errors.name)}
+          helperText={formik.touched.name && formik.errors.name}
       />
         <TextField
-          name="companyEmail"
+          name="email"
           label="Company Email Address"
-          value={formik.values.companyEmail}
+          value={formik.values.email}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.companyEmail && Boolean(formik.errors.companyEmail)}
-          helperText={formik.touched.companyEmail && formik.errors.companyEmail}
+          error={formik.touched.email && Boolean(formik.errors.email)}
+          helperText={formik.touched.email && formik.errors.email}
+      />
+      <TextField
+          name="business_type"
+          label="Business Type"
+          value={formik.values.business_type}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.business_type && Boolean(formik.errors.business_type)}
+          helperText={formik.touched.business_type && formik.errors.business_type}
+      />
+      <TextField
+          name="description"
+          label="Business Description"
+          value={formik.values.description}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.description && Boolean(formik.errors.description)}
+          helperText={formik.touched.description && formik.errors.description}
       />
 
         <TextField
@@ -136,6 +154,25 @@ export default function OrganizationSignupView() {
               <InputAdornment position="end">
                 <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
                   <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+        <TextField
+          name="password_confirmation"
+          label="Confirm Password"
+          type={showConfirmPassword ? 'text' : 'password'}
+          value={formik.values.password_confirmation}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.password_confirmation && Boolean(formik.errors.password_confirmation)}
+          helperText={formik.touched.password_confirmation && formik.errors.password_confirmation}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={() => setShowConfirmPassword(!showConfirmPassword)} edge="end">
+                  <Iconify icon={showConfirmPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
                 </IconButton>
               </InputAdornment>
             ),
@@ -158,8 +195,9 @@ export default function OrganizationSignupView() {
         size="large"
         type="submit"
         variant="contained"
+        loading={isSubmitting}
       >
-         {isSubmtting ? "Loading" : "Signup"}
+         Signup
       </LoadingButton>
     </form>
   );

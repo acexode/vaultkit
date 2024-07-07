@@ -12,15 +12,16 @@ import { FormView } from 'src/sections/form';
 export default function LoginPage() {
     // const {state} = useGlobalContext()
     const route = useSearchParams()
-    const {form, title, url} = getFormFields(route[0].get("tag"));
-    console.log(url)
+    const tag = route[0].get("tag")
+    const {form, title, url} = getFormFields(tag);
+
   return (
     <>
       <Helmet>
         <title> Form | Vaultkit App </title>
       </Helmet>
 
-      <FormView fields={form} title={title} url={url} />
+      <FormView fields={form} title={title} url={url} tag={tag} />
     </>
   );
 }

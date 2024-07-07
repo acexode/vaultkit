@@ -36,7 +36,7 @@ const AddDataCard = ({handleCurrentForm, path}) => (
           edge="end"
           variant="contained"
           size="medium"
-          onClick={() => handleCurrentForm(path, false)}
+          onClick={() => handleCurrentForm(path, null)}
         >
           <Icon width={40} icon={closeFill} />
         </NewButton>

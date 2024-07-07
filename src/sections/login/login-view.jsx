@@ -1,4 +1,4 @@
-import axios from 'axios';
+
 import * as Yup from 'yup';
 import { useState } from 'react';
 import { useFormik } from 'formik';
@@ -19,47 +19,49 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { useRouter } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
 
+import useAuth from 'src/hooks/useAuth';
+
 import { bgGradient } from 'src/theme/css';
-import { authEndpoints } from 'src/configs/endpoints';
 
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 
-import GoogleLoginComponent from './google-login-component';
+// import GoogleLoginComponent from './google-login-component';
 
 // ----------------------------------------------------------------------
 
 export default function LoginView() {
+  const {login} = useAuth()
   const theme = useTheme();
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
 
-  const handleLoginSuccess = (tokenResponse) => {
-    // Send the token response to server
-    // fetch('http://localhost:3001/auth/google_oauth2/callback', {
-    fetch('http://localhost:3001/google_auth', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest',
-      },
-      body: JSON.stringify(tokenResponse),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log('Server response:', data);
-      })
-      .catch((error) => {
-        console.log('Error:', error);
-      });
-  };
+  // const handleLoginSuccess = (tokenResponse) => {
+  //   // Send the token response to server
+  //   // fetch('http://localhost:3001/auth/google_oauth2/callback', {
+  //   fetch('http://localhost:3001/google_auth', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'X-Requested-With': 'XMLHttpRequest',
+  //     },
+  //     body: JSON.stringify(tokenResponse),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       console.log('Server response:', data);
+  //     })
+  //     .catch((error) => {
+  //       console.log('Error:', error);
+  //     });
+  // };
 
-  const handleLoginFailure = (error) => {
-    console.log('Login failed: error:', error);
-  };
+  // const handleLoginFailure = (error) => {
+  //   console.log('Login failed: error:', error);
+  // };
 
   const [showPassword, setShowPassword] = useState(false);
-  const [isSubmtting, setisSubmtting] = useState(false)
+  
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -69,16 +71,15 @@ export default function LoginView() {
       email: Yup.string().email('Invalid email address').required('Email is required'),
       password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
     }),
-    onSubmit: async (values) => {
-      setisSubmtting(true);
+    onSubmit: async (values, { setErrors, setSubmitting }) => {
+      
       const user = { user: {email: values.email, password: values.password} };
       
+      
       try {
-        const response = await axios.post(authEndpoints.login, user);
-        const token = response.headers.authorization;
-        if(token) {
-          sessionStorage.setItem("authToken", token)
-          router.push('/');
+        const resp = await login(user)
+        console.log(resp)
+        router.push('/dashboard');
           enqueueSnackbar("Logged in successfully", { 
             autoHideDuration: 1000,
             anchorOrigin: {
@@ -87,11 +88,7 @@ export default function LoginView() {
             },
             variant: "success"
           })
-          setisSubmtting(false);
-        }else {
-          console.log('Login failed:', response.message);
-        }
-        
+          setSubmitting(false);
       } catch (error) {
         if(error?.response?.status === 401){
           enqueueSnackbar("Invalid email or password", { 
@@ -103,12 +100,13 @@ export default function LoginView() {
             variant: "error"
           })
         }
-        setisSubmtting(false);
+        setSubmitting(false);
       } finally {
-        setisSubmtting(false);
+        setSubmitting(false);
       }
     },
   });
+  const {  isSubmitting } = formik;
   const renderForm = (
     <form onSubmit={formik.handleSubmit}>
       <Stack spacing={3}>
@@ -149,8 +147,8 @@ export default function LoginView() {
         </Link>
       </Stack>
 
-      <LoadingButton fullWidth size="large" type="submit" variant="contained">
-         {isSubmtting ? "Loading.." : "Login"}
+      <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
+        Login
       </LoadingButton>
     </form>
   );
@@ -191,7 +189,7 @@ export default function LoginView() {
           </Typography>
 
           <Stack direction="row" spacing={2}>
-            <GoogleLoginComponent onSuccess={handleLoginSuccess} onFailure={handleLoginFailure} />
+            {/* <GoogleLoginComponent onSuccess={handleLoginSuccess} onFailure={handleLoginFailure} /> */}
           </Stack>
 
           <Divider sx={{ my: 3 }}>

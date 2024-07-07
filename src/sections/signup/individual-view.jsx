@@ -1,4 +1,4 @@
-import axios from 'axios';
+
 import * as Yup from 'yup';
 import { useState } from 'react';
 import { useFormik } from 'formik';
@@ -21,9 +21,10 @@ import { Checkbox, FormControlLabel  } from '@mui/material';
 import { useRouter } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
 
+import useAuth from 'src/hooks/useAuth';
+
 import google from 'src/assets/google.svg';
 import { bgGradient } from 'src/theme/css';
-import { authEndpoints } from 'src/configs/endpoints';
 
 import Iconify from 'src/components/iconify';
 
@@ -31,10 +32,9 @@ import Iconify from 'src/components/iconify';
 
 export default function IndividualSignupView() {
   const theme = useTheme();
-  const [isSubmtting, setisSubmtting] = useState(false)
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-
+  const {registerIndiviual} = useAuth()
   const [showPassword, setShowPassword] = useState(false);
 
 
@@ -49,29 +49,20 @@ export default function IndividualSignupView() {
       password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
       terms: Yup.boolean().oneOf([true], 'You must accept the Terms and Conditions').required('You must accept the Terms and Conditions'),
     }),
-    onSubmit: async (values) => {
-      setisSubmtting(true);
-      const user = { user: {email: values.email, password: values.password} };
-      
+    onSubmit: async (values, { setErrors, setSubmitting }) => {
       try {
-        const response = await axios.post(authEndpoints.signupUser, user);
-        const token = response.headers.authorization;
-        if(token && response?.status.code === 200) {
-          sessionStorage.setItem("authToken", token)
-          router.push('/');
-          enqueueSnackbar(response?.status.message, { 
+        
+        const response = await registerIndiviual(values)
+        console.log(response)
+        router.push('/dashboard');
+          enqueueSnackbar(response?.data?.status.message, { 
             autoHideDuration: 1000,
             anchorOrigin: {
               vertical: "top",
               horizontal: "right"
             },
             variant: "success"
-          })
-          setisSubmtting(false);
-        }else {
-          console.log('Login failed:', response.message);
-        }
-        
+          })  
       } catch (error) {
         
         if(error.response) {
@@ -92,12 +83,14 @@ export default function IndividualSignupView() {
           console.error('Network or server error:', error.message);
         }
         console.error('Login error:', error);
-        setisSubmtting(false);
+        setSubmitting(false);
       } finally {
-        setisSubmtting(false);
+        setSubmitting(false);
       }
     },
   });
+
+  const {  isSubmitting } = formik;
 
   const renderForm = (
     <form onSubmit={formik.handleSubmit}>
@@ -151,8 +144,8 @@ export default function IndividualSignupView() {
         <div style={{display: "block", fontSize: "13px", color: "red"}}>{formik.errors.terms}</div>
       )}
 
-      <LoadingButton fullWidth size="large" type="submit" variant="contained" sx={{ mt: 3 }}>
-         {isSubmtting ? "Loading" : "Signup"}
+      <LoadingButton fullWidth size="large" type="submit" variant="contained" sx={{ mt: 3 }} loading={isSubmitting}>
+        Signup
       </LoadingButton>
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 1 }}>
        

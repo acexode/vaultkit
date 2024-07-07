@@ -1,7 +1,9 @@
-import React from 'react';
+import { useSnackbar } from 'notistack';
+import React, { useState, useEffect } from 'react';
 
 import { Container } from '@mui/material';
 
+import { employmentAPI } from 'src/apis';
 import { useGlobalContext } from 'src/context/context';
 
 import ListCard from './ListCard';
@@ -9,22 +11,34 @@ import ListCard from './ListCard';
 const EmploymentInfo = () => {
   console.log(console.log('contact info'));
   const {handleCurrentForm} = useGlobalContext()
-  const data = [{
-    home_address: 'Kubwa FCT',
-    phone_number: '07069598686',
-    emergency_contact_name: 'Wife',
-    emergency_contact_phone: '08033737737',
-    emergency_contact_email: 'wife@gmail.com',
-    emergency_contact_address: 'Kubwa FCT Abuja',
-    emergency_contact_relationship: 'Wfie',
-    city: 'Abuja',
-    province: 'Kubwa',
-    postal_code: '901101',
-    // emergency_contact_city: '',
-    // emergency_contact_province: '',
-    // Emergency_contact_postal_code: '',
-  }];
+  const [data, setData] = useState([])
+  const { enqueueSnackbar } = useSnackbar();
 
+useEffect(() => {
+  const fetchData = async () => {
+   try {
+    const response = await employmentAPI._readMany()
+    if(response.data) {
+      setData(response.data)
+    }
+    if(response.error){
+      enqueueSnackbar(response.error.message, { 
+        autoHideDuration: 1000,
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right"
+        },
+        variant: "error"
+      })
+    }
+    console.log(response)
+   } catch (error) {
+    console.log(error)
+   }
+  }
+  fetchData()
+ },[enqueueSnackbar])
+ 
 
   return (
     <Container>

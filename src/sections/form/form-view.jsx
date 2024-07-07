@@ -1,8 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
+
+import { useLocation } from 'react-router-dom';
 
 import {
   Grid,
@@ -18,73 +21,196 @@ import {
 
 import { useRouter } from 'src/routes/hooks';
 
+import useAuth from 'src/hooks/useAuth';
+// import useAuth from 'src/hooks/useAuth'; 
 import useGoogleAutocomplete from 'src/hooks/useGoogleAutocomplete';
 
 import axiosInstance from 'src/utils/axios';
+import { queryParamsToObject } from 'src/utils/crud-utils';
+
+import { profileRequestMapper } from 'src/apis';
+import { getSingleProfileUrl, getSingleProfileDataPatchUrl } from 'src/configs/endpoints';
 
 import { UploadSingleFile } from 'src/components/uploads';
 
 import SocialMediaInput from './socialMediaInput';
 
-const MyFormComponent = ({ fields, title, url }) => {
+const MyFormComponent = ({ fields, title, url, tag }) => {
+  const {user} = useAuth()
+ 
   const router = useRouter();
-  const initialValues = {};
+  const [initialValues, setinitialValues] = useState({})
   const validationSchema = {};
   const { predictions, setInput } = useGoogleAutocomplete();
-  
+  const location = useLocation();
+  const {id} = queryParamsToObject(location.search)
+ 
   const [autocompleteValues, setAutocompleteValues] = useState({});
-  console.log(predictions);
-  fields.forEach((field) => {
-    initialValues[field.name] = field.defaultValue || '';
-    validationSchema[field.name] = Yup.string().required(`${field.label} is required`);
-    // if (field.name === 'phone_number') {
-    //   validationSchema[field.name] = Yup.string()
-    //     .matches(/^\d+$/, 'Phone number must be digits only')
-    //     .required('Phone number is required');
-    // } else if(field.name === 'first_name') {
-    //   validationSchema[field.name] = Yup.string().required(`${field.label} is required`);
-    // }else if(field.name === 'last_name'){
-    //   validationSchema[field.name] = Yup.string().required(`${field.label} is required`);
-    // }else {
-    //   validationSchema[field.name] = Yup.string();
-    // }
-  });
+  // console.log(predictions);
+  
+  useEffect(() => {
+    const vals = {}
+    fields.forEach((field) => {
+      vals[field.name] = field.defaultValue || '';
+      
+      if (['mailing_address', 'emergency_contact_city', 'emergency_contact_address', 'country', 'last_address'].includes(field.name)) {
+        validationSchema[field.name] = Yup.string()
+          .transform((value, originalValue) => 
+             typeof originalValue === 'object' ? originalValue.value : originalValue
+          )
+          .required(`${field.label} is required`);
+      } else if (field.name === "phone_number") {
+        validationSchema[field.name] = Yup.string()
+          .matches(/^\d+$/, 'Phone number must be digits only')
+          .required('Phone number is required');
+      } else if (field.name === 'social_media_links' && field.type === 'social_media') {
+        vals[field.name] = Object.values(field.defaultValue).join(' ') || '';
+        validationSchema[field.name] = Yup.string()
+        .transform((value, originalValue) =>
+          typeof originalValue === 'object'
+            ? Object.values(originalValue).join(' ')
+            : originalValue
+        )
+        .required(`${field.label} is required`);
+      } else {
+        validationSchema[field.name] = Yup.string().required(`${field.label} is required`);
+      }
+    });
+    setinitialValues(vals)
+    const singleUrl = getSingleProfileUrl(tag, id, user.id)
+    if(id){
+      const getData = async () => {
+        const response = await axiosInstance.get(singleUrl)
+        console.log(response.data.data)
+        setinitialValues(response.data.data)
+      }
+      getData()
+    }
+    
+  }, [id, tag, user.id])
+
+  const handleProfileDataSubmit = async (values) => {
+    const api = profileRequestMapper(tag)
+    let response;
+    const singleUrl = getSingleProfileDataPatchUrl(tag, id)
+    if(tag === 'contact-info'){
+      const formData = new FormData();
+      Object.keys(values).forEach((val) => {
+        formData.append(`contact_information[${val}]`, values[val])
+      })
+      if(id){
+        console.log(formData)
+       response = await await axiosInstance.patch(singleUrl, formData)
+       if(response.status === 200){
+          router.push("/dashboard/user")
+       }
+      }else {
+        response = await api._create(formData)
+      }
+
+    }else if(tag === 'education-info'){
+      console.log("my education")
+      const formData = new FormData();
+      Object.keys(values).forEach((val) => {
+        formData.append(`education_data[${val}]`, values[val])
+      })
+      if(id){
+        response = await await axiosInstance.patch(singleUrl, formData)
+        if(response.status === 200){
+          router.push("/dashboard/user")
+       }
+      }else {
+        response = await api._create(formData)
+      }
+
+    }else if(tag === 'employment-info'){
+      const formData = new FormData();
+      Object.keys(values).forEach((val) => {
+        formData.append(val, values[val])
+      })
+      if(id){
+        response = await await axiosInstance.patch(singleUrl, formData)
+        if(response.status === 200){
+          router.push("/dashboard/user")
+       }
+      }else {
+        response = await api._create(formData)
+      }
+
+    }else if(tag === 'personal-info'){
+      const formData = new FormData();
+      Object.keys(values).forEach((val) => {
+        formData.append(val, values[val])
+      })
+      if(id){
+        response = await await axiosInstance.patch(singleUrl, formData)
+        if(response.status === 200){
+          router.push("/dashboard/user")
+       }
+      }else {
+        response = await api._create(formData)
+      }
+
+    }else if(tag === 'financial-info'){
+      if(id){
+        // edit contact
+      }
+      // create contact
+    }else if(tag === 'identification-info'){
+      if(id){
+        // edit contact
+      }
+      // create contact
+    }else if(tag === 'realestate-info'){
+      const formData = new FormData();
+      Object.keys(values).forEach((val) => {
+        formData.append(`real_estate_informations[${val}]`, values[val])
+      })
+      if(id){
+        response = await await axiosInstance.patch(singleUrl, formData)
+        if(response.status === 200){
+          router.push("/dashboard/user")
+       }
+      }else {
+        response = await api._create(formData)
+      }
+      
+    }else if(tag === 'residential-info'){
+      const formData = new FormData();
+      Object.keys(values).forEach((val) => {
+        formData.append(`residential_history[${val}]`, values[val])
+      })
+      if(id){
+        response = await await axiosInstance.patch(singleUrl, formData)
+        if(response.status === 200){
+          router.push("/dashboard/user")
+       }
+      }else {
+        response = await api._create(formData)
+      }
+    }
+    return response
+  }
+ 
   const formik = useFormik({
     initialValues,
+    enableReinitialize: true,
     validationSchema: Yup.object(validationSchema),
-    onSubmit: (values) => {
-      const hasUploads = fields.filter((f) => f.type === 'uploads');
-      const isEdit = true;
+    onSubmit: async (values) => {
+      console.log(values)
       try {
-        if (isEdit) {
-          if (hasUploads.length > 0) {
-            console.log('form data');
-            // create form fields
-            axiosInstance.post(url, values);
-          } else {
-            console.log('object');
-            axiosInstance.post(url, values);
-          }
-        } else {
-          console.log('new post');
-          if (hasUploads.length > 0) {
-            console.log('form fields');
-            // create form fields
-            axiosInstance.put(url, values);
-          } else {
-            console.log('object');
-            axiosInstance.put(url, values);
-          }
-        }
-        console.log(values);
+        const response = await handleProfileDataSubmit(values)
+        if(response.status === 200){
+          router.push("/dashboard/user")
+       }
       } catch (error) {
         console.log(error);
       }
 
-      // Handle form submission
+      
     },
   });
-
+  console.log(formik)
   const handlePlaceSelected = (event, newValue, name) => {
     console.log('CALLED', newValue);
     setAutocompleteValues((prev) => ({ ...prev, [name]: newValue }));
@@ -94,11 +220,10 @@ const MyFormComponent = ({ fields, title, url }) => {
       setInput('');
     }
   };
-  console.log(fields);
   const renderField = (field) => {
     switch (field.type) {
       case 'upload':
-        return <UploadSingleFile label={field.label} />;
+        return <UploadSingleFile label={field.label} setFieldValue={formik.setFieldValue}  name={field.name} />;
       case 'social_media':
         return <SocialMediaInput touched={formik.touched} values={formik.values} handleChange={formik.handleChange} error={formik.errors} />;
       case 'select':
@@ -115,6 +240,7 @@ const MyFormComponent = ({ fields, title, url }) => {
             error={formik.touched[field.name] && Boolean(formik.errors[field.name])}
             helperText={formik.touched[field.name] && formik.errors[field.name]}
             margin="3"
+             
           >
             {field.options.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -208,6 +334,7 @@ const MyFormComponent = ({ fields, title, url }) => {
             onChange={formik.handleChange}
             error={formik.touched[field.name] && Boolean(formik.errors[field.name])}
             helperText={formik.touched[field.name] && formik.errors[field.name]}
+            InputLabelProps={{ shrink: formik.values[field.name] }} 
           />
         );
     }
@@ -271,6 +398,7 @@ const MyFormComponent = ({ fields, title, url }) => {
 MyFormComponent.propTypes = {
   title: PropTypes.string,
   url: PropTypes.string,
+  tag: PropTypes.string,
   fields: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,

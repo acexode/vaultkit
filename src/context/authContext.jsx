@@ -3,8 +3,7 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useEffect, useReducer, createContext } from 'react';
 
-import axiosInstance from 'src/utils/axios';
-import { setSession, isValidToken, cacheOfficer } from 'src/utils/jwt';
+import { cacheUser, setSession, isValidToken } from 'src/utils/jwt';
 
 import { authEndpoints } from 'src/configs/endpoints';
 
@@ -74,13 +73,13 @@ function AuthProvider({ children }) {
   useEffect(() => {
     const initialize = async () => {
       try {
-        const accessToken = window.localStorage.getItem('accessToken');
-        const officer = window.localStorage.getItem('officer');
-
+        const accessToken = window.sessionStorage.getItem('authToken');
+        const cachedUser = window.sessionStorage.getItem('user');
+         console.log(cachedUser, isValidToken(accessToken))
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
-          const user = JSON.parse(officer);
-
+          const user = JSON.parse(cachedUser);
+          console.log(user)
           dispatch({
             type: 'INITIALIZE',
             payload: {
@@ -113,35 +112,58 @@ function AuthProvider({ children }) {
   }, []);
 
   const login = async (values) => {
-    const response = await axiosInstance.post(authEndpoints.login, values);
-    const { token, data } = response.data;
-    console.log(response);
-    cacheOfficer(data)
-    setSession(token.token);
+    const response = await axios.post(authEndpoints.login, values);
+    const token = response.headers.authorization;
+    const { data } = response.data.status;
+    cacheUser(data.user)
+    setSession(token);
     dispatch({
       type: 'LOGIN',
+      payload: {
+        user: data.user
+      }
+    });
+    return response
+  };
+
+  const registerIndiviual = async (values) => {
+    const user = values
+
+    const response = await axios.post(authEndpoints.signupUser, {
+      user
+    });
+    const token = response.headers.authorization;
+    const { data } = response.data;
+    cacheUser(data)
+    setSession(token);
+    dispatch({
+      type: 'REGISTER',
       payload: {
         user: data
       }
     });
+    return response
   };
 
-  const register = async (email, password, firstName, lastName) => {
-    const response = await axios.post(authEndpoints.signupUser, {
-      email,
-      password,
-      firstName,
-      lastName
-    });
-    const { accessToken, user } = response.data;
+  const registerOrganization = async (values) => {
 
-    window.localStorage.setItem('accessToken', accessToken);
+    const organization =  {email: values.email, password: values.password, name: values.name, password_confirmation: values.password, business_type: values.business_type, description: values.description} ;
+
+    const response = await axios.post(authEndpoints.signupCompany, {
+      organization
+    });
+    const token = response.headers.authorization;
+    const { data } = response.data;
+    console.log(token, response)
+    cacheUser(data)
+    setSession(token);
     dispatch({
       type: 'REGISTER',
       payload: {
-        user
+        user: data
       }
     });
+    return response
   };
 
   const logout = async () => {
@@ -149,7 +171,20 @@ function AuthProvider({ children }) {
     dispatch({ type: 'LOGOUT' });
   };
 
-  const resetPassword = () => {};
+  // eslint-disable-next-line consistent-return
+  const resetPassword = async (data) => {
+    try {
+      console.log(data)
+      const response = await axios.post(authEndpoints.resetPassword, data)
+      if(response?.status === 200) {
+        return response
+      }
+    } catch (error) {
+      console.log(error?.response);
+      throw new Error(error?.response?.data?.message || 'Something went wrong');
+    }
+    
+  };
 
   const updateProfile = () => {};
 
@@ -160,9 +195,10 @@ function AuthProvider({ children }) {
         method: 'jwt',
         login,
         logout,
-        register,
+        registerIndiviual,
         resetPassword,
-        updateProfile
+        updateProfile,
+        registerOrganization
       }}
     >
       {children}
