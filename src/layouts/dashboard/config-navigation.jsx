@@ -35,6 +35,11 @@ export const OrganizationNavConfig = [
     icon: icon('ic_home'),
   },
   {
+    title: 'profile',
+    path: '/dashboard/user',
+    icon: icon('ic_user'),
+  },
+  {
     title: 'organization',
     path: '/dashboard/organization',
     icon: icon('ic_org'),
