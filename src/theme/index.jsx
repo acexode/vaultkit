@@ -23,7 +23,6 @@ export default function ThemeProvider({ children }) {
     }),
     []
   );
-console.log(memoizedValue);
   const theme = createTheme(memoizedValue);
 
   theme.components = overrides(theme);

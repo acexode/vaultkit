@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -15,18 +15,31 @@ import { useResponsive } from 'src/hooks/use-responsive';
 
 // import { account } from 'src/_mock/account';
 
+import useAuth from 'src/hooks/useAuth';
+
 import Logo from 'src/components/logo';
 import Scrollbar from 'src/components/scrollbar';
 
 import { NAV } from './config-layout';
-import navConfig from './config-navigation';
+import navConfig, { OrganizationNavConfig } from './config-navigation';
 
 // ----------------------------------------------------------------------
 
 export default function Nav({ openNav, onCloseNav }) {
   const pathname = usePathname();
+  const { user } = useAuth();
+
+  const [navArray, setnavArray] = useState([]);
 
   const upLg = useResponsive('up', 'lg');
+
+  useEffect(() => {
+    if (user?.type !== 'organization') {
+      setnavArray(OrganizationNavConfig);
+    } else {
+      setnavArray(navConfig);
+    }
+  }, [user]);
 
   useEffect(() => {
     if (openNav) {
@@ -35,15 +48,13 @@ export default function Nav({ openNav, onCloseNav }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
-
   const renderMenu = (
     <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
-      {navConfig.map((item) => (
+      {navArray.map((item) => (
         <NavItem key={item.title} item={item} />
       ))}
     </Stack>
   );
-
 
   const renderContent = (
     <Scrollbar
@@ -58,10 +69,7 @@ export default function Nav({ openNav, onCloseNav }) {
     >
       <Logo sx={{ mt: 3, ml: 4 }} />
 
-
-
       {renderMenu}
-
     </Scrollbar>
   );
 

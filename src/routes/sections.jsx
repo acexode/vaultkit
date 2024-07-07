@@ -39,6 +39,7 @@ const Loadable = (Component) => (props) => {
 export const IndexPage = Loadable(lazy(() => import('src/pages/app')));
 export const SharedDataPage = Loadable(lazy(() => import('src/pages/shared-data-history')));
 export const UserPage = Loadable(lazy(() => import('src/pages/user')));
+export const OrganizationPage = Loadable(lazy(() => import('src/pages/organization')));
 export const FormPage = Loadable(lazy(() => import('src/pages/form')));
 export const LoginPage = Loadable(lazy(() => import('src/pages/login')));
 export const SignupPage = Loadable(lazy(() => import('src/pages/signup')));
@@ -72,6 +73,7 @@ export default function Router() {
           children: [
             { element: <IndexPage />, index: true },
             { path: 'user', element: <UserPage /> },
+            { path: 'organization', element: <OrganizationPage /> },
             { path: 'form', element: <FormPage /> },
             { path: 'analytics', element: <AnalyticsPage /> },
             { path: 'download-view', element: <DownloadViewPage /> },

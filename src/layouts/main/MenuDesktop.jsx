@@ -221,6 +221,7 @@ MenuDesktop.propTypes = {
   navConfig: PropTypes.array
 };
 
+
 export default function MenuDesktop({ isOffset, isHome, navConfig }) {
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);

@@ -51,7 +51,6 @@ const NOTIFICATIONS = [
 ];
 
 export default function NotificationsPopover() {
-  console.log(NOTIFICATIONS);
   const [notifications, setNotifications] = useState(NOTIFICATIONS);
   const router = useRouter();
   const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
@@ -67,7 +66,7 @@ export default function NotificationsPopover() {
   };
   const handleNavigate = () => {
     handleClose()
-    router.push('/notifications');
+    router.push('/dashboard/notifications');
   };
 
   const handleMarkAllAsRead = () => {

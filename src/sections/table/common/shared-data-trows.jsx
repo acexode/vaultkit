@@ -90,7 +90,7 @@ export default function SharedDataTRows({
       >
         <MenuItem onClick={()=> handleViewDetails('data-details')}>
           <Iconify icon="eva:eye-outline" sx={{ mr: 2 }} />
-          Edit
+          View
         </MenuItem>
         <MenuItem onClick={addNoteMenu}>
           <Iconify icon="eva:file-outline" sx={{ mr: 2 }} />

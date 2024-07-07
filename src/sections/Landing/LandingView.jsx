@@ -6,7 +6,7 @@ import Page from 'src/components/common/Page';
 
 import Hero from './Hero';
 import Features from './Feature';
-import Benefits from './Benefits';
+// import Benefits from './Benefits';
 import HowItWorks from './HowItWorks';
 import Header from '../../layouts/main/Header';
 
@@ -27,7 +27,7 @@ const LandingView = () => (
       <ContentStyle>
       <HowItWorks />
       <Features />
-      <Benefits />
+      {/* <Benefits /> */}
 
       </ContentStyle>
     </RootStyle>

@@ -1,40 +1,41 @@
 /* eslint-disable no-shadow */
 
 // material
-import { Box, Grid, Card, Icon, alpha, styled, useTheme, Container, Typography, useMediaQuery } from '@mui/material';
+import { Box, Grid, Card, alpha, styled, useTheme, Container, Typography, useMediaQuery } from '@mui/material';
 
+import Iconify from 'src/components/iconify';
 import MotionInView from 'src/components/common/MotionInView';
 import { varFadeInUp, varFadeInDown } from 'src/components/common/animate/variants/actions';
 
 const steps = [
   {
     title: 'Sign Up and Complete Your Profile',
-    icon: <Icon>AccountCircle</Icon>,
+    icon: 'mdi:account-circle-outline',
     description: 'Create an account and fill in your personal, contact, educational, employment, financial, and residential history information.',
   },
   {
     title: 'Verify Your Data',
-    icon: <Icon>VerifiedUser</Icon>,
+    icon: 'mdi:user-check-outline',
     description: 'Ensure the accuracy of your data through our verification process, making it trustworthy and secure for sharing.',
   },
   {
     title: 'Set Permissions and Share',
-    icon: <Icon>Settings</Icon>,
+    icon: 'mdi:settings-transfer-outline',
     description: 'Control what data you want to share, with whom, and for how long. Set permissions for view-only or view and download access.',
   },
   {
     title: 'Respond to Data Requests',
-    icon: <Icon>Share</Icon>,
+    icon: 'charm:git-request',
     description: 'Receive and review data requests from other users or organizations. Approve or decline requests based on your preference.',
   },
   {
     title: 'Manage and Track Data Sharing',
-    icon: <Icon>Visibility</Icon>,
+    icon: 'icon-park-outline:data-lock',
     description: 'Keep track of who has access to your data, monitor sharing activity, and revoke permissions as needed.',
   },
   {
     title: 'Analyze Data Usage',
-    icon: <Icon>BarChart</Icon>,
+    icon: 'mdi:chart-bar',
     description: 'Get insights into how your data is being used with detailed analytics and reports.',
   }
 ];
@@ -120,7 +121,7 @@ export default function HowItWorks() {
           </MotionInView>
           <MotionInView variants={varFadeInDown}>
             <Typography variant="h2" sx={{ textAlign: 'center' }}>
-              What Vaultkit helps you?
+             How it works
             </Typography>
           </MotionInView>
         </Box>
@@ -133,15 +134,12 @@ export default function HowItWorks() {
                   <CardIconStyle
                    
                     sx={{
-                      ...(index === 0 && {
-                        filter: (theme) => shadowIcon(theme.palette.info.main)
-                      }),
-                      ...(index === 1 && {
-                        filter: (theme) => shadowIcon(theme.palette.error.main)
-                      })
+              
+                      filter: (theme) => shadowIcon(theme.palette.error.main)
+                      
                     }}
                   >
-                    {card.icon}
+                    <Iconify icon={card.icon} width={40} />
                     </CardIconStyle>
                   <Typography variant="h5" paragraph>
                     {card.title}
