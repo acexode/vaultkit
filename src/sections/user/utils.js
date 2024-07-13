@@ -54,3 +54,9 @@ export function applyFilter({ inputData, comparator, filterName }) {
 
   return inputData;
 }
+export function toSentenceCase(text) {
+  const words = text.split('_');
+  const sentenceCasedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
+  const sentenceCasedText = sentenceCasedWords.join(' ');
+  return sentenceCasedText;
+}

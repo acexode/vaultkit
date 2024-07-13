@@ -1,5 +1,5 @@
+import React from 'react';
 import PropTypes from 'prop-types';
-import React, { useState, useEffect } from 'react';
 
 import { Grid, Paper, styled, Checkbox, FormGroup, FormControlLabel } from '@mui/material';
 
@@ -14,11 +14,12 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const SelectDataToShare = ({ fields, name, handleCheckboxChange }) => {
+const SelectDataToShare = ({ fields, name, setFieldValue, values, fieldData }) => {
+
   // const [selectedFields, setSelectedFields] = useState(
   //   fields.reduce((acc, field) => ({ ...acc, [field.name]: selectAll }), {})
   // );
-  
+
   // useEffect(() => {
   //   const newSelectedFields = fields.reduce((acc, field) => ({ ...acc, [field.name]: selectAll }), {});
   //   setSelectedFields((prevSelectedFields) => {
@@ -29,30 +30,38 @@ const SelectDataToShare = ({ fields, name, handleCheckboxChange }) => {
   //   });
   // }, [selectAll, fields]);
 
-  // const handleCheckboxChangeInternal = (name) => (event) => {
-  //   const { checked } = event.target;
-  //   console.log(checked)
-  //   setSelectedFields((prevSelectedFields) => ({
-  //     ...prevSelectedFields,
-  //     [name]: checked,
-  //   }));
-  //   handleCheckboxChange(name)(event);
-  // };
-  console.log("")
+  const handleCheckboxChange = (field, checked, category) => {
+    setFieldValue(`${category}.all`, false);
+    setFieldValue(field, checked);
+    console.log(category);
+  };
+  const getLabel = (field, category) => {
+    console.log(field, category);
+    return fieldData[category].filter(e => e.name === field )[0]?.label || '';
+  }
+  console.log(getLabel('gender', name));
+
+  console.log(values);
   return (
-    <Grid container sx={{ marginLeft: 0, background: "#F5F6F7", padding: '10px', borderRadius: '5px' }}>
-      {fields.map((field) => (
-        <Grid item xs={12} md={4} mb={2} key={field.name}>
+    <Grid
+      container
+      sx={{ marginLeft: 0, background: '#F5F6F7', padding: '10px', borderRadius: '5px' }}
+    >
+      {Object.keys(fields).filter(e => e !== 'all').map((field) => (
+        <Grid item xs={12} md={4} mb={2} key={field}>
           <Item>
             <FormGroup>
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={selectedFields[field.name] || selectAll}
-                    onChange={handleCheckboxChangeInternal(field.name)}
+                    name={`${name}.${field}`}
+                    checked={values[name][field]}
+                    onChange={(evt) =>
+                      handleCheckboxChange(`${name}.${field}`, evt.target.checked, name)
+                    }
                   />
                 }
-                label={field.label}
+                label={getLabel(field, name)}
               />
             </FormGroup>
           </Item>
@@ -63,12 +72,11 @@ const SelectDataToShare = ({ fields, name, handleCheckboxChange }) => {
 };
 
 SelectDataToShare.propTypes = {
-  fields: PropTypes.arrayOf(PropTypes.shape({
-    label: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-  })).isRequired,
-  selectAll: PropTypes.bool.isRequired,
-  handleCheckboxChange: PropTypes.func.isRequired,
+  fields: PropTypes.any.isRequired,
+  name: PropTypes.string.isRequired,
+  setFieldValue: PropTypes.func.isRequired,
+  values: PropTypes.any.isRequired,
+  fieldData: PropTypes.any.isRequired,
 };
 
 export default SelectDataToShare;
