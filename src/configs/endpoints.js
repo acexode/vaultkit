@@ -7,7 +7,7 @@ export const baseEndpoints = {
   auth: `${serverBaseUrl  }/`,
   profiles: `${serverBaseUrl  }/users/${user?.id}`,
   profile: `${serverBaseUrl  }/users`,
-  share: `${serverBaseUrl  }/share`,
+  share: `${serverBaseUrl  }/permission_base/access_requests`,
 };
 
 
@@ -40,6 +40,11 @@ export const profileEndpoint = {
   resInfo: `${baseEndpoints.profiles  }/residential_histories`,
 
 }
+
+export const requestDataEndpoint = {
+    request: `${baseEndpoints.share  }`,
+    share: `${baseEndpoints.share  }/share_data`,
+  }
 
 
 export const getSingleProfileUrl = (category, id, userId) => {

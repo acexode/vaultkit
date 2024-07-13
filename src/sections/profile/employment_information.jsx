@@ -9,7 +9,6 @@ import { useGlobalContext } from 'src/context/context';
 import ListCard from './ListCard';
 
 const EmploymentInfo = () => {
-  console.log(console.log('contact info'));
   const {handleCurrentForm} = useGlobalContext()
   const [data, setData] = useState([])
   const { enqueueSnackbar } = useSnackbar();

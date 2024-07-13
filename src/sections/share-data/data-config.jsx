@@ -73,11 +73,6 @@ export default function DataConfigView({handleClose}) {
         
           <Typography variant="h4" sx={{textAlign: 'center', my:2 }}>Data Sharing Settings</Typography>
 
-
-         
-
-        
-
           {renderForm}
         
       </Stack>

@@ -18,7 +18,7 @@ import Iconify from 'src/components/iconify';
 
 export default function RequestDataTRows({
   selected,
-  name,
+  title,
   company,
   role,
   validity,
@@ -53,7 +53,7 @@ export default function RequestDataTRows({
           <Stack direction="row" alignItems="center" spacing={2}>
             {/* <Avatar alt={name} src={avatarUrl} /> */}
             <Typography variant="subtitle2" noWrap>
-              {name}
+              {title}
             </Typography>
           </Stack>
         </TableCell>
@@ -65,7 +65,16 @@ export default function RequestDataTRows({
         <TableCell align="center">{validity }</TableCell>
 
         <TableCell>
-          <Label color={(status === 'expired' && 'error') || 'success'}>{status}</Label>
+        <Label 
+            color={
+              (status === 'expired' && 'error') || 
+              (status === 'approved' && 'success') || 
+              (status === 'pending' && 'warning') || 
+              'default'
+            }
+          >
+            {status}
+          </Label>
         </TableCell>
 
         <TableCell align="right">
@@ -112,7 +121,7 @@ RequestDataTRows.propTypes = {
   handleClick: PropTypes.func,
   handleViewDetails: PropTypes.func,
   handleAddNoteModal: PropTypes.func,
-  name: PropTypes.any,
+  title: PropTypes.any,
   notificationCount: PropTypes.number,
   validity: PropTypes.any,
   role: PropTypes.any,

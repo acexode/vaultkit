@@ -1,16 +1,7 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
 
-import {
-  Grid,
-  Paper,
-  // Stack,
-  styled,
-
-  Checkbox,
-  FormGroup,
-  FormControlLabel,
-} from '@mui/material';
+import { Grid, Paper, styled, Checkbox, FormGroup, FormControlLabel } from '@mui/material';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -22,29 +13,62 @@ const Item = styled(Paper)(({ theme }) => ({
   height: '100%',
   color: theme.palette.text.secondary,
 }));
-const SelectDataToShare = ({ fields, selectAll }) => (
-    <Grid
-      container
-      // divider={<Divider orientation="vertical" flexItem />}
-      sx={{ marginLeft: 0, background: "#F5F6F7", padding: '10px', borderRadius: '5px' }}
-      // spacing={{  md: 6, lg: 6 }}
-    >
-      {fields.map((f) => (
-        <Grid item xs={12} md={4} mb={2}>
+
+const SelectDataToShare = ({ fields, name, handleCheckboxChange }) => {
+  // const [selectedFields, setSelectedFields] = useState(
+  //   fields.reduce((acc, field) => ({ ...acc, [field.name]: selectAll }), {})
+  // );
+  
+  // useEffect(() => {
+  //   const newSelectedFields = fields.reduce((acc, field) => ({ ...acc, [field.name]: selectAll }), {});
+  //   setSelectedFields((prevSelectedFields) => {
+  //     const isDifferent = Object.keys(newSelectedFields).some(
+  //       (key) => newSelectedFields[key] !== prevSelectedFields[key]
+  //     );
+  //     return isDifferent ? newSelectedFields : prevSelectedFields;
+  //   });
+  // }, [selectAll, fields]);
+
+  // const handleCheckboxChangeInternal = (name) => (event) => {
+  //   const { checked } = event.target;
+  //   console.log(checked)
+  //   setSelectedFields((prevSelectedFields) => ({
+  //     ...prevSelectedFields,
+  //     [name]: checked,
+  //   }));
+  //   handleCheckboxChange(name)(event);
+  // };
+  console.log("")
+  return (
+    <Grid container sx={{ marginLeft: 0, background: "#F5F6F7", padding: '10px', borderRadius: '5px' }}>
+      {fields.map((field) => (
+        <Grid item xs={12} md={4} mb={2} key={field.name}>
           <Item>
             <FormGroup>
-              <FormControlLabel checked={selectAll} control={<Checkbox />} label={f} />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={selectedFields[field.name] || selectAll}
+                    onChange={handleCheckboxChangeInternal(field.name)}
+                  />
+                }
+                label={field.label}
+              />
             </FormGroup>
           </Item>
         </Grid>
       ))}
     </Grid>
-  
-  
-  )
-  
-SelectDataToShare.propTypes = {
-  fields: PropTypes.array,
-  selectAll: PropTypes.bool,
+  );
 };
+
+SelectDataToShare.propTypes = {
+  fields: PropTypes.arrayOf(PropTypes.shape({
+    label: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+  })).isRequired,
+  selectAll: PropTypes.bool.isRequired,
+  handleCheckboxChange: PropTypes.func.isRequired,
+};
+
 export default SelectDataToShare;

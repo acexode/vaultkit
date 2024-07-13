@@ -1,9 +1,13 @@
+import axios from 'axios';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import { useSnackbar } from 'notistack';
+import React, { useState, useEffect } from 'react';
 
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
+
+import { requestDataEndpoint } from 'src/configs/endpoints';
 
 // import { Stack, Button } from '@mui/material';
 import TableToolbar from 'src/sections/table/user-table-toolbar';
@@ -66,6 +70,41 @@ export default function SharedTabSection({handleViewDetails}) {
     setFilterName(event.target.value);
   };
 
+  const [requestData, setRequestData] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
+
+  
+  useEffect(() => {
+    const fetchRequestData = async () => {
+      try {
+        const response = await axios.get(requestDataEndpoint.request)
+        if (response.data && response.status === 200) {
+          setRequestData(response.data);
+        } else if (response.error) {
+          enqueueSnackbar(response.error.message, {
+            autoHideDuration: 1000,
+            anchorOrigin: {
+              vertical: 'top',
+              horizontal: 'right',
+            },
+            variant: 'error',
+          });
+        }
+      } catch (error) {
+        console.log(error);
+        enqueueSnackbar('An error occurred while fetching data.', {
+          autoHideDuration: 1000,
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'right',
+          },
+          variant: 'error',
+        });
+      }
+    };
+    fetchRequestData();
+  }, [enqueueSnackbar, setRequestData]);
+
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -89,7 +128,7 @@ export default function SharedTabSection({handleViewDetails}) {
         </Tabs>
 
         <CustomTabPanel value={value} index={0}>
-            <RequestTableView filterName={filterName} selected={selected} setSelected={setSelected} handleViewDetails={handleViewDetails} />
+            <RequestTableView requestData={requestData} filterName={filterName} selected={selected} setSelected={setSelected} handleViewDetails={handleViewDetails} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
         <SharedTableView filterName={filterName} selected={selected} setSelected={setSelected} handleViewDetails={handleViewDetails} />

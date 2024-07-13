@@ -1,12 +1,8 @@
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
-import Tabs from '@mui/material/Tabs';
-import Typography from '@mui/material/Typography';
-import { Stack, Button, Checkbox, FormGroup, FormControlLabel } from '@mui/material';
+import { Box, Tab, Tabs, Stack, Button, Checkbox, FormGroup, Typography, FormControlLabel } from '@mui/material';
 
 import { getFormFields } from 'src/_mock/formData';
 
@@ -14,10 +10,30 @@ import MHidden from 'src/components/common/MHidden';
 
 import DataConfigView from './data-config';
 import SelectDataToShare from './form-view';
+import { initialValues } from './iniialValues';
+
+const SelectAllCheck = ({ handleSelectAll, values, field, category, setFieldValue }) => (
+  <FormGroup>
+    <FormControlLabel
+      name={field}
+      onChange={(ev) => handleSelectAll(setFieldValue, field, ev.target.checked)}
+      control={<Checkbox checked={values[category][field]} />}
+      label="Select All"
+    />
+  </FormGroup>
+);
+
+SelectAllCheck.propTypes = {
+  handleSelectAll: PropTypes.func.isRequired,
+  category: PropTypes.string.isRequired,
+  field: PropTypes.string.isRequired,
+  setFieldValue: PropTypes.func.isRequired,
+  values: PropTypes.any.isRequired,
+  
+};
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
-
   return (
     <div
       role="tabpanel"
@@ -44,28 +60,11 @@ function a11yProps(index) {
     'aria-controls': `vertical-tabpanel-${index}`,
   };
 }
-const SelectAllCheck = ({ handleSelectAll, selectAll, field }) => (
-  <FormGroup>
-    <FormControlLabel
-      name={field}
-      onChange={(ev) => handleSelectAll(ev, field)}
-      control={<Checkbox checked={selectAll} />}
-      label="Select All"
-    />
-  </FormGroup>
-);
-SelectAllCheck.propTypes = {
-  handleSelectAll: PropTypes.func,
-  selectAll: PropTypes.bool,
-  field: PropTypes.string,
-};
-ShareView.propTypes = {
-  handleCloseModal: PropTypes.func,
-};
 
 export default function ShareView({ handleCloseModal }) {
+  
   const [value, setValue] = useState(0);
-  const [selectAll, setselectAll] = useState({
+  const [selectAll, setSelectAll] = useState({
     basic: false,
     contact: false,
     empInfo: false,
@@ -75,30 +74,60 @@ export default function ShareView({ handleCloseModal }) {
     reInfo: false,
     resInfo: false,
   });
+
+  const [selectedFields, setSelectedFields] = useState({
+    basic: {},
+    contact: {},
+    empInfo: {},
+    eduInfo: {},
+    finInfo: {},
+    idInfo: {},
+    reInfo: {},
+    resInfo: {},
+  });
+  console.log(selectedFields, "main")
   const fieldData = getFormFields('field-labels');
 
+  useEffect(() => {
+    const updatedFields = {};
+    Object.keys(fieldData).forEach((key) => {
+      updatedFields[key] = fieldData[key].reduce((acc, field) => ({ ...acc, [field.name]: selectAll[key] }), {});
+    });
+    setSelectedFields(updatedFields);
+  }, [selectAll]);
+
+  useEffect(() => {
+    console.log(selectedFields);
+  }, [selectedFields]);
+
   const handleChange = (event, newValue) => {
-    console.log(newValue);
     setValue(newValue);
   };
+
   const handleSaveNext = () => {
     const next = value === 8 ? value : value + 1;
     setValue(next);
   };
-  const handleClose = (event, newValue) => {
-    console.log(newValue);
+
+  const handleClose = () => {
     handleCloseModal('share-data-view');
   };
-  const handleSelectAll = (ev, field) => {
-    console.log(ev, field);
-    const s = {
-      ...selectAll,
-      [field]: ev.target.checked,
-    };
-    console.log(s);
-    setselectAll(s);
+
+  const handleSelectAll = (setFieldValue, category, checked) => {
+    Object.keys(initialValues[category]).forEach((field)=> {
+      setFieldValue(`${category}.${field}`, checked)
+    })
+    
   };
-  const initialValues = {};
+
+  const handleCheckboxChange = (category) => (name) => (event) => {
+    setSelectedFields((prevSelectedFields) => ({
+      ...prevSelectedFields,
+      [category]: { ...prevSelectedFields[category], [name]: event.target.checked },
+    }));
+  };
+
+  
 
   const formik = useFormik({
     initialValues,
@@ -110,34 +139,14 @@ export default function ShareView({ handleCloseModal }) {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Stack
-        direction={{ xs: 'column', sm: 'row' }}
-        alignItems="center"
-        justifyContent="space-between"
-        mb={5}
-      >
-        <Typography sx={{textAlign: 'center', mb: 2}} variant="h4">Select data for sharing</Typography>
-        <Box
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          // sx={{  display: 'flex' }}
-        >
-          <Button
-            variant="outlined"
-            sx={{ mx: 2, flex: 1 }} // Equal width for both buttons
-            autoFocus
-            onClick={handleSaveNext}
-          >
+      <Stack direction={{ xs: 'column', sm: 'row' }} alignItems="center" justifyContent="space-between" mb={5}>
+        <Typography sx={{ textAlign: 'center', mb: 2 }} variant="h4">Select data for sharing</Typography>
+        <Box direction="row" alignItems="center" justifyContent="space-between">
+          <Button variant="outlined" sx={{ mx: 2, flex: 1 }} autoFocus onClick={handleSaveNext}>
             Save & Next
           </Button>
-          <Button
-            variant="contained"
-            sx={{ flex: 1 }} // Equal width for both buttons
-            autoFocus
-            onClick={handleClose}
-          >
-            Save
+          <Button variant="contained" sx={{ flex: 1 }} autoFocus onClick={handleClose}>
+            Share Data
           </Button>
         </Box>
       </Stack>
@@ -170,72 +179,50 @@ export default function ShareView({ handleCloseModal }) {
           </CustomTabPanel>
 
           <CustomTabPanel value={value} index={1}>
-            <SelectAllCheck
-              field="basic"
-              selectAll={selectAll.basic}
-              handleSelectAll={handleSelectAll}
-            />
-            <SelectDataToShare selectAll={selectAll.basic} fields={fieldData.basic} />
+            <SelectAllCheck setFieldValue={formik.setFieldValue}  field="basic" name={basic} handleSelectAll={handleSelectAll} />
+            <SelectDataToShare name='basic' fields={initialValues.basic} handleCheckboxChange={handleCheckboxChange('basic')} />
           </CustomTabPanel>
+
           <CustomTabPanel value={value} index={2}>
-            <SelectAllCheck
-              field="contact"
-              selectAll={selectAll.contact}
-              handleSelectAll={handleSelectAll}
-            />
-            <SelectDataToShare selectAll={selectAll.contact} fields={fieldData.contact} />
+            <SelectAllCheck setFieldValue={formik.setFieldValue}  field="contact" name={contact} handleSelectAll={handleSelectAll} />
+            <SelectDataToShare name='contact' fields={initialValues.contact} handleCheckboxChange={handleCheckboxChange('contact')} />
           </CustomTabPanel>
+
           <CustomTabPanel value={value} index={3}>
-            <SelectAllCheck
-              field="empInfo"
-              selectAll={selectAll.empInfo}
-              handleSelectAll={handleSelectAll}
-            />
-            <SelectDataToShare selectAll={selectAll.empInfo} fields={fieldData.empInfo} />
+            <SelectAllCheck setFieldValue={formik.setFieldValue}  field="empInfo" name={empInfo} handleSelectAll={handleSelectAll} />
+            <SelectDataToShare name='empInfo' fields={initialValues.empInfo} handleCheckboxChange={handleCheckboxChange('empInfo')} />
           </CustomTabPanel>
+
           <CustomTabPanel value={value} index={4}>
-            <SelectAllCheck
-              field="eduInfo"
-              selectAll={selectAll.eduInfo}
-              handleSelectAll={handleSelectAll}
-            />
-            <SelectDataToShare selectAll={selectAll.eduInfo} fields={fieldData.eduInfo} />
+            <SelectAllCheck setFieldValue={formik.setFieldValue}  field="eduInfo" name={eduInfo} handleSelectAll={handleSelectAll} />
+            <SelectDataToShare name='eduInfo' fields={initialValues.eduInfo} handleCheckboxChange={handleCheckboxChange('eduInfo')} />
           </CustomTabPanel>
 
           <CustomTabPanel value={value} index={5}>
-            <SelectAllCheck
-              field="finInfo"
-              selectAll={selectAll.finInfo}
-              handleSelectAll={handleSelectAll}
-            />
-            <SelectDataToShare selectAll={selectAll.finInfo} fields={fieldData.finInfo} />
+            <SelectAllCheck setFieldValue={formik.setFieldValue}  field="finInfo" name={finInfo} handleSelectAll={handleSelectAll} />
+            <SelectDataToShare name='finInfo' fields={initialValues.finInfo} handleCheckboxChange={handleCheckboxChange('finInfo')} />
           </CustomTabPanel>
+
           <CustomTabPanel value={value} index={6}>
-            <SelectAllCheck
-              field="idInfo"
-              selectAll={selectAll.idInfo}
-              handleSelectAll={handleSelectAll}
-            />
-            <SelectDataToShare selectAll={selectAll.idInfo} fields={fieldData.idInfo} />
+            <SelectAllCheck setFieldValue={formik.setFieldValue}  field="idInfo" name={idInfo} handleSelectAll={handleSelectAll} />
+            <SelectDataToShare name='idInfo' fields={initialValues.idInfo} handleCheckboxChange={handleCheckboxChange('idInfo')} />
           </CustomTabPanel>
+
           <CustomTabPanel value={value} index={7}>
-            <SelectAllCheck
-              field="reInfo"
-              selectAll={selectAll.reInfo}
-              handleSelectAll={handleSelectAll}
-            />
-            <SelectDataToShare selectAll={selectAll.reInfo} fields={fieldData.reInfo} />
+            <SelectAllCheck setFieldValue={formik.setFieldValue}  field="reInfo" name={reInfo} handleSelectAll={handleSelectAll} />
+            <SelectDataToShare name='reInfo' fields={initialValues.reInfo} handleCheckboxChange={handleCheckboxChange('reInfo')} />
           </CustomTabPanel>
+
           <CustomTabPanel value={value} index={8}>
-            <SelectAllCheck
-              field="resInfo"
-              selectAll={selectAll.resInfo}
-              handleSelectAll={handleSelectAll}
-            />
-            <SelectDataToShare selectAll={selectAll.resInfo} fields={fieldData.resInfo} />
+            <SelectAllCheck setFieldValue={formik.setFieldValue}  field="resInfo" name={resInfo} handleSelectAll={handleSelectAll} />
+            <SelectDataToShare name='resInfo' fields={initialValues.resInfo} handleCheckboxChange={handleCheckboxChange('resInfo')} />
           </CustomTabPanel>
         </Box>
       </form>
     </Box>
   );
 }
+
+ShareView.propTypes = {
+  handleCloseModal: PropTypes.func.isRequired,
+};

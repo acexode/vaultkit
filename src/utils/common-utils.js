@@ -4,4 +4,9 @@ export const convertToSentenceCase =(str)=> {
     return str.toLowerCase().replace(/(^|[.!?])(\w)/g, (match, p1, p2) => p1 + p2.toUpperCase());
 }
 
+// export const humanReadableDate = (data) => {
+//     const date = new Date(date);
+//     const humanReadable = 
+// }
+
 
