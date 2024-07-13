@@ -35,13 +35,10 @@ const SelectDataToShare = ({ fields, name, setFieldValue, values, fieldData }) =
     setFieldValue(field, checked);
     console.log(category);
   };
-  const getLabel = (field, category) => {
-    console.log(field, category);
-    return fieldData[category].filter(e => e.name === field )[0]?.label || '';
-  }
-  console.log(getLabel('gender', name));
+  const getLabel = (field, category) => fieldData[category].filter(e => e.name === field )[0]?.label || ''
+  // console.log(getLabel('gender', name));
 
-  console.log(values);
+ 
   return (
     <Grid
       container

@@ -11,6 +11,8 @@ import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
+import { humanReadableTime } from 'src/utils/common-utils';
+
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 
@@ -26,7 +28,8 @@ export default function RequestDataTRows({
   handleClick,
   handleAddNoteModal,
   notificationCount,
-  handleViewDetails
+  handleViewDetails,
+  approveRequest
 }) {
   const [open, setOpen] = useState(null);
 
@@ -37,6 +40,9 @@ export default function RequestDataTRows({
   const handleCloseMenu = () => {
     setOpen(null);
   };
+  const ApproveRequest = async () => {
+    await approveRequest();
+  }
   const addNoteMenu = () => {
     setOpen(null);
     handleAddNoteModal(true)
@@ -62,7 +68,7 @@ export default function RequestDataTRows({
 
         <TableCell>{role}</TableCell>
 
-        <TableCell align="center">{validity }</TableCell>
+        <TableCell align="center">{humanReadableTime(validity)  }</TableCell>
 
         <TableCell>
         <Label 
@@ -105,7 +111,10 @@ export default function RequestDataTRows({
           <Iconify icon="eva:file-outline" sx={{ mr: 2 }} />
           Add Note
         </MenuItem>
-
+        <MenuItem onClick={ApproveRequest} sx={{ color: 'error.main' }}>
+          <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
+          Approve
+        </MenuItem>
         <MenuItem onClick={handleCloseMenu} sx={{ color: 'error.main' }}>
           <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
           Revoke
@@ -121,6 +130,7 @@ RequestDataTRows.propTypes = {
   handleClick: PropTypes.func,
   handleViewDetails: PropTypes.func,
   handleAddNoteModal: PropTypes.func,
+  approveRequest: PropTypes.func,
   title: PropTypes.any,
   notificationCount: PropTypes.number,
   validity: PropTypes.any,

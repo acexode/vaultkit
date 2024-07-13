@@ -1,10 +1,16 @@
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
+import { useSnackbar } from 'notistack';
 
 import { Box, Tab, Tabs, Stack, Button, Checkbox, FormGroup, Typography, FormControlLabel } from '@mui/material';
 
+import useAuth from 'src/hooks/useAuth';
+
+import axiosInstance from 'src/utils/axios';
+
 import { getFormFields } from 'src/_mock/formData';
+import { requestDataEndpoint } from 'src/configs/endpoints';
 
 import MHidden from 'src/components/common/MHidden';
 
@@ -61,11 +67,23 @@ function a11yProps(index) {
   };
 }
 
+
 export default function ShareView({ handleCloseModal }) {
   const [value, setValue] = useState(0);
-
+  const { enqueueSnackbar } = useSnackbar();
+  const {user} = useAuth()
   const fieldData = getFormFields('field-labels');
-  console.log(fieldData);
+  const typeMapping = {
+    basic: 'personal',
+    contact: 'contact',
+    eduInfo: 'education',
+    empInfo: 'employment',
+    finInfo: 'financial',
+    idInfo: 'identity',
+    reInfo: 'residencial',
+    resInfo: 'realestate'
+  };
+ 
   // useEffect(() => {
   //   const updatedFields = {};
   //   Object.keys(fieldData).forEach((key) => {
@@ -80,16 +98,15 @@ export default function ShareView({ handleCloseModal }) {
   };
 
   const handleSaveNext = () => {
-    const next = value === 8 ? value : value + 1;
+    const next = value === 8 ? 0 : value + 1;
     setValue(next);
   };
 
   const handleClose = () => {
     handleCloseModal('share-data-view');
   };
-
+ 
   const handleSelectAll = (setFieldValue, category, checked) => {
-    console.log(category, checked);
     Object.keys(initialValues[category]).forEach((field)=> {
 
       setFieldValue(`${category}.${field}`, checked)
@@ -103,26 +120,64 @@ export default function ShareView({ handleCloseModal }) {
 
   const formik = useFormik({
     initialValues,
-    onSubmit: (values) => {
-      console.log(values);
-      // Handle form submission
+    onSubmit: async (values) => {
+      const result = Object.keys(formik.values).reduce((acc, key) => {
+        if (typeMapping[key]) {
+            const sharedData = Object.keys(formik.values[key]).filter(subKey => formik.values[key][subKey] === true);
+            if (sharedData.length > 0) {
+                acc.push({ type: typeMapping[key], shared_data: sharedData });
+            }
+        }
+        return acc;
+      }, []);
+      const data = {
+        access_request: {
+          title: values.title,
+          receiver_email: values.receiver_email,
+          receiver_type: "user",
+          sharer_type: "user",
+          start_time: values.start_time,
+          end_time: values.end_time,
+          resource: result,
+          sharer_id: user?.id
+        }
+      }
+      try {
+        const response = await axiosInstance.post(requestDataEndpoint.share, data)
+        if(response.status === 200){
+          enqueueSnackbar(response.data.success, {
+            variant: 'success',
+          });
+        } 
+        handleClose('share-data-view')
+      } catch (error) {
+        if(error.response.status === 422){
+          enqueueSnackbar(error.response.data.error, {
+            variant: 'error',
+          });
+        }
+      }
     },
   });
 
+
+
+
   return (
     <Box sx={{ width: '100%' }}>
-      <Stack direction={{ xs: 'column', sm: 'row' }} alignItems="center" justifyContent="space-between" mb={5}>
+      
+      <form onSubmit={formik.handleSubmit}>
+      <Stack direction={{ xs: 'column', sm: 'row' }} alignItems="center" justifyContent="space-between" mb={5} marginTop={2}>
         <Typography sx={{ textAlign: 'center', mb: 2 }} variant="h4">Select data for sharing</Typography>
         <Box direction="row" alignItems="center" justifyContent="space-between">
           <Button variant="outlined" sx={{ mx: 2, flex: 1 }} autoFocus onClick={handleSaveNext}>
-            Save & Next
+            {value === 8 ? "Previous" : "Save & Next"}
           </Button>
-          <Button variant="contained" sx={{ flex: 1 }} autoFocus onClick={handleClose}>
+          <Button variant="contained" sx={{ flex: 1 }} type='submit' autoFocus>
             Share Data
           </Button>
         </Box>
       </Stack>
-      <form onSubmit={formik.handleSubmit}>
         <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 450 }}>
           <MHidden width="smDown">
             <Tabs
@@ -147,7 +202,7 @@ export default function ShareView({ handleCloseModal }) {
           </MHidden>
 
           <CustomTabPanel value={value} index={0}>
-            <DataConfigView />
+            <DataConfigView values={formik.values} setFieldValue={formik.setFieldValue} formik={formik} />
           </CustomTabPanel>
 
           <CustomTabPanel value={value} index={1}>

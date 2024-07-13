@@ -1,4 +1,8 @@
 export const initialValues = {
+  title: '',
+  receiver_email: '',
+  start_time: '',
+  end_time: '',
   basic: {
     social_insurance_number: true,
     date_of_birth: false,

@@ -21,7 +21,8 @@ import { emptyRows, applyFilter, getComparator } from '../user/utils';
 
 // ----------------------------------------------------------------------
 
-export default function RequestTableView({filterName, selected, setSelected, handleViewDetails, requestData}) {
+export default function RequestTableView({filterName, selected, setSelected, handleViewDetails, requestData, approveRequest}) {
+  console.log(requestData, "dfkdskl")
   const [page, setPage] = useState(0);
   const [showAddNote, setshowAddNote] = useState(false)
 
@@ -138,6 +139,7 @@ console.log(users);
                     handleAddNoteModal={handleAddNoteModal}
                     notificationCount={row.notificationCount}
                     handleViewDetails={handleViewDetails}
+                    approveRequest={approveRequest}
                   />
                 ))}
 
@@ -168,6 +170,7 @@ RequestTableView.propTypes = {
     filterName: PropTypes.string,
     selected: PropTypes.array,
     setSelected: PropTypes.func,
+    approveRequest: PropTypes.func,
     handleViewDetails: PropTypes.func,
     requestData: PropTypes.array,
   };
