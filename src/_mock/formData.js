@@ -121,8 +121,8 @@ export const BasicInfo = [
     name: 'work_authorization',
     type: 'select',
     options: [
-      { label: 'Yes', value: 'yes' },
-      { label: 'No', value: 'no' },
+      { label: 'Yes', value: true },
+      { label: 'No', value: false },
     ],
 
     defaultValue: '',
