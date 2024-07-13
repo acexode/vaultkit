@@ -16,32 +16,11 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const SelectDataToShare = ({ fields, name, setFieldValue, values, fieldData }) => {
 
-  // const [selectedFields, setSelectedFields] = useState(
-  //   fields.reduce((acc, field) => ({ ...acc, [field.name]: selectAll }), {})
-  // );
-
-  // useEffect(() => {
-  //   const newSelectedFields = fields.reduce((acc, field) => ({ ...acc, [field.name]: selectAll }), {});
-  //   setSelectedFields((prevSelectedFields) => {
-  //     const isDifferent = Object.keys(newSelectedFields).some(
-  //       (key) => newSelectedFields[key] !== prevSelectedFields[key]
-  //     );
-  //     return isDifferent ? newSelectedFields : prevSelectedFields;
-  //   });
-  // }, [selectAll, fields]);
-
   const handleCheckboxChange = (field, checked, category) => {
     setFieldValue(`${category}.all`, false);
     setFieldValue(field, checked);
-    console.log(category);
   };
-  const getLabel = (field, category) => {
-    console.log(field, category);
-    return fieldData[category].filter(e => e.name === field )[0]?.label || '';
-  }
-  console.log(getLabel('gender', name));
-
-  console.log(values);
+  const getLabel = (field, category) => fieldData[category].filter(e => e.name === field )[0]?.label || ''
   return (
     <Grid
       container

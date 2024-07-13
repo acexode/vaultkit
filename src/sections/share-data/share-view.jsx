@@ -65,15 +65,6 @@ export default function ShareView({ handleCloseModal }) {
   const [value, setValue] = useState(0);
 
   const fieldData = getFormFields('field-labels');
-  console.log(fieldData);
-  // useEffect(() => {
-  //   const updatedFields = {};
-  //   Object.keys(fieldData).forEach((key) => {
-  //     updatedFields[key] = fieldData[key].reduce((acc, field) => ({ ...acc, [field.name]: selectAll[key] }), {});
-  //   });
-  //   setSelectedFields(updatedFields);
-  // }, []);
-
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -95,10 +86,6 @@ export default function ShareView({ handleCloseModal }) {
       setFieldValue(`${category}.${field}`, checked)
     })
   };
-
-  // const handleCheckboxChange = (category) => (name) => (event) => {
-    
-  // };
 
 
   const formik = useFormik({
