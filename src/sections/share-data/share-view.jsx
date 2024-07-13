@@ -113,10 +113,6 @@ export default function ShareView({ handleCloseModal }) {
     })
   };
 
-  // const handleCheckboxChange = (category) => (name) => (event) => {
-    
-  // };
-
 
   const formik = useFormik({
     initialValues,
