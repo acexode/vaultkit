@@ -946,7 +946,7 @@ export const ResidentialHistory = [
   },
 ];
 
-const getLabels = (arr) => arr.map((e) => e.label);
+const getLabels = (arr) => arr.map((e) => ({label: e.label, name: e.name}));
 
 export const getFormFields = (slug) => {
   let data = {};
