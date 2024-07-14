@@ -6,25 +6,26 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
-import { Stack, Button, Checkbox, FormGroup, FormControlLabel } from '@mui/material';
+import { Stack, Button, Checkbox, useTheme, FormGroup, useMediaQuery, FormControlLabel } from '@mui/material';
 
 import { getFormFields } from 'src/_mock/formData';
 
-import MHidden from 'src/components/common/MHidden';
+// import MHidden from 'src/components/common/MHidden';
 
 import DataConfigView from './data-config';
 import SelectDataToShare from './form-view';
 
 function CustomTabPanel(props) {
-  const { children, value, index, ...other } = props;
+  const { children, value, index, orientation, ...other } = props;
 
   return (
     <div
       role="tabpanel"
       hidden={value !== index}
       style={{ flex: 1 }}
-      id={`vertical-tabpanel-${index}`}
-      aria-labelledby={`vertical-tab-${index}`}
+      id={ orientation === 'vertical' ? `vertical-tabpanel-${index}` : `simple-tabpanel-${index}`}
+      aria-labelledby={ orientation === 'vertical' ? `vertical-tab-${index}` : `simple-tab-${index}`}
+      // aria-labelledby={`vertical-tab-${index}`}
       {...other}
     >
       {value === index && <Box>{children}</Box>}
@@ -36,12 +37,13 @@ CustomTabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
+  orientation: PropTypes.number.isRequired,
 };
 
-function a11yProps(index) {
+function a11yProps(index, orientation) {
   return {
-    id: `vertical-tab-${index}`,
-    'aria-controls': `vertical-tabpanel-${index}`,
+    id: orientation === 'vertical' ? `vertical-tab-${index}` : `simple-tab-${index}`,
+    'aria-controls': orientation === 'vertical' ?  `vertical-tabpanel-${index}` : `simple-tabpanel-${index}`,
   };
 }
 const SelectAllCheck = ({ handleSelectAll, selectAll, field }) => (
@@ -64,6 +66,9 @@ ShareView.propTypes = {
 };
 
 export default function ShareView({ handleCloseModal }) {
+  const themes = useTheme();
+  const isMobile = useMediaQuery(themes.breakpoints.down('sm'));
+  console.log(isMobile);
   const [value, setValue] = useState(0);
   const [selectAll, setselectAll] = useState({
     basic: false,
@@ -142,14 +147,14 @@ export default function ShareView({ handleCloseModal }) {
         </Box>
       </Stack>
       <form onSubmit={formik.handleSubmit}>
-        <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 450 }}>
-          <MHidden width="smDown">
+        <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 450, flexDirection: isMobile ? 'column' : 'row'  }}>
+          {/* <MHidden width="smDown"> */}
             <Tabs
               value={value}
               onChange={handleChange}
               variant="scrollable"
               scrollButtons="auto"
-              orientation="vertical"
+              orientation={ !isMobile ? "vertical": "horizontal"}
               aria-label="Vertical tabs example"
               sx={{ borderRight: 1, borderColor: 'divider' }}
             >
@@ -163,7 +168,7 @@ export default function ShareView({ handleCloseModal }) {
               <Tab label="Real Estate" {...a11yProps(7)} />
               <Tab label="Residential Histories" {...a11yProps(8)} />
             </Tabs>
-          </MHidden>
+          {/* </MHidden> */}
 
           <CustomTabPanel value={value} index={0}>
             <DataConfigView />
