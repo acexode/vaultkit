@@ -31,17 +31,21 @@ export default function CategorySelectCheckmarks({handleSelected, list, isChild,
     const val = typeof value === 'string' ? value.split(',') : value
     setselected(val);
     if(isChild){
-        handleNested(childName, val)
+        handleNested(childName, val);
     }else{
         handleSelected(val);
-
     }
+  };
+
+  const getLabelForValue = (value) => {
+    const item = list.find((option) => option.value === value);
+    return item ? item.label : value;
   };
 
   return (
     <div>
       <FormControl sx={{  width: '100%', mb: 1  }}>
-        <InputLabel id="demo-multiple-checkbox-label">{title}</InputLabel>
+        <InputLabel shrink id="demo-multiple-checkbox-label">{title}</InputLabel>
         <Select
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
@@ -49,13 +53,14 @@ export default function CategorySelectCheckmarks({handleSelected, list, isChild,
           value={selected}
           onChange={handleChange}
           input={<OutlinedInput label="Tag" />}
-          renderValue={(val) => val.join(', ')}
+          renderValue={(selectedValues) => selectedValues.map(getLabelForValue).join(', ')}
           MenuProps={MenuProps}
+          
         >
-          {list.map((name) => (
-            <MenuItem key={name} value={name}>
-              <Checkbox checked={selected.indexOf(name) > -1} />
-              <ListItemText primary={name} />
+          {list.map(({label, value}) => (
+            <MenuItem key={label} value={value}>
+              <Checkbox checked={selected.indexOf(value) > -1} />
+              <ListItemText primary={label} />
             </MenuItem>
           ))}
         </Select>
