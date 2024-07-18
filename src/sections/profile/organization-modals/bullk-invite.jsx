@@ -16,6 +16,12 @@ const IconWrapper = styled('div')(({ theme }) => ({
   justifyContent: 'center',
   margin: '0 auto 15px',
 }));
+const TemplateWrapper = styled('a')(({ theme }) => ({
+
+  textDecoration: 'none',
+  display: 'block',
+  textAlign:'center'
+}));
 
 const BulkInviteModal = ({ handleCloseModal }) => {
   console.log('saved');
@@ -32,6 +38,9 @@ const BulkInviteModal = ({ handleCloseModal }) => {
       <Typography textAlign="center" variant="h4">
         Upload employee 
       </Typography>
+      <TemplateWrapper href=''>
+        Download sample template
+      </TemplateWrapper>
       {!submitted && (
         <Stack direction="column" justifyContent="center" spacing={3} my={3}>
             <UploadSingleFile label="CSV file" />

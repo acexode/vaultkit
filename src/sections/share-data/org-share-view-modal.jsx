@@ -26,9 +26,9 @@ import useAuth from 'src/hooks/useAuth';
 
 import axiosInstance from 'src/utils/axios';
 
-import DataConfigView from './data-config';
 import SelectDataToShare from './form-view';
 import { initialValues } from './iniialValues';
+import OrgDataConfigView from './org-data-config';
 
 const SelectAllCheck = ({ handleSelectAll, values, field, category, setFieldValue }) => (
   <FormGroup>
@@ -82,10 +82,10 @@ function a11yProps(index, orientation) {
   };
 }
 
-export default function ShareView({ handleCloseModal }) {
+export default function OrgShareView({ handleCloseModal, employees }) {
   const themes = useTheme();
   const isMobile = useMediaQuery(themes.breakpoints.down('sm'));
-  console.log(isMobile);
+  console.log(employees);
   const [value, setValue] = useState(0);
   // const [disabled, setdisabled] = useState(true);
   const { enqueueSnackbar } = useSnackbar();
@@ -102,13 +102,6 @@ export default function ShareView({ handleCloseModal }) {
     resInfo: 'realestate',
   };
 
-  // useEffect(() => {
-  //   const updatedFields = {};
-  //   Object.keys(fieldData).forEach((key) => {
-  //     updatedFields[key] = fieldData[key].reduce((acc, field) => ({ ...acc, [field.name]: selectAll[key] }), {});
-  //   });
-  //   setSelectedFields(updatedFields);
-  // }, []);
 
   const handleChange = (event, newValue) => {
     if(getDisabled){
@@ -242,7 +235,7 @@ export default function ShareView({ handleCloseModal }) {
           </Tabs>
 
           <CustomTabPanel value={value} index={0}>
-            <DataConfigView
+            <OrgDataConfigView
               values={formik.values}
               setFieldValue={formik.setFieldValue}
               formik={formik}
@@ -390,6 +383,7 @@ export default function ShareView({ handleCloseModal }) {
   );
 }
 
-ShareView.propTypes = {
+OrgShareView.propTypes = {
   handleCloseModal: PropTypes.func.isRequired,
+  employees: PropTypes.array.isRequired,
 };

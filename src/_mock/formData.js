@@ -30,7 +30,7 @@ export const BasicInfo = [
   //   isForm: true,
   // },
   {
-    label: 'Social insurance number',
+    label: 'Identity Number',
     name: 'social_insurance_number',
     type: 'text',
     defaultValue: '',

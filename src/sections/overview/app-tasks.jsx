@@ -12,6 +12,9 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 
 import Iconify from 'src/components/iconify';
 
+import AlertDialog from '../modal/modal';
+import ViewRequest from '../share-data/view-request';
+
 // ----------------------------------------------------------------------
 
 export default function AnalyticsTasks({ title, subheader, list, ...other }) {
@@ -51,6 +54,7 @@ AnalyticsTasks.propTypes = {
 
 function TaskItem({ task, checked, onChange }) {
   const [open, setOpen] = useState(null);
+  const [opeRequest, setopeRequest] = useState(false)
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -66,8 +70,12 @@ function TaskItem({ task, checked, onChange }) {
   };
 
   const handleShare = () => {
+    setopeRequest(true)
     handleCloseMenu();
     console.info('SHARE', task.id);
+  };
+  const handleCloseRequest = () => {
+    setopeRequest(false)
   };
 
 
@@ -120,7 +128,7 @@ function TaskItem({ task, checked, onChange }) {
 
         <MenuItem onClick={handleShare}>
           <Iconify icon="solar:share-bold" sx={{ mr: 2 }} />
-          Share
+          View & Share
         </MenuItem>
 
         <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
@@ -128,6 +136,7 @@ function TaskItem({ task, checked, onChange }) {
           Delete
         </MenuItem>
       </Popover>
+      <AlertDialog handleClose={(handleCloseRequest)} fullWidth maxWidth="sm" title="Generate Access Code" component={<ViewRequest handleCloseModal={handleCloseRequest} />} open={opeRequest} />
     </>
   );
 }
