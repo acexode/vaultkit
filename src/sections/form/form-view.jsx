@@ -22,176 +22,52 @@ import {
 import { useRouter } from 'src/routes/hooks';
 
 import useAuth from 'src/hooks/useAuth';
-// import useAuth from 'src/hooks/useAuth'; 
+// import useAuth from 'src/hooks/useAuth';
 import useGoogleAutocomplete from 'src/hooks/useGoogleAutocomplete';
 
 import axiosInstance from 'src/utils/axios';
 import { queryParamsToObject } from 'src/utils/crud-utils';
+import { validationFieldMapper, handleProfileDataSubmit } from 'src/utils/formviewutil';
 
-import { profileRequestMapper } from 'src/apis';
-import { getSingleProfileUrl, getSingleProfileDataPatchUrl } from 'src/configs/endpoints';
+import countries from 'src/_mock/countries';
+import { getSingleProfileUrl } from 'src/configs/endpoints';
 
 import { UploadSingleFile } from 'src/components/uploads';
 
 import SocialMediaInput from './socialMediaInput';
 
 const MyFormComponent = ({ fields, title, url, tag }) => {
-  const {user} = useAuth()
- 
+  const { user } = useAuth();
+  
   const router = useRouter();
-  const [initialValues, setinitialValues] = useState({})
+  const [initialValues, setinitialValues] = useState({});
   const validationSchema = {};
   const { predictions, setInput } = useGoogleAutocomplete();
   const location = useLocation();
-  const {id} = queryParamsToObject(location.search)
- 
-  const [autocompleteValues, setAutocompleteValues] = useState({});
- 
+  const { id } = queryParamsToObject(location.search);
   
+  const [autocompleteValues, setAutocompleteValues] = useState({});
+
   useEffect(() => {
-    const vals = {}
-    fields.forEach((field) => {
-      vals[field.name] = field.defaultValue || '';
-      
-      
-      if (field.name === "phone_number") {
-        validationSchema[field.name] = Yup.string()
-          .matches(/^\d+$/, 'Phone number must be digits only')
-          .required('Phone number is required');
-      } else if (field.name === 'social_media_links' && field.type === 'social_media') {
-        vals[field.name] = Object.values(field.defaultValue).join(' ') || '';
-        validationSchema[field.name] = Yup.string()
-        .transform((value, originalValue) =>
-          typeof originalValue === 'object'
-            ? Object.values(originalValue).join(' ')
-            : originalValue
-        )
-        .required(`${field.label} is required`);
-      } else {
-        validationSchema[field.name] = Yup.string().required(`${field.label} is required`);
-      }
-    });
-    setinitialValues(vals)
-    const singleUrl = getSingleProfileUrl(tag, id, user?.id)
-    if(id){
+    const vals = validationFieldMapper(fields, validationSchema, Yup)
+    
+    setinitialValues(vals);
+    const singleUrl = getSingleProfileUrl(tag, id, user?.id);
+    if (id) {
       const getData = async () => {
-        const response = await axiosInstance.get(singleUrl)
-    
-        setinitialValues(response.data.data)
-      }
-      getData()
+        const response = await axiosInstance.get(singleUrl);
+
+        setinitialValues(response.data.data);
+      };
+      getData();
     }
-    
-  }, [id, tag, user?.id])
+  }, [id, tag, user?.id]);
 
-  const handleProfileDataSubmit = async (values) => {
-    const api = profileRequestMapper(tag)
-    let response;
-    const singleUrl = getSingleProfileDataPatchUrl(tag, id)
-    if(tag === 'contact-info'){
-      const formData = new FormData();
-      Object.keys(values).forEach((val) => {
-        formData.append(`contact_information[${val}]`, values[val])
-      })
-      if(id){
-       
-       response = await await axiosInstance.patch(singleUrl, formData)
-       if(response.status === 200){
-          router.push("/dashboard/user")
-       }
-      }else {
-        response = await api._create(formData)
-      }
-
-    }else if(tag === 'education-info'){
-      
-      const formData = new FormData();
-      Object.keys(values).forEach((val) => {
-        formData.append(`education_data[${val}]`, values[val])
-      })
-      if(id){
-        response = await await axiosInstance.patch(singleUrl, formData)
-        if(response.status === 200){
-          router.push("/dashboard/user")
-       }
-      }else {
-        response = await api._create(formData)
-      }
-
-    }else if(tag === 'employment-info'){
-      const formData = new FormData();
-      Object.keys(values).forEach((val) => {
-        formData.append(val, values[val])
-      })
-      if(id){
-        response = await await axiosInstance.patch(singleUrl, formData)
-        if(response.status === 200){
-          router.push("/dashboard/user")
-       }
-      }else {
-        response = await api._create(formData)
-      }
-
-    }else if(tag === 'personal-info'){
-      const formData = new FormData();
-      Object.keys(values).forEach((val) => {
-        if(val === 'social_media_links'){
-          formData.append(val, JSON.stringify(values[val]))
-        }else {
-
-          formData.append(val, values[val])
-        }
-      })
-      if(id){
-        response = await await axiosInstance.patch(singleUrl, formData)
-        if(response.status === 200){
-          router.push("/dashboard/user")
-       }
-      }else {
-        response = await api._create(formData)
-      }
-
-    }else if(tag === 'financial-info'){
-      if(id){
-        // edit contact
-      }
-      // create contact
-    }else if(tag === 'identification-info'){
-      if(id){
-        // edit contact
-      }
-      // create contact
-    }else if(tag === 'realestate-info'){
-      const formData = new FormData();
-      Object.keys(values).forEach((val) => {
-        formData.append(`real_estate_informations[${val}]`, values[val])
-      })
-      if(id){
-        response = await await axiosInstance.patch(singleUrl, formData)
-        if(response.status === 200){
-          router.push("/dashboard/user")
-       }
-      }else {
-        response = await api._create(formData)
-      }
-      
-    }else if(tag === 'residential-info'){
-      const formData = new FormData();
-      Object.keys(values).forEach((val) => {
-        formData.append(`residential_history[${val}]`, values[val])
-      })
-      if(id){
-        response = await await axiosInstance.patch(singleUrl, formData)
-        if(response.status === 200){
-          router.push("/dashboard/user")
-       }
-      }else {
-        response = await api._create(formData)
-      }
-    }
-    return response
-  }
  
+  const handleSubmit = (values) => {
+    handleProfileDataSubmit(values, tag, id, router)
+  }
+
   const formik = useFormik({
     initialValues,
     enableReinitialize: true,
@@ -199,23 +75,20 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
     onSubmit: async (values) => {
       console.log(values)
       try {
-        const response = await handleProfileDataSubmit(values)
-        if(response.status === 200){
-          router.push("/dashboard/user")
-       }
+        const response = await handleSubmit(values);
+        if (response.status === 200) {
+          router.push('/dashboard/user');
+        }
       } catch (error) {
         console.log(error);
       }
-
-      
     },
   });
 
   const handlePlaceSelected = (event, newValue, name) => {
-   
-    setAutocompleteValues((prev) => ({ ...prev, [name]: newValue.value }));
-   
-    formik.setFieldValue(name, newValue.value);
+    setAutocompleteValues((prev) => ({ ...prev, [name]: newValue?.value }));
+    console.log(name, newValue)
+    formik.setFieldValue(name, newValue?.value);
     if (newValue) {
       setInput('');
     }
@@ -223,9 +96,22 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
   const renderField = (field) => {
     switch (field.type) {
       case 'upload':
-        return <UploadSingleFile label={field.label} setFieldValue={formik.setFieldValue}  name={field.name} />;
+        return (
+          <UploadSingleFile
+            label={field.label}
+            setFieldValue={formik.setFieldValue}
+            name={field.name}
+          />
+        );
       case 'social_media':
-        return <SocialMediaInput touched={formik.touched} values={formik.values} handleChange={formik.handleChange} error={formik.errors} />;
+        return (
+          <SocialMediaInput
+            touched={formik.touched}
+            values={formik.values}
+            handleChange={formik.handleChange}
+            error={formik.errors}
+          />
+        );
       case 'select':
         return (
           <TextField
@@ -262,7 +148,26 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
             )}
           />
         );
-
+      case 'country-select':
+        return (
+          <Autocomplete
+            id="country-select-demo"
+            sx={{ width: 300 }}
+            options={countries}
+            autoHighlight
+            getOptionLabel={(option) => option.label}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Choose a country"
+                inputProps={{
+                  ...params.inputProps,
+                  autoComplete: 'new-password',
+                }}
+              />
+            )}
+          />
+        );
       case 'date':
         return (
           <TextField
@@ -307,14 +212,22 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
             id={field.name}
             value={autocompleteValues[field.name] || ''}
             onChange={(evt, val) => handlePlaceSelected(evt, val, field.name)}
-            options={predictions.map((prediction) => ({
-              label: prediction.description,
-              value: prediction.description,
-            }))}
+            options={
+              predictions
+                ? predictions.map((prediction) => ({
+                    label: prediction.description,
+                    value: prediction.description,
+                  }))
+                : []
+            }
             onInputChange={(event, newInputValue) => {
+              console.log(newInputValue)
               setInput(newInputValue);
+
             }}
-            renderInput={(params) => <TextField {...params} label={field.label} variant="outlined" />}
+            renderInput={(params) => (
+              <TextField {...params} label={field.label} variant="outlined" />
+            )}
             error={formik.touched[field.name] && Boolean(formik.errors[field.name])}
             helperText={formik.touched[field.name] && formik.errors[field.name]}
           />
@@ -334,7 +247,7 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
             onChange={formik.handleChange}
             error={formik.touched[field.name] && Boolean(formik.errors[field.name])}
             helperText={formik.touched[field.name] && formik.errors[field.name]}
-            InputLabelProps={{ shrink: formik.values[field.name] }} 
+            InputLabelProps={{ shrink: formik.values[field.name] }}
           />
         );
     }

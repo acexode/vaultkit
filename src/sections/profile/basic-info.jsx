@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import { useSnackbar } from 'notistack';
 import React, { useState, useEffect } from 'react';
 
@@ -39,14 +40,17 @@ const BasicInfo = () => {
 
   const { handleCurrentForm } = useGlobalContext();
   const [data, setData] = useState(null);
-  const { enqueueSnackbar } = useSnackbar();
   
+  const { enqueueSnackbar } = useSnackbar();
+  console.log(data, "dslkfdsk")
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await basicAPI._readMany();
         if (response.data) {
+          
           setData(response.data);
+          
         } else if (response.error) {
           enqueueSnackbar(response.error.message, {
             autoHideDuration: 1000,
@@ -93,11 +97,28 @@ const BasicInfo = () => {
     }
     return '';
   };
+  const allValuesAreNull = (obj) => {
+    const keysToIgnore = ['id', 'account_creation_date', 'ip_address', 'last_login_at'];
 
+    for (const key in obj) {
+      if (!keysToIgnore.includes(key)) {
+        if (obj[key] && typeof obj[key] === 'object') {
+          for (const nestedKey in obj[key]) {
+            if (obj[key][nestedKey] !== null) {
+              return false;
+            }
+          }
+        } else if (obj[key] !== null) {
+          return false;
+        }
+      }
+    }
+    return true;
+  };
   return (
     <Container>
       <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
-        {data ? (
+        {data && !allValuesAreNull(data) ? (
           <Card
             sx={{
               p: 2,
@@ -136,7 +157,7 @@ const BasicInfo = () => {
               title="You haven't added any data"
               description="Click the button below to start adding your data"
             />
-            <Button onClick={() => handleCurrentForm('personal-info', false)} variant='outlined' size='lg' color='inherit'>
+            <Button onClick={() => handleCurrentForm('personal-info', data?.id)} variant='outlined' size='lg' color='inherit'>
               Add Data
             </Button>
           </>

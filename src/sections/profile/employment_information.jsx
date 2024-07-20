@@ -11,6 +11,7 @@ import ListCard from './ListCard';
 const EmploymentInfo = () => {
   const {handleCurrentForm} = useGlobalContext()
   const [data, setData] = useState([])
+  
   const { enqueueSnackbar } = useSnackbar();
 
 useEffect(() => {
