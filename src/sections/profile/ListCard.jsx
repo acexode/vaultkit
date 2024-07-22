@@ -41,6 +41,7 @@ const NewButton = styled(IconButton)(({ theme, width, height }) => ({
 }));
 
 const ListCard = ({ data, handleCurrentForm, path, title }) => {
+  
   const [open, setopen] = useState(false);
   const [selectedData, setselectedData] = useState(null);
  
@@ -57,7 +58,7 @@ const ListCard = ({ data, handleCurrentForm, path, title }) => {
   return (
     <Grid container alignItems="stretch" justifyContent="space-around">
       {data && data.map((d) => (
-        <Card
+        <Card key={d.id}
           sx={{
             p: 2,
             width: 1,
@@ -136,7 +137,7 @@ const ListCard = ({ data, handleCurrentForm, path, title }) => {
 };
 
 ListCard.propTypes = {
-  data: PropTypes.object,
+  data: PropTypes.array,
   handleCurrentForm: PropTypes.func,
   path: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,

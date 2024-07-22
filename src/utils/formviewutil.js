@@ -1,5 +1,5 @@
 import { profileRequestMapper } from "src/apis";
-import { baseEndpoints, getSingleProfileDataPatchUrl } from "src/configs/endpoints";
+import { getSingleProfileDataPatchUrl } from "src/configs/endpoints";
 
 import axiosInstance from "./axios";
 
@@ -14,6 +14,7 @@ export const handleProfileDataSubmit = async (values, tag, id, router) => {
         formData.append(`contact_information[${val}]`, values[val]);
       });
       if (id) {
+        
         response = await await axiosInstance.patch(singleUrl, formData);
         if (response.status === 200) {
           router.push('/dashboard/user');
@@ -67,15 +68,11 @@ export const handleProfileDataSubmit = async (values, tag, id, router) => {
           work_permit_upload_url: values.work_permit_upload_url
         },
       };
-      console.log(!id, typeof id)
-      if (!id) {
-        response = await await axiosInstance.patch(singleUrl, data);
+        response = await api._create(data);
         if (response.status === 200) {
-          router.push('/dashboard/user');
+            router.push('/dashboard/user');
         }
-      } else {
-        response = await axiosInstance.post(`${baseEndpoints.profile}/basic_info`, data);
-      }
+      
     } else if (tag === 'financial-info') {
       if (id) {
         // edit contact

@@ -12,18 +12,28 @@ import {
 import { convertToSentenceCase } from 'src/utils/common-utils';
 
 const renderItem = (item) => {
-  if (typeof item === 'string' && item.startsWith('http')) {
-     return <a href={item}>Link</a>;
-  } if (typeof item === 'object') {
-    // Assuming the object has a single key-value pair
+  if (typeof item === 'string') {
+    if (item.startsWith('http')) {
+      return <a href={item} target="_blank" rel="noopener noreferrer">Link</a>;
+    }
+    return item; 
+  } 
+  
+  if (typeof item === 'number') {
+    return item.toString(); 
+  }
+
+  if (typeof item === 'object' && item !== null) {
+    
     const value = Object.values(item)[0];
     if (typeof value === 'string' && value.startsWith('http')) {
-      return <a href={value}>Link</a>;
+      return <a href={value} target="_blank" rel="noopener noreferrer">Link</a>;
     }
-    return value;
+    return JSON.stringify(item); 
   }
-  return '';
+  return JSON.stringify(item);
 };
+
 
 const ListItemRoot = styled('div')(({ theme }) => ({
   display: 'block',
@@ -47,8 +57,9 @@ const Item = styled('div')(({ theme }) => ({
   boxSizing: 'border-box',
 }));
 
-const ListCardContent = ({data, field}) => (
-    
+const ListCardContent = ({data, field}) => {
+  console.log(data, field)
+  return (
     <ListItemRoot>
     <Item>
       <ListItemText sx={{ minWidth: '84px' }}>
@@ -60,6 +71,7 @@ const ListCardContent = ({data, field}) => (
     </Item>
   </ListItemRoot>
   )
+}
 
   ListCardContent.propTypes = {
     data: PropTypes.object.isRequired,

@@ -7,10 +7,11 @@ import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import { Box, Button, Container, Typography, ListItemText } from '@mui/material';
 
+import axiosInstance from 'src/utils/axios';
 import { convertToSentenceCase } from 'src/utils/common-utils';
 
-import { basicAPI } from 'src/apis';
 import { useGlobalContext } from 'src/context/context';
+import { profileEndpoint } from 'src/configs/endpoints';
 
 import EmptyContent from 'src/components/common/EmptyContent';
 
@@ -42,13 +43,13 @@ const BasicInfo = () => {
   const [data, setData] = useState(null);
   
   const { enqueueSnackbar } = useSnackbar();
-  console.log(data, "dslkfdsk")
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await basicAPI._readMany();
+        // const response = await basicAPI._readMany();
+        const response = await axiosInstance.get(profileEndpoint.basic);
         if (response.data) {
-          
           setData(response.data);
           
         } else if (response.error) {
@@ -62,7 +63,7 @@ const BasicInfo = () => {
           });
         }
       } catch (error) {
-        console.log(error);
+        
         enqueueSnackbar('An error occurred while fetching data.', {
           autoHideDuration: 1000,
           anchorOrigin: {
@@ -97,28 +98,11 @@ const BasicInfo = () => {
     }
     return '';
   };
-  const allValuesAreNull = (obj) => {
-    const keysToIgnore = ['id', 'account_creation_date', 'ip_address', 'last_login_at'];
-
-    for (const key in obj) {
-      if (!keysToIgnore.includes(key)) {
-        if (obj[key] && typeof obj[key] === 'object') {
-          for (const nestedKey in obj[key]) {
-            if (obj[key][nestedKey] !== null) {
-              return false;
-            }
-          }
-        } else if (obj[key] !== null) {
-          return false;
-        }
-      }
-    }
-    return true;
-  };
+ 
   return (
     <Container>
       <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
-        {data && !allValuesAreNull(data) ? (
+        {data ? (
           <Card
             sx={{
               p: 2,
@@ -138,7 +122,7 @@ const BasicInfo = () => {
                 </Item>
               </Box>
               {Object.keys(data)
-                .filter(e => !['id', 'account_creation_date', 'ip_address', 'last_login_at'].includes(e))
+                .filter(e => !['id', 'account_creation_date', 'ip_address', 'last_login_at', 'user_id', 'created_at', 'updated_at', 'is_private'].includes(e))
                 .map((e) => (
                   <ListItemRoot key={e}>
                     <Item>
@@ -157,7 +141,7 @@ const BasicInfo = () => {
               title="You haven't added any data"
               description="Click the button below to start adding your data"
             />
-            <Button onClick={() => handleCurrentForm('personal-info', data?.id)} variant='outlined' size='lg' color='inherit'>
+            <Button onClick={() => handleCurrentForm('personal-info')} variant='outlined' size='lg' color='inherit'>
               Add Data
             </Button>
           </>

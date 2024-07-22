@@ -45,7 +45,7 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
   const { predictions, setInput } = useGoogleAutocomplete();
   const location = useLocation();
   const { id } = queryParamsToObject(location.search);
-  
+  console.log(id)
   const [autocompleteValues, setAutocompleteValues] = useState({});
 
   useEffect(() => {
@@ -73,7 +73,7 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
     enableReinitialize: true,
     validationSchema: Yup.object(validationSchema),
     onSubmit: async (values) => {
-      console.log(values)
+      
       try {
         const response = await handleSubmit(values);
         if (response.status === 200) {

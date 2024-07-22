@@ -19,6 +19,7 @@ useEffect(() => {
    try {
     const response = await employmentAPI._readMany()
     if(response.data) {
+      
       setData(response.data)
     }
     if(response.error){
