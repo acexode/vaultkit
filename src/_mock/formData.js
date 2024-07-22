@@ -29,13 +29,13 @@ export const BasicInfo = [
   //   defaultValue: '',
   //   isForm: true,
   // },
-  // {
-  //   label: 'Social insurance number',
-  //   name: 'social_insurance_number',
-  //   type: 'text',
-  //   defaultValue: '',
-  //   isForm: true,
-  // },
+  {
+    label: 'Identity Number',
+    name: 'social_insurance_number',
+    type: 'text',
+    defaultValue: '',
+    isForm: true,
+  },
   {
     label: 'Date of birth',
     name: 'date_of_birth',
@@ -128,8 +128,8 @@ export const BasicInfo = [
     name: 'work_authorization',
     type: 'select',
     options: [
-      { label: 'Yes', value: 'true' },
-      { label: 'No', value: 'false' },
+      { label: 'Yes', value: true },
+      { label: 'No', value: false },
     ],
 
     defaultValue: '',

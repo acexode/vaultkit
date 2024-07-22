@@ -94,15 +94,10 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
     }
   };
   const renderField = (field) => {
+    console.log(field, formik.values[field.name]);
     switch (field.type) {
       case 'upload':
-        return (
-          <UploadSingleFile
-            label={field.label}
-            setFieldValue={formik.setFieldValue}
-            name={field.name}
-          />
-        );
+        return <UploadSingleFile label={field.label} file={formik.values[field.name]} setFieldValue={formik.setFieldValue}  name={field.name} />;
       case 'social_media':
         return (
           <SocialMediaInput
@@ -115,18 +110,19 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
       case 'select':
         return (
           <TextField
-            key={field.name}
+            key={Math.random() + field.name}
             select
             fullWidth
             id={field.name}
             name={field.name}
+            InputLabelProps={{ shrink: true }}
             label={field.label}
-            value={formik.values[field.name]}
+            value={formik.values[field.name] || ""}
+            defaultValue={formik.values[field.name]}
             onChange={formik.handleChange}
             error={formik.touched[field.name] && Boolean(formik.errors[field.name])}
             helperText={formik.touched[field.name] && formik.errors[field.name]}
             margin="3"
-             
           >
             {field.options.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -247,7 +243,7 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
             onChange={formik.handleChange}
             error={formik.touched[field.name] && Boolean(formik.errors[field.name])}
             helperText={formik.touched[field.name] && formik.errors[field.name]}
-            InputLabelProps={{ shrink: formik.values[field.name] }}
+            InputLabelProps={{ shrink: true }} 
           />
         );
     }

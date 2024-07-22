@@ -9,43 +9,14 @@ import Typography from '@mui/material/Typography';
 import { Box, Checkbox, useTheme, useMediaQuery, FormControlLabel } from '@mui/material';
 
 
-
-
-// ----------------------------------------------------------------------
-// const validityOptions = [
-//   {
-//     value: '30m',
-//     label: '30 Minutes'
-//   },
-//   {
-//     value: '1hr',
-//     label: '1 Hour'
-//   },
-//   {
-//     value: '3hr',
-//     label: '3 Hours'
-//   },
-//   {
-//     value: '6hr',
-//     label: '6 Hours'
-//   },
-//   {
-//     value: '12hr',
-//     label: '12 Hours'
-//   },
-//   {
-//     value: '24hr',
-//     label: '1 day'
-//   }
-// ]
-DataConfigView.propTypes = {
+OrgDataConfigView.propTypes = {
   handleClose: PropTypes.func,
   setFieldValue: PropTypes.func.isRequired,
   values: PropTypes.any.isRequired,
   formik: PropTypes.any.isRequired,
 
 };
-export default function DataConfigView({handleClose, values, setFieldValue, formik}) {
+export default function OrgDataConfigView({handleClose, values, setFieldValue, formik}) {
   const themes = useTheme();
   const isMobile = useMediaQuery(themes.breakpoints.down('sm'));
   console.log(isMobile);

@@ -19,6 +19,8 @@ import axiosInstance from 'src/utils/axios';
 import { getFormFields } from 'src/_mock/formData';
 import { requestDataEndpoint } from 'src/configs/endpoints';
 
+import NestedSelect from 'src/components/common/NestedSelect';
+
 import CategorySelectCheckmarks from './category-select';
 
 // ----------------------------------------------------------------------
@@ -56,6 +58,7 @@ const categories = [
 RequestDataView.propTypes = {
   handleClose: PropTypes.func,
 };
+
 export default function RequestDataView({ handleClose }) {
   const {user} = useAuth()
   const [selectedCategory, setselectedCategory] = useState([]);
@@ -138,6 +141,7 @@ export default function RequestDataView({ handleClose }) {
           error={formik.touched.title && Boolean(formik.errors.title)}
           helperText={formik.touched.title && formik.errors.title}
         />
+        <NestedSelect />
         <CategorySelectCheckmarks
           handleSelected={setselectedCategory}
           list={categories}

@@ -12,6 +12,7 @@ import {
   TablePagination,
 } from '@mui/material';
 
+import { useRouter } from 'src/routes/hooks';
 import useDialogState from 'src/routes/hooks/useSharedData';
 
 import Iconify from 'src/components/iconify';
@@ -21,10 +22,12 @@ import AlertDialog from '../modal/modal';
 import TableNoData from '../table/table-no-data';
 import CommonTableHead from '../table/user-table-head';
 import TableEmptyRows from '../table/table-empty-rows';
+import OrgTableToolbar from '../table/OrganizationToolbar';
+import OrgShareView from '../share-data/org-share-view-modal';
 import BulkInviteModal from './organization-modals/bullk-invite';
-import RequestDataTRows from '../table/common/request-data-trows';
 import SingleInviteModal from './organization-modals/single-invite';
 import { emptyRows, applyFilter, getComparator } from '../user/utils';
+import OrganizationTRows from '../table/common/Organizatio-table.row';
 
 OrganizationProfileView.propTypes = {
   handleVerificationModal: PropTypes.func,
@@ -32,22 +35,31 @@ OrganizationProfileView.propTypes = {
 export default function OrganizationProfileView({ handleVerificationModal }) {
   const SingleInvite = 'open-single-invite'
   const BulkInvite = 'open-bulk-invite'
+  const OrgRequestData = 'org-request-data'
   const { openDialog, closeDialog, isDialogOpen } = useDialogState();
+  const router = useRouter();
   // const [employees, setemployees] = useState([])
   const [selected, setSelected] = useState([]);
   //   const [filterName, setFilterName] = useState('');
   // const [page, setPage] = useState(0);
 
-  const handleViewDetails = (newValue) => {
-    console.log(newValue);
+  const handleViewDetails = (value) => {
+    router.push(`/dashboard/user?userId=${value}`);
+
   };
   //   console.log(setFilterName);
 
-  const employees = [];
+  const employees = [
+    {
+      id: 5,
+      name: 'Abubakar',
+      email: 'abudawud92@gmail.com',
+      status: 'pending',
+    }
+  ];
   const filterName = '';
 
   const [page, setPage] = useState(0);
-  const [showAddNote, setshowAddNote] = useState(false);
 
   const [order, setOrder] = useState('asc');
 
@@ -98,8 +110,8 @@ export default function OrganizationProfileView({ handleVerificationModal }) {
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
   };
-  const handleAddNoteModal = () => {
-    setshowAddNote(!showAddNote);
+  const handleRequestData = () => {
+     openDialog(OrgRequestData)
   };
 
   const dataFiltered = applyFilter({
@@ -142,6 +154,7 @@ export default function OrganizationProfileView({ handleVerificationModal }) {
       </Stack>
       <Scrollbar>
         <TableContainer sx={{ overflow: 'unset' }}>
+          <OrgTableToolbar handleRequestBtn={handleRequestData} numSelected={selected.length} />
           <Table sx={{ minWidth: 800 }}>
             <CommonTableHead
               order={order}
@@ -152,9 +165,7 @@ export default function OrganizationProfileView({ handleVerificationModal }) {
               onSelectAllClick={handleSelectAllClick}
               headLabel={[
                 { id: 'name', label: 'Name' },
-                { id: 'role', label: 'Email' },
-                { id: 'company', label: 'Designation' },
-                { id: 'validity', label: 'Access Validity', align: 'center' },
+                { id: 'email', label: 'Email' },
                 { id: 'status', label: 'Status' },
                 { id: '' },
               ]}
@@ -164,17 +175,18 @@ export default function OrganizationProfileView({ handleVerificationModal }) {
                 {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => (
-                    <RequestDataTRows
+                    <OrganizationTRows
                       key={row.id}
+                      userId={row.id}
                       name={row.name}
-                      role={row.role}
+                      email={row.email}
                       status={row.status}
                       company={row.company}
                       avatarUrl={row.avatarUrl}
                       validity={row.validity}
                       selected={selected.indexOf(row.name) !== -1}
                       handleClick={(event) => handleClick(event, row.name)}
-                      handleAddNoteModal={handleAddNoteModal}
+                      handleRequestData={handleRequestData}
                       notificationCount={row.notificationCount}
                       handleViewDetails={handleViewDetails}
                     />
@@ -205,6 +217,7 @@ export default function OrganizationProfileView({ handleVerificationModal }) {
       />
       <AlertDialog handleClose={()=> closeDialog(SingleInvite)} fu maxWidth="lg" title="Generate Access Code" component={<SingleInviteModal handleCloseModal={closeDialog} />} open={isDialogOpen(SingleInvite)} />
       <AlertDialog handleClose={()=> closeDialog(BulkInvite)} fu maxWidth="lg" title="Generate Access Code" component={<BulkInviteModal handleCloseModal={closeDialog} />} open={isDialogOpen(BulkInvite)} />
+      <AlertDialog handleClose={()=> closeDialog(OrgRequestData)} fullWidth maxWidth="lg" title="Generate Access Code" component={<OrgShareView employees={employees} handleCloseModal={closeDialog} />} open={isDialogOpen(OrgRequestData)} />
     </Box>
   );
 }

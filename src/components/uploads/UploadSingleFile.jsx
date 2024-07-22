@@ -133,11 +133,11 @@ export default function UploadSingleFile({ error, file, sx, label, setFieldValue
           </Typography>
         </Box>
 
-        {file && (
+        {isString(file) && file.length  && (
           <Box
             component="img"
             alt="file preview"
-            src={isString(file) ? file : file.preview}
+            src={file}
             sx={{
               top: 8,
               borderRadius: 1,
@@ -148,7 +148,23 @@ export default function UploadSingleFile({ error, file, sx, label, setFieldValue
             }}
           />
         )}
+        {isString(file?.url) && (
+          <Box
+            component="img"
+            alt="file preview"
+            src={ file?.url}
+            sx={{
+              top: 8,
+              borderRadius: 1,
+              // objectFit: 'cover',
+              position: 'absolute',
+              // width: 'calc(100% - 16px)',
+              // height: 'calc(100% - 16px)',
+            }}
+          />
+        )}
       </DropZoneStyle>
+        { isString(file?.url) &&<Typography color="primary" variant='caption'  pt={1}>Click on image to change it</Typography>}
 
       {fileRejections.length > 0 && <ShowRejectionItems fileRejections={fileRejections} />}
     </Box>
