@@ -26,7 +26,7 @@ export const sharedDataEndpoint = {
   share: `${baseEndpoints.extractApproval}/share`,
 };
 export const profileEndpoint = {
-  basic: `${baseEndpoints.profiles}`,
+  basic: `${baseEndpoints.profile}/basic_info`,
   contact: `${baseEndpoints.profiles}/contact_information`,
   eduInfo: `${baseEndpoints.profiles}/education_data`,
   empInfo: `${baseEndpoints.profiles}/employment_informations`,

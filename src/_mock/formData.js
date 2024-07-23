@@ -1,27 +1,27 @@
 import { profileEndpoint } from 'src/configs/endpoints';
 
 export const BasicInfo = [
-  // {
-  //   label: 'First name',
-  //   name: 'first_name',
-  //   type: 'text',
-  //   defaultValue: '',
-  //   isForm: true,
-  // },
-  // {
-  //   label: 'Last name',
-  //   name: 'last_name',
-  //   type: 'text',
-  //   defaultValue: '',
-  //   isForm: true,
-  // },
-  // {
-  //   label: 'Middle name',
-  //   name: 'middle_name',
-  //   type: 'text',
-  //   defaultValue: '',
-  //   isForm: true,
-  // },
+  {
+    label: 'First name',
+    name: 'first_name',
+    type: 'text',
+    defaultValue: '',
+    isForm: true,
+  },
+  {
+    label: 'Last name',
+    name: 'last_name',
+    type: 'text',
+    defaultValue: '',
+    isForm: true,
+  },
+  {
+    label: 'Middle name',
+    name: 'middle_name',
+    type: 'text',
+    defaultValue: '',
+    isForm: true,
+  },
   // {
   //   label: 'Email',
   //   name: 'email',
@@ -64,19 +64,26 @@ export const BasicInfo = [
     isForm: true,
   },
   {
+    label: 'Identity number',
+    name: 'identity_number',
+    type: 'number',
+    defaultValue: '',
+    isForm: true,
+  },
+  {
     label: 'Mailing address',
     name: 'mailing_address',
     type: 'autocomplete',
     defaultValue: '',
     isForm: true,
   },
-  {
-    label: 'Nationality',
-    name: 'nationality',
-    type: 'text',
-    defaultValue: '',
-    isForm: true,
-  },
+  // {
+  //   label: 'Nationality',
+  //   name: 'nationality',
+  //   type: 'country-select',
+  //   defaultValue: '',
+  //   isForm: true,
+  // },
   {
     label: 'Preferred language',
     name: 'preferred_language',
@@ -109,13 +116,13 @@ export const BasicInfo = [
   //   defaultValue: '',
   //   isForm: true,
   // },
-  {
-    label: 'Is private',
-    name: 'is_private',
-    type: 'text',
-    defaultValue: '',
-    isForm: true,
-  },
+  // {
+  //   label: 'Is private',
+  //   name: 'is_private',
+  //   type: 'text',
+  //   defaultValue: '',
+  //   isForm: true,
+  // },
   {
     label: 'Work authorization',
     name: 'work_authorization',
@@ -144,25 +151,25 @@ export const BasicInfo = [
     defaultValue: '',
     isForm: true,
   },
-  {
-    label: 'Social Media Links',
-    name: 'social_media_links',
-    type: 'line',
-    defaultValue: '',
-    isForm: false,
-  },
-  {
-    label: 'Social media links',
-    name: 'social_media_links',
-    type: 'social_media',
-    defaultValue: {
-      instagram: '',
-      facebook: '',
-      twitter: '',
-      linkedin: '',
-    },
-    isForm: true,
-  },
+  // {
+  //   label: 'Social Media Links',
+  //   name: 'social_media_links',
+  //   type: 'line',
+  //   defaultValue: '',
+  //   isForm: false,
+  // },
+  // {
+  //   label: 'Social media links',
+  //   name: 'social_media_links',
+  //   type: 'social_media',
+  //   defaultValue: {
+  //     instagram: '',
+  //     facebook: '',
+  //     twitter: '',
+  //     linkedin: '',
+  //   },
+  //   isForm: true,
+  // },
   {
     label: 'Profile picture',
     name: 'profile_picture_url',

@@ -5,12 +5,13 @@ import usePlacesService from 'react-google-autocomplete/lib/usePlacesService';
 const useGoogleAutocomplete = () => {
 
   const [input, setInput] = useState('');
-
+  
   const { placePredictions, getPlacePredictions } = usePlacesService({
     apiKey: import.meta.env.VITE_GOOGLE_LOCATION_API,
   });
 
   useEffect(() => {
+    
    if(input.length > 0){
        const fetchPredictions = () => {
          const request = {

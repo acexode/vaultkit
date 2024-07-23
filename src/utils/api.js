@@ -35,7 +35,7 @@ const handleError = (error) => {
 
 export class API {
   constructor(type, url, methods = 'MCRUDP') {
-    this._url = url;
+    this._url = url
     if (methods.includes('M')) this[`read${type}s`] = this._readMany.bind(this);
     if (methods.includes('C')) this[`create${type}`] = this._create.bind(this);
     if (methods.includes('R')) this[`read${type}`] = this._read.bind(this);

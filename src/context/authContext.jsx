@@ -79,7 +79,7 @@ function AuthProvider({ children }) {
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
           const user = JSON.parse(cachedUser);
-          console.log(user)
+          
           dispatch({
             type: 'INITIALIZE',
             payload: {
