@@ -1,6 +1,6 @@
 import { API } from "src/utils/api";
 
-import { authEndpoints, profileEndpoint} from "src/configs/endpoints";
+import { authEndpoints, serverBaseUrl, profileEndpoint} from "src/configs/endpoints";
 
 // auth apis
 export const loginAPI = new API('Login', authEndpoints.login, 'C');
@@ -16,33 +16,49 @@ export const financialAPI = new API('Financial', profileEndpoint.finInfo, 'MCRUD
 export const identityAPI = new API('Identity', profileEndpoint.idInfo, 'MCRUDP');
 export const realEstateAPI = new API('RealEstate', profileEndpoint.realInfo, 'MCRUDP');
 export const residentialHistoryAPI = new API('ResidentialHistory', profileEndpoint.resInfo, 'MCRUDP');
-
-export const profileRequestMapper = (category) => {
+// eslint-disable-next-line arrow-body-style
+export const profileAPIs = (id) => {
+    const url = `${serverBaseUrl  }/users/${ id}`;
+    const path = profileEndpoint(url);
+    
+    return {
+        contactAPI : new API('Contact', path.contact, 'MCRUDP'),
+        educationAPI : new API('Education', path.eduInfo, 'MCRUDP'),
+        employmentAPI : new API('Employment', path.empInfo, 'MCRUDP'),
+        basicAPI : new API('Basic', path.basic, 'MCRUDP'),
+        financialAPI : new API('Financial', path.finInfo, 'MCRUDP'),
+        identityAPI : new API('Identity', path.idInfo, 'MCRUDP'),
+        realEstateAPI : new API('RealEstate', path.realInfo, 'MCRUDP'),
+        residentialHistoryAPI : new API('ResidentialHistory', path.resInfo, 'MCRUDP')
+    }
+}
+export const profileRequestMapper = (category, id) => {
     let api = null;
+    const profiles = profileAPIs(id)
     switch (category) {
         case 'contact-info':
-            api = contactAPI
+            api = profiles.contactAPI
             break;
         case 'education-info':
-            api = educationAPI
+            api = profiles.educationAPI
             break;
         case 'employment-info':
-            api = employmentAPI
+            api = profiles.employmentAPI
             break;
         case 'personal-info':
-            api = basicAPI
+            api = profiles.basicAPI
             break;
         case 'financial-info':
-            api = financialAPI
+            api = profiles.financialAPI
             break;
         case 'identification-info':
-            api = identityAPI
+            api = profiles.identityAPI
             break;
         case 'realestate-info':
-            api = realEstateAPI
+            api = profiles.realEstateAPI
             break;
         case 'residential-info':
-            api = residentialHistoryAPI
+            api = profiles.residentialHistoryAPI
             break;
         default:
             api = null;

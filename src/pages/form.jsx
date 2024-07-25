@@ -1,6 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import {  useSearchParams } from 'react-router-dom';
 
+import useAuth from 'src/hooks/useAuth';
+
 import { getFormFields } from 'src/_mock/formData';
 
 // import { useGlobalContext } from 'src/context/context';
@@ -13,7 +15,8 @@ export default function LoginPage() {
     // const {state} = useGlobalContext()
     const route = useSearchParams()
     const tag = route[0].get("tag")
-    const {form, title, url} = getFormFields(tag);
+    const {user} = useAuth()
+    const {form, title, url} = getFormFields(tag, user.id);
 
   return (
     <>

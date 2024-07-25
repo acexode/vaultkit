@@ -25,22 +25,22 @@ export const authEndpoints = {
 export const sharedDataEndpoint = {
   share: `${baseEndpoints.extractApproval}/share`,
 };
-export const profileEndpoint = {
-  basic: `${baseEndpoints.profile}/basic_info`,
-  contact: `${baseEndpoints.profiles}/contact_information`,
-  eduInfo: `${baseEndpoints.profiles}/education_data`,
-  empInfo: `${baseEndpoints.profiles}/employment_informations`,
-  finInfo: `${baseEndpoints.profiles}/fin-info`,
-  idInfo: `${baseEndpoints.profiles}/id-info`,
-  realInfo: `${baseEndpoints.profiles}/real_estate_informations`,
-  resInfo: `${baseEndpoints.profiles}/residential_histories`,
-};
+export const profileEndpoint = (path) => ({
+    basic: `${path}/basic_info`,
+    contact: `${path}/contact_information`,
+    eduInfo: `${path}/education_data`,
+    empInfo: `${path}/employment_informations`,
+    finInfo: `${path}/fin-info`,
+    idInfo: `${path}/id-info`,
+    realInfo: `${path}/real_estate_informations`,
+    resInfo: `${path}/residential_histories`,
+  })
 
-export const requestDataEndpoint = {
-  request: `${baseEndpoints.share}`,
-  share: `${baseEndpoints.share}/share_data`,
-  approve: `${baseEndpoints.share}/${user?.id}/approve_request`,
-};
+export const requestDataEndpoint = (id) => ({
+    request: `${baseEndpoints.share}`,
+    share: `${baseEndpoints.share}/share_data`,
+    approve: `${baseEndpoints.share}/${id}/approve_request`,
+  })
 
 export const getSingleProfileUrl = (category, id, userId) => {
   let api = null;
@@ -55,7 +55,7 @@ export const getSingleProfileUrl = (category, id, userId) => {
       api = `${baseEndpoints.profile}/employment_informations/${id}`;
       break;
     case 'personal-info':
-      api = `${baseEndpoints.profile}/${id}`;
+      api = `${baseEndpoints.profile}/basic_info`;
       break;
     case 'financial-info':
       api = `${baseEndpoints.profile}/finanacial_informations/${id}`;

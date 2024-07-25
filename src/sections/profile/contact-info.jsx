@@ -9,7 +9,9 @@ import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import { Box, Button, Container, Typography, ListItemText } from '@mui/material';
 
-import { contactAPI } from 'src/apis';
+import useAuth from 'src/hooks/useAuth';
+
+import { profileAPIs } from 'src/apis';
 import { useGlobalContext } from 'src/context/context';
 
 import EmptyContent from 'src/components/common/EmptyContent';
@@ -38,13 +40,14 @@ const Item = styled('div')(({ theme }) => ({
 const ContactInfo = () => {
   const {handleCurrentForm} = useGlobalContext();
   const [data, setData] = useState(null)
- 
+  const {user} = useAuth()
   const { enqueueSnackbar } = useSnackbar();
 
 useEffect(() => {
   const fetchData = async () => {
    try {
-    const response = await contactAPI._readMany()
+    const api = profileAPIs(user?.id)
+    const response = await api.contactAPI._readMany()
     
     if(response.data) {
       setData(response.data)
@@ -65,7 +68,7 @@ useEffect(() => {
    }
   }
   fetchData()
- },[enqueueSnackbar])
+ },[enqueueSnackbar, user?.id])
   
 
   function convertToSentenceCase(str) {

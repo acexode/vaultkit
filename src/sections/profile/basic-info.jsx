@@ -1,5 +1,4 @@
 /* eslint-disable no-restricted-syntax */
-import { useSnackbar } from 'notistack';
 import React, { useState, useEffect } from 'react';
 
 import Card from '@mui/material/Card';
@@ -7,11 +6,11 @@ import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import { Box, Button, Container, Typography, ListItemText } from '@mui/material';
 
-import axiosInstance from 'src/utils/axios';
+import useAuth from 'src/hooks/useAuth';
+
 import { convertToSentenceCase } from 'src/utils/common-utils';
 
 import { useGlobalContext } from 'src/context/context';
-import { profileEndpoint } from 'src/configs/endpoints';
 
 import EmptyContent from 'src/components/common/EmptyContent';
 
@@ -41,41 +40,17 @@ const BasicInfo = () => {
 
   const { handleCurrentForm } = useGlobalContext();
   const [data, setData] = useState(null);
-  
-  const { enqueueSnackbar } = useSnackbar();
+  const {user} = useAuth()
+
   
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // const response = await basicAPI._readMany();
-        const response = await axiosInstance.get(profileEndpoint.basic);
-        if (response.data) {
-          setData(response.data);
-          
-        } else if (response.error) {
-          enqueueSnackbar(response.error.message, {
-            autoHideDuration: 1000,
-            anchorOrigin: {
-              vertical: 'top',
-              horizontal: 'right',
-            },
-            variant: 'error',
-          });
-        }
-      } catch (error) {
-        
-        enqueueSnackbar('An error occurred while fetching data.', {
-          autoHideDuration: 1000,
-          anchorOrigin: {
-            vertical: 'top',
-            horizontal: 'right',
-          },
-          variant: 'error',
-        });
-      }
-    };
-    fetchData();
-  }, [enqueueSnackbar]);
+    
+    if (user?.basic) {
+      setData(user?.basic);
+    }
+   
+  
+  }, [ user, user?.id]);
 
   const renderItem = (item) => {
     

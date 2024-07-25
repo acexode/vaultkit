@@ -9,6 +9,8 @@ import {
   IconButton,
 } from '@mui/material';
 
+import useAuth from 'src/hooks/useAuth';
+
 const NewButton = styled(IconButton)(({ theme, width, height }) => ({
   borderRadius: '50%',
   height,
@@ -17,7 +19,9 @@ const NewButton = styled(IconButton)(({ theme, width, height }) => ({
   '&:hover': { opacity: 0.72, cursor: 'pointer' },
 }));
 
-const AddDataCard = ({handleCurrentForm, path}) => (
+const AddDataCard = ({handleCurrentForm, path}) => {
+  const {user} = useAuth()
+  return (
     <Card
         sx={{
           p: 2,
@@ -42,6 +46,7 @@ const AddDataCard = ({handleCurrentForm, path}) => (
         </NewButton>
       </Card>
   )
+}
   AddDataCard.propTypes = {
     handleCurrentForm: PropTypes.func,
     path: PropTypes.string.isRequired,

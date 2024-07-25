@@ -6,6 +6,8 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 
+import useAuth from 'src/hooks/useAuth';
+
 import axiosInstance from 'src/utils/axios';
 
 import { requestDataEndpoint } from 'src/configs/endpoints';
@@ -60,7 +62,7 @@ export default function SharedTabSection({handleViewDetails}) {
   const [selected, setSelected] = useState([]);
   const [filterName, setFilterName] = useState('');
   // const [page, setPage] = useState(0);
-
+  const {user} = useAuth()
   const handleChange = (event, newValue) => {
     console.log(newValue);
     setValue(newValue);
@@ -94,7 +96,8 @@ export default function SharedTabSection({handleViewDetails}) {
   useEffect(() => {
     const fetchRequestData = async () => {
       try {
-        const response = await axiosInstance.get(requestDataEndpoint.request)
+        const url = requestDataEndpoint(user.id)
+        const response = await axiosInstance.get(url.request)
         console.log(response)
         if (response.data && response.status === 200) {
           setRequestData(response.data);
@@ -121,7 +124,7 @@ export default function SharedTabSection({handleViewDetails}) {
       }
     };
     fetchRequestData();
-  }, [enqueueSnackbar, setRequestData]);
+  }, [enqueueSnackbar, setRequestData, user.id]);
 
 
   return (

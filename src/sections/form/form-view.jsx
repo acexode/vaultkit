@@ -26,6 +26,7 @@ import useAuth from 'src/hooks/useAuth';
 import useGoogleAutocomplete from 'src/hooks/useGoogleAutocomplete';
 
 import axiosInstance from 'src/utils/axios';
+import { getValueType } from 'src/utils/utils';
 import { queryParamsToObject } from 'src/utils/crud-utils';
 import { validationFieldMapper, handleProfileDataSubmit } from 'src/utils/formviewutil';
 
@@ -44,8 +45,8 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
   const validationSchema = {};
   const { predictions, setInput } = useGoogleAutocomplete();
   const location = useLocation();
-  const { id } = queryParamsToObject(location.search);
-  console.log(id)
+  const queryObject = queryParamsToObject(location.search);
+  const id = getValueType(queryObject.id)
   const [autocompleteValues, setAutocompleteValues] = useState({});
 
   useEffect(() => {
@@ -56,8 +57,9 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
     if (id) {
       const getData = async () => {
         const response = await axiosInstance.get(singleUrl);
-
-        setinitialValues(response.data.data);
+        const res = response.data.data || response.data
+      
+        setinitialValues(res);
       };
       getData();
     }
@@ -65,7 +67,8 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
 
  
   const handleSubmit = (values) => {
-    handleProfileDataSubmit(values, tag, id, router)
+    console.log(id, user.id)
+    handleProfileDataSubmit(values, tag, id, router, user.id)
   }
 
   const formik = useFormik({
@@ -87,14 +90,14 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
 
   const handlePlaceSelected = (event, newValue, name) => {
     setAutocompleteValues((prev) => ({ ...prev, [name]: newValue?.value }));
-    console.log(name, newValue)
+  
     formik.setFieldValue(name, newValue?.value);
     if (newValue) {
       setInput('');
     }
   };
   const renderField = (field) => {
-    console.log(field, formik.values[field.name]);
+    // console.log(field, formik.values);
     switch (field.type) {
       case 'upload':
         return <UploadSingleFile label={field.label} file={formik.values[field.name]} setFieldValue={formik.setFieldValue}  name={field.name} />;

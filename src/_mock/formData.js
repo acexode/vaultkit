@@ -1,4 +1,4 @@
-import { profileEndpoint } from 'src/configs/endpoints';
+import { serverBaseUrl, profileEndpoint } from 'src/configs/endpoints';
 
 export const BasicInfo = [
   {
@@ -63,13 +63,13 @@ export const BasicInfo = [
     defaultValue: '',
     isForm: true,
   },
-  {
-    label: 'Identity number',
-    name: 'identity_number',
-    type: 'number',
-    defaultValue: '',
-    isForm: true,
-  },
+  // {
+  //   label: 'Identity number',
+  //   name: 'identity_number',
+  //   type: 'number',
+  //   defaultValue: '',
+  //   isForm: true,
+  // },
   {
     label: 'Mailing address',
     name: 'mailing_address',
@@ -955,39 +955,41 @@ export const ResidentialHistory = [
 
 const getLabels = (arr) => arr.map((e) => ({label: e.label, name: e.name}));
 
-export const getFormFields = (slug) => {
+export const getFormFields = (slug, id) => {
   let data = {};
+  const url = `${serverBaseUrl  }/users/${ id}`;
+  const path = profileEndpoint(url);
   switch (slug) {
     case 'personal-info':
-      data = { form: BasicInfo, title: 'Personal Information', url: profileEndpoint.basic };
+      data = { form: BasicInfo, title: 'Personal Information', url: path.basic };
       break;
     case 'contact-info':
-      data = { form: ContactInfo, title: 'Contact Info', url: profileEndpoint.contact };
+      data = { form: ContactInfo, title: 'Contact Info', url: path.contact };
       break;
     case 'education-info':
-      data = { form: EducationInfo, title: 'Education Info', url: profileEndpoint.eduInfo };
+      data = { form: EducationInfo, title: 'Education Info', url: path.eduInfo };
       break;
     case 'employment-info':
-      data = { form: EmployeeInfo, title: 'Employment Info', url: profileEndpoint.empInfo };
+      data = { form: EmployeeInfo, title: 'Employment Info', url: path.empInfo };
       break;
     case 'financial-info':
-      data = { form: FinancialInfo, title: 'Financial Info', url: profileEndpoint.finInfo };
+      data = { form: FinancialInfo, title: 'Financial Info', url: path.finInfo };
       break;
     case 'identification-info':
       data = {
         form: IdentificationInfo,
         title: 'Identification Info',
-        url: profileEndpoint.idInfo,
+        url: path.idInfo,
       };
       break;
     case 'realestate-info':
-      data = { form: RealEstateInfo, title: 'Real Estate Info', url: profileEndpoint.reInfo };
+      data = { form: RealEstateInfo, title: 'Real Estate Info', url: path.reInfo };
       break;
     case 'residential-info':
       data = {
         form: ResidentialHistory,
         title: 'Residential History',
-        url: profileEndpoint.resInfo,
+        url: path.resInfo,
       };
       break;
     case 'field-labels':

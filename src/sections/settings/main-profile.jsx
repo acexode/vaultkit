@@ -17,6 +17,7 @@ import {
   FormControlLabel
 } from '@mui/material';
 
+import useAuth from 'src/hooks/useAuth';
 import useIsMountedRef from 'src/hooks/useIsMountedRef';
 
 import countries from 'src/_mock/countries';
@@ -32,7 +33,7 @@ import UploadAvatar from 'src/layouts/dashboard/common/UploadAvatar';
 
 export default function MainProfileView() {
   const isMountedRef = useIsMountedRef();
-  const { user, updateProfile } = {};
+  const { user, updateProfile } = useAuth();
 
   const UpdateUserSchema = Yup.object().shape({
     displayName: Yup.string().required('Name is required')
@@ -41,7 +42,7 @@ export default function MainProfileView() {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      displayName: user?.displayName || '',
+      displayName: user?.basic.first_name || '',
       email: user?.email,
       photoURL: user?.photoURL,
       phoneNumber: user?.phoneNumber,

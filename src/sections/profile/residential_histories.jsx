@@ -3,7 +3,9 @@ import React, { useState, useEffect } from 'react';
 
 import { Container } from '@mui/material';
 
-import { residentialHistoryAPI } from 'src/apis';
+import useAuth from 'src/hooks/useAuth';
+
+import { profileAPIs } from 'src/apis';
 import { useGlobalContext } from 'src/context/context';
 
 import ListCard from './ListCard';
@@ -13,11 +15,13 @@ const ResidentialHistory = () => {
   const {handleCurrentForm} = useGlobalContext()
   const [data, setData] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
-
+  const {user} = useAuth()
 useEffect(() => {
   const fetchData = async () => {
    try {
-    const response = await residentialHistoryAPI._readMany()
+    const api = profileAPIs(user?.id)
+    const response = await api.residentialHistoryAPI._readMany()
+   
     if(response.data) {
       setData(response.data)
     }
@@ -37,7 +41,7 @@ useEffect(() => {
    }
   }
   fetchData()
- },[enqueueSnackbar])
+ },[enqueueSnackbar, user?.id])
   
 
   return (

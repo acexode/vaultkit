@@ -90,7 +90,7 @@ export default function ShareView({ handleCloseModal }) {
   // const [disabled, setdisabled] = useState(true);
   const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuth();
-  const fieldData = getFormFields('field-labels');
+  const fieldData = getFormFields('field-labels', user.id);
   const typeMapping = {
     basic: 'personal',
     contact: 'contact',
@@ -159,7 +159,8 @@ export default function ShareView({ handleCloseModal }) {
         },
       };
       try {
-        const response = await axiosInstance.post(requestDataEndpoint.share, data);
+        const url = requestDataEndpoint(user.id)
+        const response = await axiosInstance.post(url.share, data);
         if (response.status === 200) {
           enqueueSnackbar(response.data.success, {
             variant: 'success',
