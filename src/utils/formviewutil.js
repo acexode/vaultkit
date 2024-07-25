@@ -1,10 +1,12 @@
+
 import { profileRequestMapper } from "src/apis";
 import { getSingleProfileDataPatchUrl } from "src/configs/endpoints";
 
 import axiosInstance from "./axios";
 
-export const handleProfileDataSubmit = async (values, tag, id, router) => {
-    const api = profileRequestMapper(tag);
+export const handleProfileDataSubmit = async (values, tag, id, router, userId) => {
+    const api = profileRequestMapper(tag, userId);
+    console.log(typeof id, id)
     let response;
     const singleUrl = getSingleProfileDataPatchUrl(tag, id);
     console.log(singleUrl, 'url');

@@ -6,6 +6,10 @@ import Grid from '@mui/material/Unstable_Grid2';
 
 // import Iconify from 'src/components/iconify';
 
+import { useEffect } from 'react';
+
+import useAuth from 'src/hooks/useAuth';
+
 import AppTasks from '../app-tasks';
 import AppWelcome from '../AppWelcome';
 import AppOrderTimeline from '../app-order-timeline';
@@ -14,12 +18,18 @@ import AppOrderTimeline from '../app-order-timeline';
 // ----------------------------------------------------------------------
 
 export default function AppView() {
+  const {getBasicInfo, user} = useAuth()
+  useEffect(() => {
+    if(user){
+      getBasicInfo()
+    }
+  }, [getBasicInfo, user])
   return (
     <Container maxWidth="xl">
 
       <Grid container spacing={3}>
       <Grid item xs={12} md={12}>
-            <AppWelcome displayName="Sir Abubakar" />
+            <AppWelcome displayName={user?.basic?.first_name} />
           </Grid>
 
 

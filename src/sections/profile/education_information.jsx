@@ -3,7 +3,9 @@ import React, { useState, useEffect } from 'react';
 
 import { Container } from '@mui/material';
 
-import { educationAPI } from 'src/apis';
+import useAuth from 'src/hooks/useAuth';
+
+import { profileAPIs } from 'src/apis';
 import { useGlobalContext } from 'src/context/context';
 
 import ListCard from './ListCard';
@@ -13,11 +15,13 @@ const EducationInfo = () => {
   const { handleCurrentForm } = useGlobalContext();
   const [educationData, seteducationData] = useState([])
   const { enqueueSnackbar } = useSnackbar();
-  
+  const {user} = useAuth()
 useEffect(() => {
   const fetchData = async () => {
    try {
-    const response = await educationAPI._readMany()
+    const api = profileAPIs(user?.id)
+    const response = await api.educationAPI._readMany()
+    
     if(response.data) {
       seteducationData(response.data)
     }
@@ -37,7 +41,7 @@ useEffect(() => {
    }
   }
   fetchData()
- },[enqueueSnackbar])
+ },[enqueueSnackbar, user?.id])
   return (
     <Container>
       <ListCard handleCurrentForm={handleCurrentForm} path="education-info" data={educationData} title="Education Info" />

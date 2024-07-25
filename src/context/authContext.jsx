@@ -1,11 +1,13 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import { useSnackbar } from 'notistack';
 import { useEffect, useReducer, createContext } from 'react';
 
+import axiosInstance from 'src/utils/axios';
 import { cacheUser, setSession, isValidToken } from 'src/utils/jwt';
 
-import { authEndpoints } from 'src/configs/endpoints';
+import { authEndpoints, serverBaseUrl, profileEndpoint } from 'src/configs/endpoints';
 
 // utils
 
@@ -60,7 +62,8 @@ const AuthContext = createContext({
   method: 'jwt',
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
-  register: () => Promise.resolve()
+  register: () => Promise.resolve(),
+  getBasicInfo: () => Promise.resolve()
 });
 
 AuthProvider.propTypes = {
@@ -69,7 +72,7 @@ AuthProvider.propTypes = {
 
 function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
-
+  const { enqueueSnackbar } = useSnackbar();
   useEffect(() => {
     const initialize = async () => {
       try {
@@ -78,8 +81,9 @@ function AuthProvider({ children }) {
          console.log(cachedUser, isValidToken(accessToken))
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
-          const user = JSON.parse(cachedUser);
           
+          const user = JSON.parse(cachedUser);
+          console.log("USER")
           dispatch({
             type: 'INITIALIZE',
             payload: {
@@ -110,11 +114,34 @@ function AuthProvider({ children }) {
 
     initialize();
   }, []);
-
+  const getBasicInfo = async () => {
+    const url = `${serverBaseUrl  }/users`;
+    const path = profileEndpoint(url);
+    try {
+      
+      const basicInfoResponse = await axiosInstance.get(path.basic);
+      console.log(basicInfoResponse)
+      const user = {...state.user, basic: basicInfoResponse.data}
+      console.log(user, "USER")
+      dispatch({
+        type: 'INITIALIZE',
+        payload: {
+          isAuthenticated: true,
+          user
+        }
+      });
+      
+    } catch (error) {
+      enqueueSnackbar(error.response?.message)
+    }
+  }
   const login = async (values) => {
     const response = await axios.post(authEndpoints.login, values);
+   
     const token = response.headers.authorization;
+    
     const { data } = response.data.status;
+    
     cacheUser(data.user)
     setSession(token);
     dispatch({
@@ -198,7 +225,8 @@ function AuthProvider({ children }) {
         registerIndiviual,
         resetPassword,
         updateProfile,
-        registerOrganization
+        registerOrganization,
+        getBasicInfo
       }}
     >
       {children}

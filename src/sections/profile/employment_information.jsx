@@ -3,7 +3,9 @@ import React, { useState, useEffect } from 'react';
 
 import { Container } from '@mui/material';
 
-import { employmentAPI } from 'src/apis';
+import useAuth from 'src/hooks/useAuth';
+
+import { profileAPIs } from 'src/apis';
 import { useGlobalContext } from 'src/context/context';
 
 import ListCard from './ListCard';
@@ -13,11 +15,14 @@ const EmploymentInfo = () => {
   const [data, setData] = useState([])
   
   const { enqueueSnackbar } = useSnackbar();
-
+  const {user} = useAuth()
 useEffect(() => {
   const fetchData = async () => {
    try {
-    const response = await employmentAPI._readMany()
+    const api = profileAPIs(user?.id)
+    
+    const response = await api.employmentAPI._readMany()
+    
     if(response.data) {
       
       setData(response.data)
@@ -38,7 +43,7 @@ useEffect(() => {
    }
   }
   fetchData()
- },[enqueueSnackbar])
+ },[enqueueSnackbar, user?.id])
  
 
   return (

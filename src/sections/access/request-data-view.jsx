@@ -97,7 +97,8 @@ export default function RequestDataView({ handleClose }) {
      
     
       try {
-        const response = await axiosInstance.post(requestDataEndpoint.request, data);
+        const url = requestDataEndpoint(user.id)
+        const response = await axiosInstance.post(url.request, data);
         if(response.status === 200){
           enqueueSnackbar(response.data.success, {
             variant: 'success',
@@ -122,7 +123,7 @@ export default function RequestDataView({ handleClose }) {
     console.log(selectedCategory);
   }, [selectedCategory]);
 
-  const fieldData = getFormFields('field-labels');
+  const fieldData = getFormFields('field-labels', user.id);
 
   console.log(fieldData);
 

@@ -1,11 +1,18 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import { useSnackbar } from 'notistack';
+import React, { useState, useEffect } from 'react';
 
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
 import { Alert, Stack, Button } from '@mui/material';
+
+import useAuth from 'src/hooks/useAuth';
+
+import axiosInstance from 'src/utils/axios';
+
+import { serverBaseUrl, profileEndpoint } from 'src/configs/endpoints';
 
 import BasicInfo from './basic-info';
 import ContactInfo from './contact-info';
@@ -54,14 +61,53 @@ ProfileView.propTypes = {
 };
 export default function ProfileView({handleVerificationModal}) {
   const [value, setValue] = useState(0);
-
+  const [data, setData] = useState(null);
+  const {user} = useAuth()
+  const { enqueueSnackbar } = useSnackbar();
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  useEffect(() => {
+    const url = `${serverBaseUrl  }/users`;
+    
+    const path = profileEndpoint(url);
+    const fetchData = async () => {
+      try {
+        // const response = await basicAPI._readMany();
+        const response = await axiosInstance.get(path.basic);
+        if (response.data) {
+          setData(response.data);
+          
+        } else if (response.error) {
+          enqueueSnackbar(response.error.message, {
+            autoHideDuration: 1000,
+            anchorOrigin: {
+              vertical: 'top',
+              horizontal: 'right',
+            },
+            variant: 'error',
+          });
+        }
+      } catch (error) {
+        
+        enqueueSnackbar('An error occurred while fetching data.', {
+          autoHideDuration: 1000,
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'right',
+          },
+          variant: 'error',
+        });
+      }
+    };
+    fetchData();
+  }, [enqueueSnackbar, user, user?.id]);
+
   return (
     <Box sx={{ width: '100%' }}>
       <Alert
+                sx={{mb: 1}}
                 severity="primary"
                 action={
                   <Button onClick={handleVerificationModal} color="primary" size="small" variant="outlined">
@@ -72,7 +118,10 @@ export default function ProfileView({handleVerificationModal}) {
                 Your data is not yet verified — start verification!
               </Alert>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">Sir Abubakar</Typography>
+        {data?.first_name && (
+
+        <Typography variant="h4">{data?.first_name}</Typography>
+        )}
       </Stack>
 
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

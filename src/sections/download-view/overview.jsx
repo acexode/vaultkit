@@ -16,7 +16,7 @@ import {
 } from './styled';
 
 const Overview = () => {
-  console.log('download view');
+ console.log()
   return (
     <Grid item mb={3} xs={12} md={12} lg={12}>
     <Card>
