@@ -25,15 +25,15 @@ export const authEndpoints = {
 export const sharedDataEndpoint = {
   share: `${baseEndpoints.extractApproval}/share`,
 };
-export const profileEndpoint = (path) => ({
+export const profileEndpoint = (path, id) => ({
     basic: `${path}/basic_info`,
-    contact: `${path}/contact_information`,
-    eduInfo: `${path}/education_data`,
-    empInfo: `${path}/employment_informations`,
-    finInfo: `${path}/fin-info`,
-    idInfo: `${path}/id-info`,
-    realInfo: `${path}/real_estate_informations`,
-    resInfo: `${path}/residential_histories`,
+    contact: `${path}/${ id}/contact_information`,
+    eduInfo: `${path}/${ id}/education_data`,
+    empInfo: `${path}/${ id}/employment_informations`,
+    finInfo: `${path}/${ id}/fin-info`,
+    idInfo: `${path}/${ id}/id-info`,
+    realInfo: `${path}/${ id}/real_estate_informations`,
+    resInfo: `${path}/${ id}/residential_histories`,
   })
 
 export const requestDataEndpoint = (id) => ({

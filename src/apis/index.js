@@ -18,9 +18,9 @@ export const realEstateAPI = new API('RealEstate', profileEndpoint.realInfo, 'MC
 export const residentialHistoryAPI = new API('ResidentialHistory', profileEndpoint.resInfo, 'MCRUDP');
 // eslint-disable-next-line arrow-body-style
 export const profileAPIs = (id) => {
-    const url = `${serverBaseUrl  }/users/${ id}`;
+    const url = `${serverBaseUrl  }/users`;
     const basicUrl = `${serverBaseUrl  }/users/basic_info`;
-    const path = profileEndpoint(url);
+    const path = profileEndpoint(url, id);
     
     return {
         contactAPI : new API('Contact', path.contact, 'MCRUDP'),
