@@ -1,44 +1,44 @@
-import NProgress from 'nprogress';
+// import NProgress from 'nprogress';
 import { motion } from 'framer-motion';
-import { useMemo, useEffect } from 'react';
+// import { useMemo, useEffect } from 'react';
 // material
 
 import { Box, alpha, styled } from '@mui/material';
-import { makeStyles, createStyles } from '@mui/styles';
+// import { makeStyles, createStyles } from '@mui/styles';
 
 import Logo from '../logo';
 
 // ----------------------------------------------------------------------
 
-const nprogressStyle = makeStyles((theme) =>
-  createStyles({
-    '@global': {
-      '#nprogress': {
-        pointerEvents: 'none',
-        '& .bar': {
-          top: 0,
-          left: 0,
-          height: 2,
-          width: '100%',
-          position: 'fixed',
-          zIndex: theme.zIndex?.snackbar,
-          backgroundColor: theme.palette?.primary.main,
-          boxShadow: `0 0 2px ${theme.palette?.primary.main}`
-        },
-        '& .peg': {
-          right: 0,
-          opacity: 1,
-          width: 100,
-          height: '100%',
-          display: 'block',
-          position: 'absolute',
-          transform: 'rotate(3deg) translate(0px, -4px)',
-          boxShadow: `0 0 10px ${theme.palette?.primary.main}, 0 0 5px ${theme.palette?.primary.main}`
-        }
-      }
-    }
-  })
-);
+// const nprogressStyle = makeStyles((theme) =>
+//   createStyles({
+//     '@global': {
+//       '#nprogress': {
+//         pointerEvents: 'none',
+//         '& .bar': {
+//           top: 0,
+//           left: 0,
+//           height: 2,
+//           width: '100%',
+//           position: 'fixed',
+//           zIndex: theme.zIndex?.snackbar,
+//           backgroundColor: theme.palette?.primary.main,
+//           boxShadow: `0 0 2px ${theme.palette?.primary.main}`
+//         },
+//         '& .peg': {
+//           right: 0,
+//           opacity: 1,
+//           width: 100,
+//           height: '100%',
+//           display: 'block',
+//           position: 'absolute',
+//           transform: 'rotate(3deg) translate(0px, -4px)',
+//           boxShadow: `0 0 10px ${theme.palette?.primary.main}, 0 0 5px ${theme.palette?.primary.main}`
+//         }
+//       }
+//     }
+//   })
+// );
 
 const RootStyle = styled('div')(({ theme }) => ({
   height: '100%',
@@ -50,24 +50,24 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-function ProgressBar() {
-  nprogressStyle();
+// function ProgressBar() {
+//   nprogressStyle();
 
-  useMemo(() => {
-    NProgress.start();
-  }, []);
+//   useMemo(() => {
+//     NProgress.start();
+//   }, []);
 
-  useEffect(() => {
-    NProgress.done();
-  }, []);
+//   useEffect(() => {
+//     NProgress.done();
+//   }, []);
 
-  return null;
-}
+//   return null;
+// }
 
 export default function LoadingScreen({ ...other }) {
   return (
     <RootStyle {...other}>
-      <ProgressBar />
+      {/* <ProgressBar /> */}
 
       <motion.div
         initial={{ rotateY: 0 }}

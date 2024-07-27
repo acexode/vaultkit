@@ -44,7 +44,7 @@ useEffect(() => {
  },[enqueueSnackbar, user?.id])
   return (
     <Container>
-      <ListCard handleCurrentForm={handleCurrentForm} path="education-info" data={educationData} title="Education Info" />
+      <ListCard handleCurrentForm={handleCurrentForm} path="education-info" redirect={3} data={educationData} title="Education Info" />
     </Container>
   );
 };

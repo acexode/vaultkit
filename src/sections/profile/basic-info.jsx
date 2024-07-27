@@ -1,4 +1,5 @@
 /* eslint-disable no-restricted-syntax */
+import { useSnackbar } from 'notistack';
 import React, { useState, useEffect } from 'react';
 
 import Card from '@mui/material/Card';
@@ -10,6 +11,7 @@ import useAuth from 'src/hooks/useAuth';
 
 import { convertToSentenceCase } from 'src/utils/common-utils';
 
+import { profileAPIs } from 'src/apis';
 import { useGlobalContext } from 'src/context/context';
 
 import EmptyContent from 'src/components/common/EmptyContent';
@@ -41,16 +43,42 @@ const BasicInfo = () => {
   const { handleCurrentForm } = useGlobalContext();
   const [data, setData] = useState(null);
   const {user} = useAuth()
+  const { enqueueSnackbar } = useSnackbar();
 
   
   useEffect(() => {
+    console.log(user);
+    if(user){
+      
+      const fetchData = async () => {
+        try {
+         const api = profileAPIs(user?.id)
+         const response = await api.basicAPI._readMany()
+         
+         if(response.data) {
+           setData(response.data)
+         }
+         if(response.error){
+           enqueueSnackbar(response.error.message, { 
+             autoHideDuration: 1000,
+             anchorOrigin: {
+               vertical: "top",
+               horizontal: "right"
+             },
+             variant: "error"
+           })
+         }
+        
+        } catch (error) {
+         console.log(error)
+        }
+       }
+       fetchData()
+     
     
-    if (user?.basic) {
-      setData(user?.basic);
-    }
-   
-  
-  }, [ user, user?.id]);
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const renderItem = (item) => {
     
@@ -90,7 +118,7 @@ const BasicInfo = () => {
                 <Item>
                   <ListItemText sx={{ minWidth: '84px' }}>Personal Info</ListItemText>
                   <ListItemText sx={{ textAlign: 'right' }}>
-                    <Button variant="outlined" onClick={() => handleCurrentForm('personal-info', data?.id)}>
+                    <Button variant="outlined" onClick={() => handleCurrentForm('personal-info', data?.id, 0)}>
                       Edit Info
                     </Button>
                   </ListItemText>
@@ -116,7 +144,7 @@ const BasicInfo = () => {
               title="You haven't added any data"
               description="Click the button below to start adding your data"
             />
-            <Button onClick={() => handleCurrentForm('personal-info')} variant='outlined' size='lg' color='inherit'>
+            <Button onClick={() => handleCurrentForm('personal-info', null, 0)} variant='outlined' size='lg' color='inherit'>
               Add Data
             </Button>
           </>

@@ -2,13 +2,23 @@ import { isString } from 'lodash';
 import PropTypes from 'prop-types';
 import { useDropzone } from 'react-dropzone';
 
-import { Box, Paper, alpha, styled, Typography } from '@mui/material';
+import { Box, List, Paper, alpha, styled, ListItem, Typography } from '@mui/material';
 
 // import { fData } from 'src/utils/format-number';
 
-import { useCallback } from 'react';
+// import fileFill from '@iconify/icons-eva/file-fill';
+import closeFill from '@iconify/icons-eva/close-fill';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useCallback } from 'react';
+
+// import { fData } from 'src/utils/format-number';
 
 import UploadIllustration from 'src/assets/illustration_upload';
+
+import Iconify from '../iconify';
+import MIconButton from '../common/MIconButton';
+import { varFadeInRight } from '../common/animate/variants/actions';
+
 // material
 
 // utils
@@ -88,14 +98,22 @@ ShowRejectionItems.propTypes = {
   fileRejections: PropTypes.array,
 };
 export default function UploadSingleFile({ error, file, sx, label, setFieldValue, name,  ...other }) {
+  const [rFile, setrFile] = useState(null)
   const onDrop = useCallback(acceptedFiles => {
     setFieldValue(name, acceptedFiles[0])
-    console.log(acceptedFiles)
   }, [setFieldValue, name])
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
     multiple: false,
     onDrop,
   });
+  useEffect(() => {
+   if(file){
+    console.log('file', file);
+
+    setrFile({...file, preview: file.url ? file.url :  URL.createObjectURL(file)})
+   }
+  }, [file])
+
 
   return (
     <Box sx={{ width: '100%', ...sx }}>
@@ -132,41 +150,53 @@ export default function UploadSingleFile({ error, file, sx, label, setFieldValue
             &nbsp;thorough your machine
           </Typography>
         </Box>
-
-        {isString(file) && file.length  && (
-          <Box
-            component="img"
-            alt="file preview"
-            src={file}
-            sx={{
-              top: 8,
-              borderRadius: 1,
-              objectFit: 'cover',
-              position: 'absolute',
-              width: 'calc(100% - 16px)',
-              height: 'calc(100% - 16px)',
-            }}
-          />
-        )}
-        {isString(file?.url) && (
-          <Box
-            component="img"
-            alt="file preview"
-            src={ file?.url}
-            sx={{
-              top: 8,
-              borderRadius: 1,
-              // objectFit: 'cover',
-              position: 'absolute',
-              // width: 'calc(100% - 16px)',
-              // height: 'calc(100% - 16px)',
-            }}
-          />
-        )}
       </DropZoneStyle>
         { isString(file?.url) &&<Typography color="primary" variant='caption'  pt={1}>Click on image to change it</Typography>}
 
       {fileRejections.length > 0 && <ShowRejectionItems fileRejections={fileRejections} />}
+     {file &&  <List disablePadding sx={{  my: 3  }}>
+        <AnimatePresence>
+                <ListItem
+                 
+                  component={motion.div}
+                  {...varFadeInRight}
+                  sx={{
+                    p: 0,
+                    m: 0.5,
+                    width: 80,
+                    height: 80,
+                    borderRadius: 1.5,
+                    overflow: 'hidden',
+                    position: 'relative',
+                    display: 'inline-flex'
+                  }}
+                >
+                  <Paper
+                    variant="outlined"
+                    component="img"
+                    src={isString(file) ? file : rFile?.preview}
+                    sx={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute' }}
+                  />
+                  <Box sx={{ top: 6, right: 6, position: 'absolute' }}>
+                    <MIconButton
+                      size="small"
+                      onClick={() => setFieldValue(name, null)}
+                      sx={{
+                        p: '2px',
+                        color: 'common.white',
+                        bgcolor: (theme) => alpha(theme.palette.grey[900], 0.72),
+                        '&:hover': {
+                          bgcolor: (theme) => alpha(theme.palette.grey[900], 0.48)
+                        }
+                      }}
+                    >
+                      <Iconify icon={closeFill} sx={{color: '#fff'}} />
+                    </MIconButton>
+                  </Box>
+                </ListItem>
+
+        </AnimatePresence>
+      </List>}
     </Box>
   );
 }

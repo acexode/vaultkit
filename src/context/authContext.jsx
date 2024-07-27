@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { useSnackbar } from 'notistack';
 import { useEffect, useReducer, createContext } from 'react';
 
+import { useRouter } from 'src/routes/hooks';
+
 import axiosInstance from 'src/utils/axios';
 import { cacheUser, setSession, isValidToken } from 'src/utils/jwt';
 
@@ -72,6 +74,7 @@ AuthProvider.propTypes = {
 
 function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const router = useRouter()
   const { enqueueSnackbar } = useSnackbar();
   useEffect(() => {
     const initialize = async () => {
@@ -99,6 +102,7 @@ function AuthProvider({ children }) {
               user: null
             }
           });
+          router.push('/login')
         }
       } catch (err) {
         console.error(err);
@@ -113,6 +117,7 @@ function AuthProvider({ children }) {
     };
 
     initialize();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const getBasicInfo = async () => {
     const url = `${serverBaseUrl  }/users`;

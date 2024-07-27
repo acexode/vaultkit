@@ -12,6 +12,7 @@ import useAuth from 'src/hooks/useAuth';
 
 import axiosInstance from 'src/utils/axios';
 
+import { useGlobalContext } from 'src/context/context';
 import { serverBaseUrl, profileEndpoint } from 'src/configs/endpoints';
 
 import BasicInfo from './basic-info';
@@ -60,13 +61,20 @@ ProfileView.propTypes = {
   handleVerificationModal: PropTypes.func,
 };
 export default function ProfileView({handleVerificationModal}) {
-  const [value, setValue] = useState(0);
   const [data, setData] = useState(null);
   const {user} = useAuth()
+  const {state} = useGlobalContext()
   const { enqueueSnackbar } = useSnackbar();
+  const [value, setValue] = useState(state.redirect);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  useEffect(() => {
+    console.log(state);
+    setValue(state.redirect)
+
+  }, [state])
 
   useEffect(() => {
     const url = `${serverBaseUrl  }/users`;

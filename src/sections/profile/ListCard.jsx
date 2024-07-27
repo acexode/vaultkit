@@ -40,7 +40,7 @@ const NewButton = styled(IconButton)(({ theme, width, height }) => ({
   '&:hover': { opacity: 0.72, cursor: 'pointer' },
 }));
 
-const ListCard = ({ data, handleCurrentForm, path, title }) => {
+const ListCard = ({ data, handleCurrentForm, path, title, redirect }) => {
   
   const [open, setopen] = useState(false);
   const [selectedData, setselectedData] = useState(null);
@@ -79,7 +79,7 @@ const ListCard = ({ data, handleCurrentForm, path, title }) => {
                       edge="end"
                       variant="contained"
                       size="medium"
-                      onClick={() => handleCurrentForm(path, d?.id)}
+                      onClick={() => handleCurrentForm(path, d?.id, redirect)}
                     >
                       <Icon width={40} icon={editFill} />
                     </NewButton>
@@ -108,7 +108,7 @@ const ListCard = ({ data, handleCurrentForm, path, title }) => {
           </CardActions>
         </Card>
       ))}
-      <AddDataCard handleCurrentForm={handleCurrentForm} path={path} />
+      <AddDataCard handleCurrentForm={handleCurrentForm} path={path} redirect={redirect} />
       <AlertDialog
         fullWidth
         showClose
@@ -140,6 +140,7 @@ ListCard.propTypes = {
   data: PropTypes.array,
   handleCurrentForm: PropTypes.func,
   path: PropTypes.string.isRequired,
+  redirect: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
 };
 

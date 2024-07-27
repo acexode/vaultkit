@@ -11,7 +11,7 @@ const useGoogleAutocomplete = () => {
   });
 
   useEffect(() => {
-    
+    console.log(input, 'input');
    if(input.length > 0){
        const fetchPredictions = () => {
          const request = {

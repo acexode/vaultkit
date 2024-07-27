@@ -9,8 +9,8 @@ import { IconButton } from '@mui/material';
 import DialogContent from '@mui/material/DialogContent';
 
 AlertDialog.propTypes = {
-  title: PropTypes.number,
-  open: PropTypes.number,
+  title: PropTypes.string,
+  open: PropTypes.bool,
   maxWidth: PropTypes.string,
   fullWidth: PropTypes.bool,
   showClose: PropTypes.bool,

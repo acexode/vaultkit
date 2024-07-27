@@ -44,6 +44,7 @@ const ContactInfo = () => {
   const { enqueueSnackbar } = useSnackbar();
 
 useEffect(() => {
+  console.log(user);
   const fetchData = async () => {
    try {
     const api = profileAPIs(user?.id)
@@ -68,17 +69,13 @@ useEffect(() => {
    }
   }
   fetchData()
- },[enqueueSnackbar, user?.id])
+ },[enqueueSnackbar, user])
   
 
   function convertToSentenceCase(str) {
     // Replace underscores with spaces
     str = str.replace(/_/g, ' ');
 
-    // Convert to sentence case
-    // console.log(
-    //   str.toLowerCase().replace(/(^|[.!?])(\w)/g, (match, p1, p2) => p1 + p2.toUpperCase())
-    // );
     return str.toLowerCase().replace(/(^|[.!?])(\w)/g, (match, p1, p2) => p1 + p2.toUpperCase());
   }
   const allValuesAreNull = (obj) => {
@@ -106,7 +103,7 @@ useEffect(() => {
               <Item>
                 <ListItemText sx={{ minWidth: '84px' }}>Contact Info</ListItemText>
                 <ListItemText sx={{ textAlign: 'right' }}>
-                  <Button variant="outlined" onClick={() => handleCurrentForm('contact-info', data?.id)}>Edit Info</Button>
+                  <Button variant="outlined" onClick={() => handleCurrentForm('contact-info', data?.id, 1)}>Edit Info</Button>
                 </ListItemText>
               </Item>
             </Box>
@@ -129,7 +126,7 @@ useEffect(() => {
         title="You havent added any data"
         description="Click the button below to start adding your data"
       />
-           <Button onClick={()=> handleCurrentForm('contact-info', false)} variant='outlined' size='lg' color='inherit'>Add Data</Button>
+           <Button onClick={()=> handleCurrentForm('contact-info', false, 1)} variant='outlined' size='lg' color='inherit'>Add Data</Button>
         </>}
         
       </Stack>

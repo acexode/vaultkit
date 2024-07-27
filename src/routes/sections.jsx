@@ -13,6 +13,7 @@ export const ProtectedRoute = lazy(() => import('src/pages/protected-route'))
 const Loadable = (Component) => (props) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { pathname } = useLocation();
+  console.log(pathname);
   const isDashboard = pathname.includes('/dashboard');
 
   return (
@@ -21,7 +22,7 @@ const Loadable = (Component) => (props) => {
         <LoadingScreen
           sx={{
             ...(!isDashboard && {
-              top: 0,
+              top: 1000,
               left: 0,
               width: 1,
               zIndex: 9999,

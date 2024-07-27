@@ -19,13 +19,15 @@ export const residentialHistoryAPI = new API('ResidentialHistory', profileEndpoi
 // eslint-disable-next-line arrow-body-style
 export const profileAPIs = (id) => {
     const url = `${serverBaseUrl  }/users/${ id}`;
+    const basicUrl = `${serverBaseUrl  }/users/basic_info`;
     const path = profileEndpoint(url);
     
     return {
         contactAPI : new API('Contact', path.contact, 'MCRUDP'),
         educationAPI : new API('Education', path.eduInfo, 'MCRUDP'),
         employmentAPI : new API('Employment', path.empInfo, 'MCRUDP'),
-        basicAPI : new API('Basic', path.basic, 'MCRUDP'),
+        basicAPI : new API('Basic', basicUrl, 'MCRUDP'),
+        basicInfoAPI : new API('Basic', path.basic, 'MCRUDP'),
         financialAPI : new API('Financial', path.finInfo, 'MCRUDP'),
         identityAPI : new API('Identity', path.idInfo, 'MCRUDP'),
         realEstateAPI : new API('RealEstate', path.realInfo, 'MCRUDP'),

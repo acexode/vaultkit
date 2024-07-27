@@ -31,6 +31,7 @@ import { queryParamsToObject } from 'src/utils/crud-utils';
 import { validationFieldMapper, handleProfileDataSubmit } from 'src/utils/formviewutil';
 
 import countries from 'src/_mock/countries';
+import { useGlobalContext } from 'src/context/context';
 import { getSingleProfileUrl } from 'src/configs/endpoints';
 
 import { UploadSingleFile } from 'src/components/uploads';
@@ -39,6 +40,7 @@ import SocialMediaInput from './socialMediaInput';
 
 const MyFormComponent = ({ fields, title, url, tag }) => {
   const { user } = useAuth();
+  const {handleRedirect} = useGlobalContext()
   
   const router = useRouter();
   const [initialValues, setinitialValues] = useState({});
@@ -68,7 +70,7 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
  
   const handleSubmit = (values) => {
     console.log(id, user.id)
-    handleProfileDataSubmit(values, tag, id, router, user.id)
+    return handleProfileDataSubmit(values, tag, id, router, user.id)
   }
 
   const formik = useFormik({
@@ -292,7 +294,7 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
             ))}
           </Grid>
           <Grid item xs={12} justifyContent="center">
-            <Button onClick={() => router.back()} variant="outlined" color="primary" sx={{ mr: 2 }}>
+            <Button onClick={() => handleRedirect(queryObject.redirect)} variant="outlined" color="primary" sx={{ mr: 2 }}>
               Cancel
             </Button>
             <Button type="submit" variant="contained" color="primary">

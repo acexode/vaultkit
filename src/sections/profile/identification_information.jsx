@@ -47,7 +47,7 @@ useEffect(() => {
 
   return (
     <Container>
-    <ListCard handleCurrentForm={handleCurrentForm} path="identification-info" data={data} title="Identification Info" />
+    <ListCard handleCurrentForm={handleCurrentForm} path="identification-info" data={data} redirect={5} title="Identification Info" />
   </Container>
   );
 };

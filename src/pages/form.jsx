@@ -11,12 +11,12 @@ import { FormView } from 'src/sections/form';
 
 
 
-export default function LoginPage() {
+export default function FormPage() {
     // const {state} = useGlobalContext()
     const route = useSearchParams()
     const tag = route[0].get("tag")
     const {user} = useAuth()
-    const {form, title, url} = getFormFields(tag, user.id);
+    const {form, title, url} = getFormFields(tag, user?.id);
 
   return (
     <>
