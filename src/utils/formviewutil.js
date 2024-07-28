@@ -63,7 +63,7 @@ export const handleProfileDataSubmit = async (values, tag, id, router, userId) =
           mailing_address: values.mailing_address,
           preferred_language: values.preferred_language,
           short_bio: values.short_bio,
-          work_authorization: values.work_authorization,
+          work_authorization: "true",
           residency_status: values.residency_status,
           identity_number: values.identity_number,
           profile_picture_url: values.profile_picture_url,
