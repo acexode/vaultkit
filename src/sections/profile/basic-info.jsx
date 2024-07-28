@@ -47,7 +47,7 @@ const BasicInfo = () => {
 
   
   useEffect(() => {
-    console.log(user);
+   
     if(user){
       
       const fetchData = async () => {
@@ -55,6 +55,7 @@ const BasicInfo = () => {
          const api = profileAPIs(user?.id)
          const response = await api.basicAPI._readMany()
          
+         console.log(response)
          if(response.data) {
            setData(response.data)
          }
@@ -90,8 +91,7 @@ const BasicInfo = () => {
         return item
        
     } if (typeof item === 'object' && item != null) {
-      // Assuming the object has a single key-value pair
-      console.log(item)
+    
       const value = Object.keys(item)[0];
      
       if (typeof item[value] === 'string' && item[value].startsWith('http')) {

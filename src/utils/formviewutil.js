@@ -6,7 +6,7 @@ import axiosInstance from "./axios";
 
 export const handleProfileDataSubmit = async (values, tag, id, router, userId) => {
     const api = profileRequestMapper(tag, userId);
-    console.log(typeof id, id)
+   
     let response;
     const singleUrl = getSingleProfileDataPatchUrl(tag, id);
     console.log(singleUrl, 'url');
@@ -71,7 +71,6 @@ export const handleProfileDataSubmit = async (values, tag, id, router, userId) =
         },
       };
         response = await api._create(data);
-        console.log(response);
         if (response.status === 200) {
             router.push('/dashboard/user');
         }

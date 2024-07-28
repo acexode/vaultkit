@@ -19,7 +19,7 @@ import axiosInstance from 'src/utils/axios';
 import { getFormFields } from 'src/_mock/formData';
 import { requestDataEndpoint } from 'src/configs/endpoints';
 
-import NestedSelect from 'src/components/common/NestedSelect';
+// import NestedSelect from 'src/components/common/NestedSelect';
 
 import CategorySelectCheckmarks from './category-select';
 
@@ -142,7 +142,7 @@ export default function RequestDataView({ handleClose }) {
           error={formik.touched.title && Boolean(formik.errors.title)}
           helperText={formik.touched.title && formik.errors.title}
         />
-        <NestedSelect />
+        {/* <NestedSelect /> */}
         <CategorySelectCheckmarks
           handleSelected={setselectedCategory}
           list={categories}
