@@ -115,9 +115,9 @@ console.log(users);
               onSelectAllClick={handleSelectAllClick}
               headLabel={[
                 { id: 'title', label: 'Title' },
-                { id: 'company', label: 'Access Code' },
+                // { id: 'company', label: 'Access Code' },
                 { id: 'role', label: 'Guest Email' },
-                { id: 'validity', label: 'Access Validity', align: 'center' },
+                { id: 'access_duration', label: 'Access Duration', align: 'center' },
                 { id: 'status', label: 'Status' },
                 { id: '' },
               ]}
@@ -134,6 +134,7 @@ console.log(users);
                     company={row.company}
                     avatarUrl={row.avatarUrl}
                     validity={row.end_time}
+                    starttime={row.start_time}
                     selected={selected.indexOf(row.name) !== -1}
                     handleClick={(event) => handleClick(event, row.name)}
                     handleAddNoteModal={handleAddNoteModal}

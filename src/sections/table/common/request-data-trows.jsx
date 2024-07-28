@@ -11,8 +11,6 @@ import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
-import { humanReadableTime } from 'src/utils/common-utils';
-
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 
@@ -24,6 +22,7 @@ export default function RequestDataTRows({
   company,
   role,
   validity,
+  starttime,
   status,
   handleClick,
   handleAddNoteModal,
@@ -32,7 +31,7 @@ export default function RequestDataTRows({
   approveRequest
 }) {
   const [open, setOpen] = useState(null);
-
+  
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
@@ -66,9 +65,9 @@ export default function RequestDataTRows({
 
         <TableCell>{company}</TableCell>
 
-        <TableCell>{role}</TableCell>
+        {/* <TableCell>{role}</TableCell> */}
 
-        <TableCell align="center">{humanReadableTime(validity)  }</TableCell>
+        <TableCell align="center">{`${starttime.split('T')[0]} - ${validity.split('T')[0]}`  }</TableCell>
 
         <TableCell>
         <Label 
@@ -134,6 +133,7 @@ RequestDataTRows.propTypes = {
   title: PropTypes.any,
   notificationCount: PropTypes.number,
   validity: PropTypes.any,
+  starttime: PropTypes.any,
   role: PropTypes.any,
   selected: PropTypes.any,
   status: PropTypes.string,

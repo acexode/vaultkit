@@ -19,10 +19,10 @@ AlertDialog.propTypes = {
 };
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
-    paddingTop: theme.spacing(5),
+    // paddingTop: theme.spacing(5),
   },
   '& .MuiDialogActions-root': {
-    padding: theme.spacing(1),
+    // padding: theme.spacing(1),
   },
 }));
 
