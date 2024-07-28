@@ -17,34 +17,57 @@ import ViewRequest from '../share-data/view-request';
 
 // ----------------------------------------------------------------------
 
-export default function AnalyticsTasks({ title, subheader, list, ...other }) {
-  const [selected, setSelected] = useState(['2']);
+export default function AppTasks({ title, subheader, list, ...other }) {
+  
+  const [selected, setSelected] = useState([]);
+  const [openRequest, setOpenRequest] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
 
   const handleClickComplete = (taskId) => {
     const tasksCompleted = selected.includes(taskId)
       ? selected.filter((value) => value !== taskId)
       : [...selected, taskId];
-
     setSelected(tasksCompleted);
+  };
+
+  const handleViewShare = (task) => {
+    setSelectedTask(task);
+    setOpenRequest(true);
+  };
+
+  const handleCloseRequest = () => {
+    setOpenRequest(false);
+    setSelectedTask(null);
   };
 
   return (
     <Card {...other}>
       <CardHeader title={title} subheader={subheader} />
-
-      {list.map((task) => (
-        <TaskItem
-          key={task.id}
-          task={task}
-          checked={selected.includes(task.id)}
-          onChange={() => handleClickComplete(task.id)}
-        />
-      ))}
+      {list?.map((task) => {
+        console.log(`Rendering TaskItem: ${task.id} - ${task.title}`);
+        return (
+          <TaskItem
+            key={task.id}
+            task={task}
+            checked={selected.includes(task.id)}
+            onChange={() => handleClickComplete(task.id)}
+            onViewShare={() => handleViewShare(task)}
+          />
+        );
+      })}
+      <AlertDialog
+        handleClose={handleCloseRequest}
+        fullWidth
+        maxWidth="sm"
+        title="View & Share Request"
+        component={<ViewRequest handleCloseModal={handleCloseRequest} data={selectedTask} />}
+        open={openRequest}
+      />
     </Card>
   );
 }
 
-AnalyticsTasks.propTypes = {
+AppTasks.propTypes = {
   list: PropTypes.array,
   subheader: PropTypes.string,
   title: PropTypes.string,
@@ -52,9 +75,8 @@ AnalyticsTasks.propTypes = {
 
 // ----------------------------------------------------------------------
 
-function TaskItem({ task, checked, onChange }) {
+function TaskItem({ task, checked, onChange, onViewShare }) {
   const [open, setOpen] = useState(null);
-  const [opeRequest, setopeRequest] = useState(false)
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -68,17 +90,6 @@ function TaskItem({ task, checked, onChange }) {
     handleCloseMenu();
     console.info('MARK COMPLETE', task.id);
   };
-
-  const handleShare = () => {
-    setopeRequest(true)
-    handleCloseMenu();
-    console.info('SHARE', task.id);
-  };
-  const handleCloseRequest = () => {
-    setopeRequest(false)
-  };
-
-
 
   const handleDelete = () => {
     handleCloseMenu();
@@ -105,7 +116,7 @@ function TaskItem({ task, checked, onChange }) {
       >
         <FormControlLabel
           control={<Checkbox checked={checked} onChange={onChange} />}
-          label={task.name}
+          label={task.title}
           sx={{ flexGrow: 1, m: 0 }}
         />
 
@@ -126,7 +137,7 @@ function TaskItem({ task, checked, onChange }) {
           Mark Complete
         </MenuItem>
 
-        <MenuItem onClick={handleShare}>
+        <MenuItem onClick={() => { onViewShare(task); handleCloseMenu(); }}>
           <Iconify icon="solar:share-bold" sx={{ mr: 2 }} />
           View & Share
         </MenuItem>
@@ -136,7 +147,6 @@ function TaskItem({ task, checked, onChange }) {
           Delete
         </MenuItem>
       </Popover>
-      <AlertDialog handleClose={(handleCloseRequest)} fullWidth maxWidth="sm" title="Generate Access Code" component={<ViewRequest handleCloseModal={handleCloseRequest} />} open={opeRequest} />
     </>
   );
 }
@@ -144,5 +154,6 @@ function TaskItem({ task, checked, onChange }) {
 TaskItem.propTypes = {
   checked: PropTypes.bool,
   onChange: PropTypes.func,
+  onViewShare: PropTypes.func,
   task: PropTypes.object,
 };

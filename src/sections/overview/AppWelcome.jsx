@@ -16,10 +16,10 @@ import SavedSuccessModal from '../share-data/saved-success-modal';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Card)(({ theme }) => ({
-  // boxShadow: 'none',
+  boxShadow: 'none',
   textAlign: 'center',
   backgroundColor: '#FCDAD1',
-  [theme.breakpoints.up('md')]: {
+  [theme.breakpoints?.up('md')]: {
     height: '100%',
     display: 'flex',
     textAlign: 'left',

@@ -98,7 +98,7 @@ export default function SharedTabSection({handleViewDetails}) {
       try {
         const url = requestDataEndpoint(user.id)
         const response = await axiosInstance.get(url.request)
-        console.log(response)
+
         if (response.data && response.status === 200) {
           setRequestData(response.data);
         } else if (response.error) {

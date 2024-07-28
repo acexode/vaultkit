@@ -1,11 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { useSnackbar } from 'notistack';
 
 import { Box, Grid, Stack, Button, styled, Container, Typography, DialogActions } from '@mui/material';
+
+import axiosInstance from 'src/utils/axios';
+
+import { requestDataEndpoint } from 'src/configs/endpoints';
 
 import Iconify from 'src/components/iconify';
 
 const ItemsStyle = styled(Grid)(({ theme, bgcolor }) => ({
-  // boxShadow: 'none',
   borderRadius: '8px',
   padding: '8px',
   marginBottom: '2px',
@@ -15,60 +20,103 @@ const ItemsStyle = styled(Grid)(({ theme, bgcolor }) => ({
     display: 'flex',
     textAlign: 'left',
     alignItems: 'center',
-    justifyContent: 'space-between'
-  }
+    justifyContent: 'space-between',
+  },
 }));
-const ViewRequest = () => {
-  console.log('view request');
-  const selectedRequest = {
-    id: 'John Doe Profile Data',
-    requester: 'Maryann Doe',
-    data: 'Personal Data, Contact Data, Employment History',
-    status: 'Pending',
-    date: '2023-06-01',
-  };
-  return (
+
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+
+
+const ViewRequest = ({ data }) => {
+  const { enqueueSnackbar } = useSnackbar();
+  const approveRequest = async () => {
+    try {
+      const response = await axiosInstance.patch(requestDataEndpoint.approve)
+      if(response.status === 200){
+        enqueueSnackbar("Access Request Approved Successfully", {
+          autoHideDuration: 1000,
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'right',
+          },
+          variant: 'success',
+        });
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  
+    return (
+
     <Container sx={{ px: 2 }}>
-        <Box textAlign="center" mb={3}>
-            <Typography variant='h4'> Request Details</Typography>
-        </Box>
-        <Grid container spacing={2} sx={{width: '100%'}}>
-      <ItemsStyle item xs={12} md={12}>
-        <Stack sx={{width: '100%'}} direction="row" justifyContent="space-between">
-          <Box sx={{width: '50%'}}>Request Title:</Box> <Box>{selectedRequest.id}</Box>
-        </Stack>
-      </ItemsStyle>
-      <ItemsStyle item xs={12} md={12} bgcolor>
-        <Stack sx={{width: '100%'}} direction="row" justifyContent="space-between">
-          <Box sx={{width: '50%'}}>Requester:</Box> <Box textAlign="right">{selectedRequest.requester}</Box>
-        </Stack>
-      </ItemsStyle>
-      <ItemsStyle item xs={12} md={12}>
-        <Stack sx={{width: '100%'}} direction="row" justifyContent="space-between">
-          <Box sx={{width: '50%'}}>Data Requested:</Box> <Box textAlign="right">{selectedRequest.data}</Box>
-        </Stack>
-      </ItemsStyle>
-      <ItemsStyle item xs={12} md={12} bgcolor>
-        <Stack sx={{width: '100%'}} direction="row" justifyContent="space-between">
-          <Typography>Status:</Typography> <Typography>{selectedRequest.status}</Typography>
-        </Stack>
-      </ItemsStyle>
-      <ItemsStyle item xs={12} md={12}>
-        <Stack sx={{width: '100%'}} direction="row" justifyContent="space-between">
-          <Typography>Date:</Typography> <Typography>{selectedRequest.date}</Typography>
-        </Stack>
-      </ItemsStyle>
-    </Grid>
-    <DialogActions sx={{mt: 2}}>
-            <Button variant='outlined' startIcon={<Iconify src="" />}>
-              Reject Request
-            </Button>
-            <Button variant='contained' startIcon={<Iconify src="" />}>
-              Share Data
-            </Button>
-          </DialogActions>
+      <Box textAlign="center" mb={3}>
+        <Typography variant="h4">Request Details</Typography>
+      </Box>
+      <Grid container spacing={2} sx={{ width: '100%' }}>
+        <ItemsStyle item xs={12} md={12}>
+          <Stack sx={{ width: '100%' }} direction="row" justifyContent="space-between">
+            <Box sx={{ width: '50%' }}>Request Title:</Box> <Box>{data?.title}</Box>
+          </Stack>
+        </ItemsStyle>
+        <ItemsStyle item xs={12} md={12} bgcolor>
+          <Stack sx={{ width: '100%' }} direction="row" justifyContent="space-between">
+            <Box sx={{ width: '50%' }}>Requester:</Box> <Box textAlign="right">{data?.requester ?? ""}</Box>
+          </Stack>
+        </ItemsStyle>
+        <ItemsStyle item xs={12} md={12}>
+          <Stack sx={{ width: '100%' }} direction="row" justifyContent="space-between">
+            <Box sx={{ width: '50%' }}>Data Requested:</Box> <Box textAlign="right">{data?.selectedRequest ?? ""}</Box>
+          </Stack>
+        </ItemsStyle>
+        <ItemsStyle item xs={12} md={12} bgcolor>
+          <Stack sx={{ width: '100%' }} direction="row" justifyContent="space-between">
+            <Typography>Status:</Typography> <Typography>{data?.status}</Typography>
+          </Stack>
+        </ItemsStyle>
+        <ItemsStyle item xs={12} md={12}>
+          <Stack sx={{ width: '100%' }} direction="row" justifyContent="space-between">
+            <Typography>Date:</Typography> <Typography>{formatDate(data?.start_time)}</Typography>
+          </Stack>
+        </ItemsStyle>
+      </Grid>
+      <DialogActions sx={{ mt: 2 }}>
+        <Button variant="outlined" startIcon={<Iconify src="" />}>
+          Reject Request
+        </Button>
+        <Button variant="contained" startIcon={<Iconify src="" />} onClick={approveRequest}>
+          Approve Request
+        </Button>
+      </DialogActions>
     </Container>
-  );
+    )
+}
+  
+  
+
+ViewRequest.propTypes = {
+  data: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    start_time: PropTypes.string.isRequired,
+    end_time: PropTypes.string.isRequired,
+    sender_id: PropTypes.number.isRequired,
+    receiver_id: PropTypes.number.isRequired,
+    status: PropTypes.string.isRequired,
+    created_at: PropTypes.string.isRequired,
+    updated_at: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    sender_type: PropTypes.string.isRequired,
+    receiver_type: PropTypes.string.isRequired,
+    selectedRequest: PropTypes.string.isRequired,
+    requester: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default ViewRequest;

@@ -6,9 +6,14 @@ import Grid from '@mui/material/Unstable_Grid2';
 
 // import Iconify from 'src/components/iconify';
 
-import { useEffect } from 'react';
+import { useSnackbar } from 'notistack';
+import { useState, useEffect } from 'react';
 
 import useAuth from 'src/hooks/useAuth';
+
+import axiosInstance from 'src/utils/axios';
+
+import { requestDataEndpoint } from 'src/configs/endpoints';
 
 import AppTasks from '../app-tasks';
 import AppWelcome from '../AppWelcome';
@@ -19,12 +24,48 @@ import AppOrderTimeline from '../app-order-timeline';
 
 export default function AppView() {
   const {getBasicInfo, user} = useAuth()
+  const [requestData, setRequestData] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
   useEffect(() => {
     if(user){
       getBasicInfo()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+
+  useEffect(() => {
+    const fetchRequestData = async () => {
+      try {
+        const url = requestDataEndpoint(user.id)
+        const response = await axiosInstance.get(url.request)
+        if (response.data && response.status === 200) {
+          setRequestData(response.data);
+        } else if (response.error) {
+          enqueueSnackbar(response.error.message, {
+            autoHideDuration: 1000,
+            anchorOrigin: {
+              vertical: 'top',
+              horizontal: 'right',
+            },
+            variant: 'error',
+          });
+        }
+      } catch (error) {
+        console.log(error);
+        enqueueSnackbar('An error occurred while fetching data.', {
+          autoHideDuration: 1000,
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'right',
+          },
+          variant: 'error',
+        });
+      }
+    };
+    fetchRequestData();
+  }, [enqueueSnackbar, setRequestData, user.id]);
+
   return (
     <Container maxWidth="xl">
 
@@ -36,16 +77,10 @@ export default function AppView() {
 
 
         <Grid xs={12} md={6} lg={8}>
+        
         <AppTasks
             title="Profile Access Request"
-            list={[
-              { id: '1', name: 'John Doe requested Access to your profile' },
-              { id: '2', name: 'Sarah Doe wants to acess your educational Background' },
-              { id: '3', name: 'Wakanda requested Access to your employment history' },
-              { id: '4', name: 'John Does requested Access to your profile' },
-              { id: '5', name: 'John Does requested Access to your profile' },
-              { id: '5', name: 'John Does requested Access to your profile' },
-            ]}
+            list={requestData}
           />
         </Grid>
 
