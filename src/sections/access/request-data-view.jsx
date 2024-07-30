@@ -85,9 +85,9 @@ export default function RequestDataView({ handleClose }) {
       const data = {
         access_request: {
           title: values.title,
-          sender_email: values.email,
+          sharer_email: values.email,
           receiver_type: "user",
-          sender_type: "user",
+          sharer_type: "user",
           start_time: values.start_time,
           end_time: values.end_time,
           resource,
