@@ -44,7 +44,7 @@ const BasicInfo = () => {
   const [data, setData] = useState(null);
   const {user} = useAuth()
   const { enqueueSnackbar } = useSnackbar();
-
+  
   
   useEffect(() => {
    

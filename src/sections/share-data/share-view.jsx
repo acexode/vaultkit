@@ -92,14 +92,14 @@ export default function ShareView({ handleCloseModal }) {
   const { user } = useAuth();
   const fieldData = getFormFields('field-labels', user.id);
   const typeMapping = {
-    basic: 'personal',
+    basic: 'basic_info',
     contact: 'contact',
     eduInfo: 'education',
     empInfo: 'employment',
     finInfo: 'financial',
     idInfo: 'identity',
-    reInfo: 'residencial',
     resInfo: 'realestate',
+    reInfo: 'residencial',
   };
 
   // useEffect(() => {
