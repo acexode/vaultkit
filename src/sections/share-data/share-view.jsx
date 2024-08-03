@@ -17,18 +17,18 @@ import {
   FormControlLabel,
 } from '@mui/material';
 
-import { getFormFields } from 'src/_mock/formData';
-import { requestDataEndpoint } from 'src/configs/endpoints';
-
-// import MHidden from 'src/components/common/MHidden';
-
 import useAuth from 'src/hooks/useAuth';
 
 import axiosInstance from 'src/utils/axios';
+import { resourceMap } from 'src/utils/share-form-utils';
+
+import { getFormFields } from 'src/_mock/formData';
+import { requestDataEndpoint } from 'src/configs/endpoints';
 
 import DataConfigView from './data-config';
 import SelectDataToShare from './form-view';
-import { initialValues } from './iniialValues';
+import MultiDataShare from './multi-data-share';
+import { initialValues } from './constants/initialValues';
 
 const SelectAllCheck = ({ handleSelectAll, values, field, category, setFieldValue }) => (
   <FormGroup>
@@ -59,7 +59,6 @@ function CustomTabPanel(props) {
       style={{ flex: 1 }}
       id={orientation === 'vertical' ? `vertical-tabpanel-${index}` : `simple-tabpanel-${index}`}
       aria-labelledby={orientation === 'vertical' ? `vertical-tab-${index}` : `simple-tab-${index}`}
-      // aria-labelledby={`vertical-tab-${index}`}
       {...other}
     >
       {value === index && <Box>{children}</Box>}
@@ -85,9 +84,7 @@ function a11yProps(index, orientation) {
 export default function ShareView({ handleCloseModal }) {
   const themes = useTheme();
   const isMobile = useMediaQuery(themes.breakpoints.down('sm'));
-  console.log(isMobile);
   const [value, setValue] = useState(0);
-  // const [disabled, setdisabled] = useState(true);
   const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuth();
   const fieldData = getFormFields('field-labels', user.id);
@@ -97,23 +94,14 @@ export default function ShareView({ handleCloseModal }) {
     eduInfo: 'education',
     empInfo: 'employment',
     finInfo: 'financial',
-    idInfo: 'identity',
-    resInfo: 'realestate',
-    reInfo: 'residencial',
+    idInfo: 'identification',
+    resInfo: 'residential',
+    reInfo: 'real_estate',
   };
 
-  // useEffect(() => {
-  //   const updatedFields = {};
-  //   Object.keys(fieldData).forEach((key) => {
-  //     updatedFields[key] = fieldData[key].reduce((acc, field) => ({ ...acc, [field.name]: selectAll[key] }), {});
-  //   });
-  //   setSelectedFields(updatedFields);
-  // }, []);
-
   const handleChange = (event, newValue) => {
-    if(getDisabled){
+    if (getDisabled) {
       setValue(newValue);
-
     }
   };
 
@@ -133,19 +121,8 @@ export default function ShareView({ handleCloseModal }) {
   };
 
   const formik = useFormik({
-    initialValues,
+    initialValues: { ...initialValues, eduInfo: [], empInfo: [], reInfo: [], resInfo: [] },
     onSubmit: async (values) => {
-      const result = Object.keys(formik.values).reduce((acc, key) => {
-        if (typeMapping[key]) {
-          const sharedData = Object.keys(formik.values[key]).filter(
-            (subKey) => formik.values[key][subKey] === true
-          );
-          if (sharedData.length > 0) {
-            acc.push({ type: typeMapping[key], shared_data: sharedData });
-          }
-        }
-        return acc;
-      }, []);
       const data = {
         access_request: {
           title: values.title,
@@ -154,12 +131,13 @@ export default function ShareView({ handleCloseModal }) {
           sharer_type: 'user',
           start_time: values.start_time,
           end_time: values.end_time,
-          resource: result,
+          resource: resourceMap(values, typeMapping),
           sharer_id: user?.id,
         },
       };
+      console.log(data);
       try {
-        const url = requestDataEndpoint(user.id)
+        const url = requestDataEndpoint(user.id);
         const response = await axiosInstance.post(url.share, data);
         if (response.status === 200) {
           enqueueSnackbar(response.data.success, {
@@ -168,7 +146,8 @@ export default function ShareView({ handleCloseModal }) {
         }
         handleClose('share-data-view');
       } catch (error) {
-        if (error.response.status === 422) {
+        console.log(error);
+        if (error?.response?.status === 422) {
           enqueueSnackbar(error.response.data.error, {
             variant: 'error',
           });
@@ -177,14 +156,11 @@ export default function ShareView({ handleCloseModal }) {
     },
   });
 
-  const getDisabled = () => (
-      formik.values.title === '' ||
-      formik.values.receiver_email === '' ||
-      formik.values.start_time === '' ||
-      formik.values.end_time === ''
-    );
-
-  console.log(formik.values);
+  const getDisabled = () =>
+    formik.values.title === '' ||
+    formik.values.receiver_email === '' ||
+    formik.values.start_time === '' ||
+    formik.values.end_time === '';
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -205,7 +181,13 @@ export default function ShareView({ handleCloseModal }) {
             alignItems="center"
             justifyContent="space-between"
           >
-            <Button disabled={getDisabled()} variant="outlined" sx={{ mx: 2, flex: 1 }} autoFocus onClick={handleSaveNext}>
+            <Button
+              disabled={getDisabled()}
+              variant="outlined"
+              sx={{ mx: 2, flex: 1 }}
+              autoFocus
+              onClick={handleSaveNext}
+            >
               {value === 8 ? 'Previous' : 'Save & Next'}
             </Button>
             <Button variant="contained" sx={{ flex: 1 }} type="submit" autoFocus>
@@ -292,7 +274,7 @@ export default function ShareView({ handleCloseModal }) {
               category="empInfo"
               handleSelectAll={handleSelectAll}
             />
-            <SelectDataToShare
+            <MultiDataShare
               fieldData={fieldData}
               values={formik.values}
               name="empInfo"
@@ -309,7 +291,7 @@ export default function ShareView({ handleCloseModal }) {
               category="eduInfo"
               handleSelectAll={handleSelectAll}
             />
-            <SelectDataToShare
+            <MultiDataShare
               fieldData={fieldData}
               values={formik.values}
               name="eduInfo"
@@ -360,7 +342,7 @@ export default function ShareView({ handleCloseModal }) {
               category="reInfo"
               handleSelectAll={handleSelectAll}
             />
-            <SelectDataToShare
+            <MultiDataShare
               fieldData={fieldData}
               values={formik.values}
               name="reInfo"
@@ -377,7 +359,7 @@ export default function ShareView({ handleCloseModal }) {
               category="resInfo"
               handleSelectAll={handleSelectAll}
             />
-            <SelectDataToShare
+            <MultiDataShare
               fieldData={fieldData}
               values={formik.values}
               name="resInfo"

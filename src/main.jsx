@@ -7,6 +7,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 
 import App from './app';
 import { AuthProvider } from './context/authContext';
+import { DataProvider } from './context/dataContext';
 
 // ----------------------------------------------------------------------
 
@@ -19,7 +20,9 @@ root.render(
       <Suspense>
         <AuthProvider>
           <GoogleOAuthProvider clientId={clientId}>
-            <App />
+            <DataProvider>
+              <App />
+            </DataProvider>
           </GoogleOAuthProvider>
         </AuthProvider>
       </Suspense>
