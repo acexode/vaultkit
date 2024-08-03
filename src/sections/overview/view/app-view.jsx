@@ -38,7 +38,8 @@ export default function AppView() {
     const fetchRequestData = async () => {
       try {
         const url = requestDataEndpoint(user.id)
-        const response = await axiosInstance.get(url.request)
+        const response = await axiosInstance.get(url.allAccessRequest)
+        console.log(response)
         if (response.data && response.status === 200) {
           setRequestData(response.data);
         } else if (response.error) {

@@ -97,8 +97,8 @@ export default function ShareView({ handleCloseModal }) {
     eduInfo: 'education',
     empInfo: 'employment',
     finInfo: 'financial',
-    idInfo: 'identity',
-    resInfo: 'realestate',
+    idInfo: 'identification',
+    resInfo: 'real_estate',
     reInfo: 'residencial',
   };
 
@@ -113,7 +113,6 @@ export default function ShareView({ handleCloseModal }) {
   const handleChange = (event, newValue) => {
     if(getDisabled){
       setValue(newValue);
-
     }
   };
 
@@ -146,6 +145,7 @@ export default function ShareView({ handleCloseModal }) {
         }
         return acc;
       }, []);
+
       const data = {
         access_request: {
           title: values.title,

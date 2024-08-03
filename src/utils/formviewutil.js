@@ -4,12 +4,13 @@ import { getSingleProfileDataPatchUrl } from "src/configs/endpoints";
 
 import axiosInstance from "./axios";
 
-export const handleProfileDataSubmit = async (values, tag, id, router, userId) => {
+export const handleProfileDataSubmit = async (values, tag, id, router, userId, enqueueSnackbar) => {
+  
     const api = profileRequestMapper(tag, userId);
    
     let response;
     const singleUrl = getSingleProfileDataPatchUrl(tag, id);
-    console.log(singleUrl, 'url');
+    
     if (tag === 'contact-info') {
       const formData = new FormData();
       Object.keys(values).forEach((val) => {
@@ -20,9 +21,16 @@ export const handleProfileDataSubmit = async (values, tag, id, router, userId) =
         response = await await axiosInstance.patch(singleUrl, formData);
         if (response.status === 200) {
           router.push('/dashboard/user');
+          enqueueSnackbar("Contact Information Updated Successfully", {
+            variant: 'success',
+          });
         }
       } else {
         response = await api._create(formData);
+        enqueueSnackbar("Contact Information Created Successfully", {
+          variant: 'success',
+        });
+       
       }
     } else if (tag === 'education-info') {
       const formData = new FormData();
@@ -33,9 +41,15 @@ export const handleProfileDataSubmit = async (values, tag, id, router, userId) =
         response = await await axiosInstance.patch(singleUrl, formData);
         if (response.status === 200) {
           router.push('/dashboard/user');
+          enqueueSnackbar("Education Information Updated Successfully", {
+            variant: 'success',
+          });
         }
       } else {
         response = await api._create(formData);
+        enqueueSnackbar("Education Information Created Successfully", {
+          variant: 'success',
+        });
       }
     } else if (tag === 'employment-info') {
       const formData = new FormData();
@@ -46,9 +60,15 @@ export const handleProfileDataSubmit = async (values, tag, id, router, userId) =
         response = await await axiosInstance.patch(singleUrl, formData);
         if (response.status === 200) {
           router.push('/dashboard/user');
+          enqueueSnackbar("Employment Information Updated Successfully", {
+            variant: 'success',
+          });
         }
       } else {
         response = await api._create(formData);
+        enqueueSnackbar("Employment Information Created Successfully", {
+          variant: 'success',
+        });
       }
     } else if (tag === 'personal-info') {
       const data = {
@@ -73,6 +93,9 @@ export const handleProfileDataSubmit = async (values, tag, id, router, userId) =
         response = await api._create(data);
         if (response.status === 200) {
             router.push('/dashboard/user');
+            enqueueSnackbar("Basic Information Created Successfully", {
+              variant: 'success',
+            });
         }
       
     } else if (tag === 'financial-info') {
@@ -94,9 +117,15 @@ export const handleProfileDataSubmit = async (values, tag, id, router, userId) =
         response = await await axiosInstance.patch(singleUrl, formData);
         if (response.status === 200) {
           router.push('/dashboard/user');
+          enqueueSnackbar("Real Estate Information Updated Successfully", {
+            variant: 'success',
+          });
         }
       } else {
         response = await api._create(formData);
+        enqueueSnackbar("Real Estate Information Created Successfully", {
+          variant: 'success',
+        });
       }
     } else if (tag === 'residential-info') {
       const formData = new FormData();
@@ -107,9 +136,15 @@ export const handleProfileDataSubmit = async (values, tag, id, router, userId) =
         response = await await axiosInstance.patch(singleUrl, formData);
         if (response.status === 200) {
           router.push('/dashboard/user');
+          enqueueSnackbar("Residential Information Updated Successfully", {
+            variant: 'success',
+          });
         }
       } else {
         response = await api._create(formData);
+        enqueueSnackbar("Residential Information Created Successfully", {
+          variant: 'success',
+        });
       }
     }
     return response;

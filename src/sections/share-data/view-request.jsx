@@ -35,11 +35,16 @@ const formatDate = (dateString) => {
 
 
 const ViewRequest = ({ data }) => {
+  // const [loading, setLoading] = useState()
+  
   const { enqueueSnackbar } = useSnackbar();
   const approveRequest = async () => {
     try {
-      const response = await axiosInstance.patch(requestDataEndpoint.approve)
+      const url = requestDataEndpoint(data?.id)
+      
+      const response = await axiosInstance.patch(url.approve)
       if(response.status === 200){
+        
         enqueueSnackbar("Access Request Approved Successfully", {
           autoHideDuration: 1000,
           anchorOrigin: {
@@ -50,6 +55,7 @@ const ViewRequest = ({ data }) => {
         });
       }
     } catch (error) {
+      
       console.log(error)
     }
   }
