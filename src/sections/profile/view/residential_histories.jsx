@@ -8,20 +8,20 @@ import useAuth from 'src/hooks/useAuth';
 import { profileAPIs } from 'src/apis';
 import { useGlobalContext } from 'src/context/context';
 
-import ListCard from './ListCard';
+import ListCard from '../components/ListCard';
 
+const ResidentialHistory = () => {
 
-const IdentificationInfo = () => {
   const {handleCurrentForm} = useGlobalContext()
-  const [data, setData] = useState([])
+  const [data, setData] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
   const {user} = useAuth()
 useEffect(() => {
   const fetchData = async () => {
    try {
     const api = profileAPIs(user?.id)
-    const response = await api.identityAPI._readMany()
-    
+    const response = await api.residentialHistoryAPI._readMany()
+   
     if(response.data) {
       setData(response.data)
     }
@@ -35,7 +35,7 @@ useEffect(() => {
         variant: "error"
       })
     }
-    console.log(response)
+  
    } catch (error) {
     console.log(error)
    }
@@ -44,12 +44,11 @@ useEffect(() => {
  },[enqueueSnackbar, user?.id])
   
 
-
   return (
     <Container>
-    <ListCard handleCurrentForm={handleCurrentForm} path="identification-info" data={data} redirect={5} title="Identification Info" />
-  </Container>
+      <ListCard handleCurrentForm={handleCurrentForm} path="residential-info" data={data} redirect={7} title="Residential Info" />
+    </Container>
   );
 };
 
-export default IdentificationInfo;
+export default ResidentialHistory;

@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 
 import AlertDialog from 'src/sections/modal/modal';
 import { ProfileView } from 'src/sections/profile/view';
-import VerificationView from 'src/sections/profile/verification-view';
+import VerificationView from 'src/sections/profile/view/verification-view';
 
 export default function UserPage() {
   const [open, setopen] = useState(false)

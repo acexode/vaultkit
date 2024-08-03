@@ -14,21 +14,24 @@ import TableNoData from 'src/sections/table/table-no-data';
 import CommonTableHead from 'src/sections/table/user-table-head';
 import TableEmptyRows from 'src/sections/table/table-empty-rows';
 
-import SharedDataTRows from '../table/common/shared-data-trows';
-import { emptyRows, applyFilter, getComparator } from '../user/utils';
+// import AlertDialog from '../modal/modal';
+import AddNotes from '../components/chat/AddNotes';
+import RequestDataTRows from '../../table/common/request-data-trows';
+import { emptyRows, applyFilter, getComparator } from '../../user/utils';
 
 // ----------------------------------------------------------------------
 
-export default function SharedTableView({filterName, selected, setSelected, handleViewDetails}) {
+export default function RequestTableView({filterName, selected, setSelected, handleViewDetails, requestData, approveRequest}) {
+  console.log(requestData, "dfkdskl")
   const [page, setPage] = useState(0);
+  const [showAddNote, setshowAddNote] = useState(false)
 
 
 
   const [order, setOrder] = useState('asc');
 
 
-
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('title');
 
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -76,17 +79,28 @@ export default function SharedTableView({filterName, selected, setSelected, hand
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
   };
+  const handleAddNoteModal = () => {
+    setshowAddNote(!showAddNote);
+  };
 
-
+console.log(users);
 
   const dataFiltered = applyFilter({
-    inputData: users,
+    inputData: requestData,
     comparator: getComparator(order, orderBy),
     filterName,
   });
-
-  const notFound = !dataFiltered.length && !!filterName;
-
+  
+  const notFound = !dataFiltered?.length && !!filterName;
+  // id: string;
+  // avatarUrl: string;
+  // name: string;
+  // company: string;
+  // isVerified: boolean;
+  // validity: string;
+  // status: string;
+  // role: string;
+  // notificationCount: number;
   return (
     <>
       <Scrollbar>
@@ -100,29 +114,33 @@ export default function SharedTableView({filterName, selected, setSelected, hand
               onRequestSort={handleSort}
               onSelectAllClick={handleSelectAllClick}
               headLabel={[
-                { id: 'name', label: 'Access Name' },
-                { id: 'company', label: 'Access Code' },
+                { id: 'title', label: 'Title' },
+                // { id: 'company', label: 'Access Code' },
                 { id: 'role', label: 'Guest Email' },
-                { id: 'validity', label: 'Access Validity', align: 'center' },
+                { id: 'access_duration', label: 'Access Duration', align: 'center' },
                 { id: 'status', label: 'Status' },
                 { id: '' },
               ]}
             />
             <TableBody>
               {dataFiltered
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => (
-                  <SharedDataTRows
+                ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                ?.map((row) => (
+                  <RequestDataTRows
                     key={row.id}
-                    name={row.name}
+                    title={row.title}
                     role={row.role}
                     status={row.status}
                     company={row.company}
                     avatarUrl={row.avatarUrl}
-                    validity={row.validity}
+                    validity={row.end_time}
+                    starttime={row.start_time}
                     selected={selected.indexOf(row.name) !== -1}
                     handleClick={(event) => handleClick(event, row.name)}
+                    handleAddNoteModal={handleAddNoteModal}
+                    notificationCount={row.notificationCount}
                     handleViewDetails={handleViewDetails}
+                    approveRequest={approveRequest}
                   />
                 ))}
 
@@ -143,13 +161,17 @@ export default function SharedTableView({filterName, selected, setSelected, hand
         rowsPerPageOptions={[5, 10, 25]}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      <AddNotes open={showAddNote} setOpen={handleAddNoteModal} />
+            {/* <AlertDialog  maxWidth="lg" title="Generate Access Code" component={<SavedSuccessModal handleCloseModal={handleSharedModal} />} open={showAddNote} /> */}
     </>
   );
 }
   
-SharedTableView.propTypes = {
+RequestTableView.propTypes = {
     filterName: PropTypes.string,
     selected: PropTypes.array,
     setSelected: PropTypes.func,
+    approveRequest: PropTypes.func,
     handleViewDetails: PropTypes.func,
+    requestData: PropTypes.array,
   };

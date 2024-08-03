@@ -9,7 +9,7 @@ import SeoIllustration from 'src/assets/illustration_seo';
 
 import AlertDialog from '../modal/modal';
 import ShareView from '../share-data/share-view';
-import SavedSuccessModal from '../share-data/saved-success-modal';
+import SavedSuccessModal from '../modal/saved-success-modal';
 // material
 ;
 

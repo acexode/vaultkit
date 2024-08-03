@@ -8,7 +8,7 @@ import useAuth from 'src/hooks/useAuth';
 import { profileAPIs } from 'src/apis';
 import { useGlobalContext } from 'src/context/context';
 
-import ListCard from './ListCard';
+import ListCard from '../components/ListCard';
 
 const EducationInfo = () => {
   

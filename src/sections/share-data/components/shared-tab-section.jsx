@@ -15,8 +15,8 @@ import { requestDataEndpoint } from 'src/configs/endpoints';
 // import { Stack, Button } from '@mui/material';
 import TableToolbar from 'src/sections/table/user-table-toolbar';
 
-import SharedTableView from './shared-table';
-import RequestTableView from './request-table';
+import SharedTableView from '../tables/shared-table';
+import RequestTableView from '../tables/request-table';
 
 
 

@@ -11,7 +11,7 @@ import useOffSetTop from 'src/hooks/useOffSetTop';
 import Logo from 'src/components/logo';
 import MHidden from 'src/components/common/MHidden';
 
-import { Label } from 'src/sections/profile/Block';
+import { Label } from 'src/sections/profile/components/Block';
 
 // components
 import navConfig from './MenuConfig';

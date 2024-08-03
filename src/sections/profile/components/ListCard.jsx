@@ -18,7 +18,7 @@ import {
 } from '@mui/material';
 
 import AddDataCard from './AddDataCard';
-import AlertDialog from '../modal/modal';
+import AlertDialog from '../../modal/modal';
 import ListCardContent from './ListCardContent';
 
 const Item = styled('div')(({ theme }) => ({

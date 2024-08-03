@@ -8,20 +8,20 @@ import useAuth from 'src/hooks/useAuth';
 import { profileAPIs } from 'src/apis';
 import { useGlobalContext } from 'src/context/context';
 
-import ListCard from './ListCard';
+import ListCard from '../components/ListCard';
 
-const FinancialInfo = () => {
-  
+const RealEstateInfo = () => {
   const {handleCurrentForm} = useGlobalContext()
   const [data, setData] = useState([])
+  
   const { enqueueSnackbar } = useSnackbar();
   const {user} = useAuth()
 useEffect(() => {
   const fetchData = async () => {
    try {
     const api = profileAPIs(user?.id)
-    const response = await api.financialAPI._readMany()
- 
+    const response = await api.realEstateAPI._readMany()
+    
     if(response.data) {
       setData(response.data)
     }
@@ -35,7 +35,7 @@ useEffect(() => {
         variant: "error"
       })
     }
-    console.log(response)
+    
    } catch (error) {
     console.log(error)
    }
@@ -44,12 +44,11 @@ useEffect(() => {
  },[enqueueSnackbar, user?.id])
   
 
-
   return (
     <Container>
-      <ListCard handleCurrentForm={handleCurrentForm} path="financial-info" redirect={4} data={data} title="Financial Info" />
+      <ListCard handleCurrentForm={handleCurrentForm} path="realestate-info" data={data} redirect={6} title="Real Estate Info" />
     </Container>
   );
 };
 
-export default FinancialInfo;
+export default RealEstateInfo;

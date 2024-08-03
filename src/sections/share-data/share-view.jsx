@@ -25,10 +25,10 @@ import { resourceMap } from 'src/utils/share-form-utils';
 import { getFormFields } from 'src/_mock/formData';
 import { requestDataEndpoint } from 'src/configs/endpoints';
 
-import DataConfigView from './data-config';
-import SelectDataToShare from './form-view';
-import MultiDataShare from './multi-data-share';
+import DataConfigView from './components/data-config';
 import { initialValues } from './constants/initialValues';
+import MultiDataShare from './components/multi-data-share';
+import SelectDataToShare from './components/select-data-share';
 
 const SelectAllCheck = ({ handleSelectAll, values, field, category, setFieldValue }) => (
   <FormGroup>

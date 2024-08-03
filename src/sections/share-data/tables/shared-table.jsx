@@ -14,24 +14,21 @@ import TableNoData from 'src/sections/table/table-no-data';
 import CommonTableHead from 'src/sections/table/user-table-head';
 import TableEmptyRows from 'src/sections/table/table-empty-rows';
 
-// import AlertDialog from '../modal/modal';
-import AddNotes from './AddNotes';
-import RequestDataTRows from '../table/common/request-data-trows';
-import { emptyRows, applyFilter, getComparator } from '../user/utils';
+import SharedDataTRows from '../../table/common/shared-data-trows';
+import { emptyRows, applyFilter, getComparator } from '../../user/utils';
 
 // ----------------------------------------------------------------------
 
-export default function RequestTableView({filterName, selected, setSelected, handleViewDetails, requestData, approveRequest}) {
-  console.log(requestData, "dfkdskl")
+export default function SharedTableView({filterName, selected, setSelected, handleViewDetails}) {
   const [page, setPage] = useState(0);
-  const [showAddNote, setshowAddNote] = useState(false)
 
 
 
   const [order, setOrder] = useState('asc');
 
 
-  const [orderBy, setOrderBy] = useState('title');
+
+  const [orderBy, setOrderBy] = useState('name');
 
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -79,28 +76,17 @@ export default function RequestTableView({filterName, selected, setSelected, han
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
   };
-  const handleAddNoteModal = () => {
-    setshowAddNote(!showAddNote);
-  };
 
-console.log(users);
+
 
   const dataFiltered = applyFilter({
-    inputData: requestData,
+    inputData: users,
     comparator: getComparator(order, orderBy),
     filterName,
   });
-  
-  const notFound = !dataFiltered?.length && !!filterName;
-  // id: string;
-  // avatarUrl: string;
-  // name: string;
-  // company: string;
-  // isVerified: boolean;
-  // validity: string;
-  // status: string;
-  // role: string;
-  // notificationCount: number;
+
+  const notFound = !dataFiltered.length && !!filterName;
+
   return (
     <>
       <Scrollbar>
@@ -114,33 +100,29 @@ console.log(users);
               onRequestSort={handleSort}
               onSelectAllClick={handleSelectAllClick}
               headLabel={[
-                { id: 'title', label: 'Title' },
-                // { id: 'company', label: 'Access Code' },
+                { id: 'name', label: 'Access Name' },
+                { id: 'company', label: 'Access Code' },
                 { id: 'role', label: 'Guest Email' },
-                { id: 'access_duration', label: 'Access Duration', align: 'center' },
+                { id: 'validity', label: 'Access Validity', align: 'center' },
                 { id: 'status', label: 'Status' },
                 { id: '' },
               ]}
             />
             <TableBody>
               {dataFiltered
-                ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                ?.map((row) => (
-                  <RequestDataTRows
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row) => (
+                  <SharedDataTRows
                     key={row.id}
-                    title={row.title}
+                    name={row.name}
                     role={row.role}
                     status={row.status}
                     company={row.company}
                     avatarUrl={row.avatarUrl}
-                    validity={row.end_time}
-                    starttime={row.start_time}
+                    validity={row.validity}
                     selected={selected.indexOf(row.name) !== -1}
                     handleClick={(event) => handleClick(event, row.name)}
-                    handleAddNoteModal={handleAddNoteModal}
-                    notificationCount={row.notificationCount}
                     handleViewDetails={handleViewDetails}
-                    approveRequest={approveRequest}
                   />
                 ))}
 
@@ -161,17 +143,13 @@ console.log(users);
         rowsPerPageOptions={[5, 10, 25]}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      <AddNotes open={showAddNote} setOpen={handleAddNoteModal} />
-            {/* <AlertDialog  maxWidth="lg" title="Generate Access Code" component={<SavedSuccessModal handleCloseModal={handleSharedModal} />} open={showAddNote} /> */}
     </>
   );
 }
   
-RequestTableView.propTypes = {
+SharedTableView.propTypes = {
     filterName: PropTypes.string,
     selected: PropTypes.array,
     setSelected: PropTypes.func,
-    approveRequest: PropTypes.func,
     handleViewDetails: PropTypes.func,
-    requestData: PropTypes.array,
   };
