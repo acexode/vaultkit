@@ -1,7 +1,8 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import { useSnackbar } from 'notistack';
 
+import LoadingButton from '@mui/lab/LoadingButton';
 import { Box, Grid, Stack, Button, styled, Container, Typography, DialogActions } from '@mui/material';
 
 import axiosInstance from 'src/utils/axios';
@@ -35,16 +36,16 @@ const formatDate = (dateString) => {
 
 
 const ViewRequest = ({ data }) => {
-  // const [loading, setLoading] = useState()
+  const [loading, setLoading] = useState()
   
   const { enqueueSnackbar } = useSnackbar();
   const approveRequest = async () => {
     try {
       const url = requestDataEndpoint(data?.id)
-      
+      setLoading(true)
       const response = await axiosInstance.patch(url.approve)
       if(response.status === 200){
-        
+        setLoading(false)
         enqueueSnackbar("Access Request Approved Successfully", {
           autoHideDuration: 1000,
           anchorOrigin: {
@@ -55,7 +56,7 @@ const ViewRequest = ({ data }) => {
         });
       }
     } catch (error) {
-      
+      setLoading(false)
       console.log(error)
     }
   }
@@ -97,9 +98,9 @@ const ViewRequest = ({ data }) => {
         <Button variant="outlined" startIcon={<Iconify src="" />}>
           Reject Request
         </Button>
-        <Button variant="contained" startIcon={<Iconify src="" />} onClick={approveRequest}>
-          Approve Request
-        </Button>
+        <LoadingButton startIcon={<Iconify src="" />} variant="contained" loading={loading} onClick={approveRequest}>
+           Approve Request
+        </LoadingButton>
       </DialogActions>
     </Container>
     )

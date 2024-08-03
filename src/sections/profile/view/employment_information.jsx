@@ -8,9 +8,9 @@ import useAuth from 'src/hooks/useAuth';
 import { profileAPIs } from 'src/apis';
 import { useGlobalContext } from 'src/context/context';
 
-import ListCard from './ListCard';
+import ListCard from '../components/ListCard';
 
-const RealEstateInfo = () => {
+const EmploymentInfo = () => {
   const {handleCurrentForm} = useGlobalContext()
   const [data, setData] = useState([])
   
@@ -20,9 +20,11 @@ useEffect(() => {
   const fetchData = async () => {
    try {
     const api = profileAPIs(user?.id)
-    const response = await api.realEstateAPI._readMany()
+    
+    const response = await api.employmentAPI._readMany()
     
     if(response.data) {
+      
       setData(response.data)
     }
     if(response.error){
@@ -35,20 +37,21 @@ useEffect(() => {
         variant: "error"
       })
     }
-    
+    console.log(response)
    } catch (error) {
     console.log(error)
    }
   }
   fetchData()
  },[enqueueSnackbar, user?.id])
-  
+ 
 
   return (
     <Container>
-      <ListCard handleCurrentForm={handleCurrentForm} path="realestate-info" data={data} redirect={6} title="Real Estate Info" />
+       <ListCard handleCurrentForm={handleCurrentForm} path="employment-info" data={data} redirect={2} title="Employment Info" />
+    
     </Container>
   );
 };
 
-export default RealEstateInfo;
+export default EmploymentInfo;

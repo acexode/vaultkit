@@ -19,16 +19,16 @@ import useDialogState from 'src/routes/hooks/useSharedData';
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
-import AlertDialog from '../modal/modal';
-import TableNoData from '../table/table-no-data';
-import CommonTableHead from '../table/user-table-head';
-import TableEmptyRows from '../table/table-empty-rows';
-import OrgTableToolbar from '../table/OrganizationToolbar';
-import OrgShareView from '../share-data/org-share-view-modal';
-import BulkInviteModal from './organization-modals/bullk-invite';
-import SingleInviteModal from './organization-modals/single-invite';
-import { emptyRows, applyFilter, getComparator } from '../user/utils';
-import OrganizationTRows from '../table/common/Organizatio-table.row';
+import AlertDialog from '../../modal/modal';
+import TableNoData from '../../table/table-no-data';
+import CommonTableHead from '../../table/user-table-head';
+import TableEmptyRows from '../../table/table-empty-rows';
+import OrgTableToolbar from '../../table/OrganizationToolbar';
+import { emptyRows, applyFilter, getComparator } from '../../user/utils';
+import OrganizationTRows from '../../table/common/Organizatio-table.row';
+import BulkInviteModal from '../../modal/organization-modals/bullk-invite';
+import SingleInviteModal from '../../modal/organization-modals/single-invite';
+import OrgShareView from '../../modal/organization-modals/org-share-view-modal';
 
 OrganizationProfileView.propTypes = {
   handleVerificationModal: PropTypes.func,

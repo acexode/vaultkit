@@ -23,7 +23,7 @@ import {
   TimelineOppositeContent,
 } from '@mui/lab';
 
-import { Block } from './Block';
+import { Block } from '../components/Block';
 
 const TIMELINES = [
   {

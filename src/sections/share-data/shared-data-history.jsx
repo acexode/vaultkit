@@ -14,9 +14,9 @@ import AlertDialog from 'src/sections/modal/modal';
 
 import ShareView from './share-view';
 import DataDetails from './view-data';
-import SharedTabSection from './shared-tab-section';
-import SavedSuccessModal from './saved-success-modal';
 import RequestDataView from '../access/request-data-view';
+import SavedSuccessModal from '../modal/saved-success-modal';
+import SharedTabSection from './components/shared-tab-section';
 
 // ----------------------------------------------------------------------
 

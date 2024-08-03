@@ -26,9 +26,9 @@ import useAuth from 'src/hooks/useAuth';
 
 import axiosInstance from 'src/utils/axios';
 
-import SelectDataToShare from './form-view';
-import OrgDataConfigView from './org-data-config';
-import { initialValues } from './constants/initialValues';
+import { initialValues } from '../../share-data/constants/initialValues';
+import OrgDataConfigView from '../../share-data/components/org-data-config';
+import SelectDataToShare from '../../share-data/components/select-data-share';
 
 const SelectAllCheck = ({ handleSelectAll, values, field, category, setFieldValue }) => (
   <FormGroup>

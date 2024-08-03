@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 import AlertDialog from 'src/sections/modal/modal';
-import VerificationView from 'src/sections/profile/verification-view';
-import OrganizationProfileView from 'src/sections/profile/organization-profile-view';
+import VerificationView from 'src/sections/profile/view/verification-view';
+import OrganizationProfileView from 'src/sections/profile/view/organization-profile-view';
 
 export default function UserPage() {
   const [open, setopen] = useState(false)

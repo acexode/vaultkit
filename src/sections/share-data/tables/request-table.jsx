@@ -15,9 +15,9 @@ import CommonTableHead from 'src/sections/table/user-table-head';
 import TableEmptyRows from 'src/sections/table/table-empty-rows';
 
 // import AlertDialog from '../modal/modal';
-import AddNotes from './AddNotes';
-import RequestDataTRows from '../table/common/request-data-trows';
-import { emptyRows, applyFilter, getComparator } from '../user/utils';
+import AddNotes from '../components/chat/AddNotes';
+import RequestDataTRows from '../../table/common/request-data-trows';
+import { emptyRows, applyFilter, getComparator } from '../../user/utils';
 
 // ----------------------------------------------------------------------
 
