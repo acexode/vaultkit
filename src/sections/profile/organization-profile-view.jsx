@@ -7,6 +7,7 @@ import {
   Table,
   Button,
   TableBody,
+  Container,
   Typography,
   TableContainer,
   TablePagination,
@@ -123,7 +124,7 @@ export default function OrganizationProfileView({ handleVerificationModal }) {
   const notFound = !dataFiltered.length && !!filterName;
   console.log(notFound, !dataFiltered.length, filterName);
   return (
-    <Box>
+    <Container maxWidth="xl" >
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Box>
@@ -218,6 +219,6 @@ export default function OrganizationProfileView({ handleVerificationModal }) {
       <AlertDialog handleClose={()=> closeDialog(SingleInvite)} fu maxWidth="lg" title="Generate Access Code" component={<SingleInviteModal handleCloseModal={closeDialog} />} open={isDialogOpen(SingleInvite)} />
       <AlertDialog handleClose={()=> closeDialog(BulkInvite)} fu maxWidth="lg" title="Generate Access Code" component={<BulkInviteModal handleCloseModal={closeDialog} />} open={isDialogOpen(BulkInvite)} />
       <AlertDialog handleClose={()=> closeDialog(OrgRequestData)} fullWidth maxWidth="lg" title="Generate Access Code" component={<OrgShareView employees={employees} handleCloseModal={closeDialog} />} open={isDialogOpen(OrgRequestData)} />
-    </Box>
+    </Container>
   );
 }

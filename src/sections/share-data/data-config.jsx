@@ -6,7 +6,7 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 // import Button from '@mui/material/Button';
-import { Box, Checkbox, useTheme, useMediaQuery, FormControlLabel } from '@mui/material';
+import { Box, Checkbox, FormControlLabel } from '@mui/material';
 
 
 
@@ -46,9 +46,8 @@ DataConfigView.propTypes = {
 
 };
 export default function DataConfigView({handleClose, values, setFieldValue, formik}) {
-  const themes = useTheme();
-  const isMobile = useMediaQuery(themes.breakpoints.down('sm'));
-  console.log(isMobile);
+  // const themes = useTheme();
+  // const isMobile = useMediaQuery(themes.breakpoints.down('sm'));
 
   const renderForm = (
     <Stack spacing={2} sx={{width: "70%"}}>

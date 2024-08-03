@@ -41,7 +41,7 @@ export default function AppView() {
         const response = await axiosInstance.get(url.allAccessRequest)
         console.log(response)
         if (response.data && response.status === 200) {
-          setRequestData(response.data);
+          setRequestData(response.data.slice(0,6));
         } else if (response.error) {
           enqueueSnackbar(response.error.message, {
             autoHideDuration: 1000,

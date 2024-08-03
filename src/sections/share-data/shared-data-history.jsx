@@ -38,7 +38,7 @@ export default function SharedDataView() {
   }
 
   return (
-    <Container>
+    <Container maxWidth="xl">
       <Stack direction={!isMobile ? "row" : "column"} alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">Shared History</Typography>
 

@@ -6,7 +6,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
-import { Alert, Stack, Button } from '@mui/material';
+import { Alert, Stack, Button, Container } from '@mui/material';
 
 import useAuth from 'src/hooks/useAuth';
 
@@ -113,7 +113,7 @@ export default function ProfileView({handleVerificationModal}) {
   }, [enqueueSnackbar, user, user?.id]);
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Container maxWidth="xl">
       <Alert
                 sx={{mb: 1}}
                 severity="primary"
@@ -174,6 +174,6 @@ export default function ProfileView({handleVerificationModal}) {
       <CustomTabPanel value={value} index={7}>
         <ResidentialHistory />
       </CustomTabPanel>
-    </Box>
+    </Container>
   );
 }
