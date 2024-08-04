@@ -1,141 +1,124 @@
+import { profileRequestMapper } from 'src/apis';
+import { getSingleProfileDataPatchUrl } from 'src/configs/endpoints';
 
-import { profileRequestMapper } from "src/apis";
-import { getSingleProfileDataPatchUrl } from "src/configs/endpoints";
-
-import axiosInstance from "./axios";
+import axiosInstance from './axios';
 
 export const handleProfileDataSubmit = async (values, tag, id, router, userId) => {
-    const api = profileRequestMapper(tag, userId);
-   
-    let response;
-    const singleUrl = getSingleProfileDataPatchUrl(tag, id);
-    console.log(singleUrl, 'url');
-    if (tag === 'contact-info') {
-      const formData = new FormData();
-      Object.keys(values).forEach((val) => {
-        formData.append(`contact_information[${val}]`, values[val]);
-      });
-      if (id) {
-        
-        response = await await axiosInstance.patch(singleUrl, formData);
-        if (response.status === 200) {
-          router.push('/dashboard/user');
-        }
-      } else {
-        response = await api._create(formData);
-      }
-    } else if (tag === 'education-info') {
-      const formData = new FormData();
-      Object.keys(values).forEach((val) => {
-        formData.append(`education_data[${val}]`, values[val]);
-      });
-      if (id) {
-        response = await await axiosInstance.patch(singleUrl, formData);
-        if (response.status === 200) {
-          router.push('/dashboard/user');
-        }
-      } else {
-        response = await api._create(formData);
-      }
-    } else if (tag === 'employment-info') {
-      const formData = new FormData();
-      Object.keys(values).forEach((val) => {
-        formData.append(val, values[val]);
-      });
-      if (id) {
-        response = await await axiosInstance.patch(singleUrl, formData);
-        if (response.status === 200) {
-          router.push('/dashboard/user');
-        }
-      } else {
-        response = await api._create(formData);
-      }
-    } else if (tag === 'personal-info') {
-      const data = {
-        basic_info: {
-          first_name: values.first_name,
-          middle_name: values.middle_name,
-          last_name: values.last_name,
-          phone_number: values.phone_number,
-          date_of_birth: values.date_of_birth,
-          nationality: values.nationality,
-          gender: values.gender,
-          mailing_address: values.mailing_address,
-          preferred_language: values.preferred_language,
-          short_bio: values.short_bio,
-          work_authorization: "true",
-          residency_status: values.residency_status,
-          identity_number: values.identity_number,
-          profile_picture_url: values.profile_picture_url,
-          work_permit_upload_url: values.work_permit_upload_url
-        },
-      };
-        response = await api._create(data);
-        if (response.status === 200) {
-            router.push('/dashboard/user');
-        }
-      
-    } else if (tag === 'financial-info') {
-      if (id) {
-        // edit contact
-      }
-      // create contact
-    } else if (tag === 'identification-info') {
-      if (id) {
-        // edit contact
-      }
-      // create contact
-    } else if (tag === 'realestate-info') {
-      const formData = new FormData();
-      Object.keys(values).forEach((val) => {
-        formData.append(`real_estate_informations[${val}]`, values[val]);
-      });
-      if (id) {
-        response = await await axiosInstance.patch(singleUrl, formData);
-        if (response.status === 200) {
-          router.push('/dashboard/user');
-        }
-      } else {
-        response = await api._create(formData);
-      }
-    } else if (tag === 'residential-info') {
-      const formData = new FormData();
-      Object.keys(values).forEach((val) => {
-        formData.append(`residential_history[${val}]`, values[val]);
-      });
-      if (id) {
-        response = await await axiosInstance.patch(singleUrl, formData);
-        if (response.status === 200) {
-          router.push('/dashboard/user');
-        }
-      } else {
-        response = await api._create(formData);
-      }
-    }
-    return response;
+  const api = profileRequestMapper(tag, userId);
+  const singleUrl = getSingleProfileDataPatchUrl(tag, id);
+  let response;
+
+  // Helper function to create FormData
+  const createFormData = (prefix) => {
+    const formData = new FormData();
+    Object.keys(values).forEach((key) => {
+      formData.append(prefix ? `${prefix}[${key}]` : key, values[key]);
+    });
+    return formData;
   };
 
-  export const validationFieldMapper = (fields, validationSchema, Yup) => {
-    const vals = {}
-    fields.forEach((field) => {
-        vals[field.name] = field.defaultValue || '';
+  // Helper function to handle API responses
+  const handleResponse = async (apiResponse) => {
+    if (apiResponse.status === 200) {
+      router.push('/dashboard/user');
+    }
+    return apiResponse;
+  };
+
+  // Logic map for handling different tags
+  const tagHandlers = {
+    'contact-info': async () => {
+      const formData = createFormData('contact_information');
+      response = id ? await axiosInstance.patch(singleUrl, formData) : await api._create(formData);
+      return handleResponse(response);
+    },
+    'education-info': async () => {
+      const formData = createFormData('education_data');
+      response = id ? await axiosInstance.patch(singleUrl, formData) : await api._create(formData);
+      return handleResponse(response);
+    },
+    'employment-info': async () => {
+      const formData = createFormData();
+      response = id ? await axiosInstance.patch(singleUrl, formData) : await api._create(formData);
+      return handleResponse(response);
+    },
+    'personal-info': async () => {
+      const data = { basic_info: { ...values } };
+      response = await api._create(data);
+      return handleResponse(response);
+    },
+    'fin-assets': async () => {
+      const payload = { asset: { ...values } };
+      response = id ? await axiosInstance.patch(singleUrl, values) : await api._create(payload);
+      return handleResponse(response);
+    },
+    'fin-bank-details': async () => {
+      const payload = { bank_detail: { ...values } };
+      console.log(payload);
+      console.log(api);
+      response = id ? await axiosInstance.patch(singleUrl, values) : await api._create(payload);
+      return handleResponse(response);
+    },
+    'fin-liability-info': async () => {
+      const payload = { liability: { ...values } };
+      response = id ? await axiosInstance.patch(singleUrl, values) : await api._create(payload);
+      return handleResponse(response);
+    },
+    'fin-insurance-info': async () => {
+      const payload = { insurance: { ...values } };
+      response = id ? await axiosInstance.patch(singleUrl, values) : await api._create(payload);
+      return handleResponse(response);
+    },
+    'fin-investment-info': async () => {
+      const payload = { investment: { ...values } };
+      response = id ? await axiosInstance.patch(singleUrl, values) : await api._create(payload);
+      return handleResponse(response);
+    },
+    'identification-info': async () => 
+      // Implement identification-info logic here
+       handleResponse(response)
+    ,
+    'realestate-info': async () => {
+      const formData = createFormData('real_estate_informations');
+      response = id ? await axiosInstance.patch(singleUrl, formData) : await api._create(formData);
+      return handleResponse(response);
+    },
+    'residential-info': async () => {
+      const formData = createFormData('residential_history');
+      response = id ? await axiosInstance.patch(singleUrl, formData) : await api._create(formData);
+      return handleResponse(response);
+    },
+  };
+
+  // Execute the handler for the given tag
+  if (tagHandlers[tag]) {
+    return tagHandlers[tag]();
+  } 
+    console.error(`No handler for tag: ${tag}`);
   
-        if (field.name === 'phone_number') {
-          validationSchema[field.name] = Yup.string()
-            .matches(/^\d+$/, 'Phone number must be digits only')
-            .required('Phone number is required');
-        } else if (field.name === 'social_media_links' && field.type === 'social_media') {
-          vals[field.name] = Object.values(field.defaultValue).join(' ') || '';
-          validationSchema[field.name] = Yup.string()
-            .transform((value, originalValue) =>
-              typeof originalValue === 'object'
-                ? Object.values(originalValue).join(' ')
-                : originalValue
-            )
-            .required(`${field.label} is required`);
-        } else {
-          validationSchema[field.name] = Yup.string().required(`${field.label} is required`);
-        }
-      });
-      return vals
-  }
+
+  return response;
+};
+
+export const validationFieldMapper = (fields, validationSchema, Yup) => {
+  const vals = {};
+  fields.forEach((field) => {
+    vals[field.name] = field.defaultValue || '';
+
+    if (field.name === 'phone_number') {
+      validationSchema[field.name] = Yup.string()
+        .matches(/^\d+$/, 'Phone number must be digits only')
+        .required('Phone number is required');
+    } else if (field.name === 'social_media_links' && field.type === 'social_media') {
+      vals[field.name] = Object.values(field.defaultValue).join(' ') || '';
+      validationSchema[field.name] = Yup.string()
+        .transform((value, originalValue) =>
+          typeof originalValue === 'object' ? Object.values(originalValue).join(' ') : originalValue
+        )
+        .required(`${field.label} is required`);
+    } else {
+      validationSchema[field.name] = Yup.string().required(`${field.label} is required`);
+    }
+  });
+  return vals;
+};

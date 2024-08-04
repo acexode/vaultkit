@@ -46,6 +46,7 @@ export const GlobalProvider = ({ children }) => {
   };
   const handleCurrentForm = useCallback(
     (value, id=null, redirectPath) => {
+      console.log(value, 'value ');
       dispatch({ type: CURRENT_FORM, value });
       router.push(`dashboard/form?tag=${  value}&id=${id}&redirect=${redirectPath}`);
       
