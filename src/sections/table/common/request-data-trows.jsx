@@ -39,9 +39,7 @@ export default function RequestDataTRows({
   const handleCloseMenu = () => {
     setOpen(null);
   };
-  const ApproveRequest = async () => {
-    await approveRequest();
-  }
+  
   const addNoteMenu = () => {
     setOpen(null);
     handleAddNoteModal(true)
@@ -67,7 +65,7 @@ export default function RequestDataTRows({
 
         {/* <TableCell>{role}</TableCell> */}
 
-        <TableCell align="center">{`${starttime.split('T')[0]} - ${validity.split('T')[0]}`  }</TableCell>
+        <TableCell align="center">{`${starttime.split(' ')[0]} - ${validity.split(' ')[0]}`  }</TableCell>
 
         <TableCell>
         <Label 
@@ -109,10 +107,6 @@ export default function RequestDataTRows({
         <MenuItem onClick={addNoteMenu}>
           <Iconify icon="eva:file-outline" sx={{ mr: 2 }} />
           Add Note
-        </MenuItem>
-        <MenuItem onClick={ApproveRequest} sx={{ color: 'error.main' }}>
-          <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
-          Approve
         </MenuItem>
         <MenuItem onClick={handleCloseMenu} sx={{ color: 'error.main' }}>
           <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />

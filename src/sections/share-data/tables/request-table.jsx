@@ -92,15 +92,6 @@ console.log(users);
   });
   
   const notFound = !dataFiltered?.length && !!filterName;
-  // id: string;
-  // avatarUrl: string;
-  // name: string;
-  // company: string;
-  // isVerified: boolean;
-  // validity: string;
-  // status: string;
-  // role: string;
-  // notificationCount: number;
   return (
     <>
       <Scrollbar>

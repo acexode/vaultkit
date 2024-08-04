@@ -40,6 +40,9 @@ export const requestDataEndpoint = (id) => ({
     request: `${baseEndpoints.share}`,
     share: `${baseEndpoints.share}/share_data`,
     approve: `${baseEndpoints.share}/${id}/approve_request`,
+    allAccessRequest: `${baseEndpoints.share}/received_requests`,
+    allSentRequest: `${baseEndpoints.share}/sent_requests`,
+
   })
 
 export const getSingleProfileUrl = (category, id, userId) => {

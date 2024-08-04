@@ -15,6 +15,8 @@ import axiosInstance from 'src/utils/axios';
 
 import { requestDataEndpoint } from 'src/configs/endpoints';
 
+import EmptyContent from 'src/components/common/EmptyContent';
+
 import AppTasks from '../app-tasks';
 import AppWelcome from '../AppWelcome';
 import AppOrderTimeline from '../app-order-timeline';
@@ -25,6 +27,7 @@ import AppOrderTimeline from '../app-order-timeline';
 export default function AppView() {
   const {getBasicInfo, user} = useAuth()
   const [requestData, setRequestData] = useState(null);
+  
   const { enqueueSnackbar } = useSnackbar();
   useEffect(() => {
     if(user){
@@ -38,7 +41,8 @@ export default function AppView() {
     const fetchRequestData = async () => {
       try {
         const url = requestDataEndpoint(user.id)
-        const response = await axiosInstance.get(url.request)
+        const response = await axiosInstance.get(url.allAccessRequest)
+        console.log(response)
         if (response.data && response.status === 200) {
           setRequestData(response.data.slice(0,6));
         } else if (response.error) {
@@ -77,11 +81,18 @@ export default function AppView() {
 
 
         <Grid xs={12} md={6} lg={8}>
-        
-        <AppTasks
-            title="Profile Access Request"
-            list={requestData}
-          />
+        {requestData ? (
+             <AppTasks
+             title="Profile Access Request"
+             list={requestData}
+           />
+        ): (
+          <EmptyContent
+              title="You Don't Have Data Request"
+              
+            />
+        )}
+       
         </Grid>
 
         <Grid xs={12} md={6} lg={4}>

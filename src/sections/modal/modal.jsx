@@ -19,13 +19,12 @@ AlertDialog.propTypes = {
 };
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
-    // paddingTop: theme.spacing(5),
+    paddingTop: '5px',
   },
   '& .MuiDialogActions-root': {
-    // padding: theme.spacing(1),
+    padding: '5px',
   },
 }));
-
 export default function AlertDialog({title, component, open, fullWidth= false, maxWidth="md", handleClose, showClose= true}) {
   // const [open, setOpen] = React.useState(false);
 
