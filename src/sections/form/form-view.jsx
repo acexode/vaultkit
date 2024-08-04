@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import React, { useState, useEffect } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 
+import { useSnackbar } from 'notistack';
 import { useLocation } from 'react-router-dom';
 
 import {
@@ -41,7 +42,7 @@ import SocialMediaInput from './socialMediaInput';
 const MyFormComponent = ({ fields, title, url, tag }) => {
   const { user } = useAuth();
   const {handleRedirect} = useGlobalContext()
-  
+  const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
   const [initialValues, setinitialValues] = useState({});
   const validationSchema = {};
@@ -70,7 +71,7 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
  
   const handleSubmit = (values) => {
     console.log(id, user.id)
-    return handleProfileDataSubmit(values, tag, id, router, user.id)
+    return handleProfileDataSubmit(values, tag, id, router, user.id, enqueueSnackbar)
   }
 
   const formik = useFormik({

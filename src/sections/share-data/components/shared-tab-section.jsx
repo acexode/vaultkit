@@ -61,7 +61,7 @@ export default function SharedTabSection({handleViewDetails}) {
   const [value, setValue] = useState(0);
   const [selected, setSelected] = useState([]);
   const [filterName, setFilterName] = useState('');
-  // const [page, setPage] = useState(0);
+  
   const {user} = useAuth()
   const handleChange = (event, newValue) => {
     console.log(newValue);
@@ -97,7 +97,7 @@ export default function SharedTabSection({handleViewDetails}) {
     const fetchRequestData = async () => {
       try {
         const url = requestDataEndpoint(user.id)
-        const response = await axiosInstance.get(url.request)
+        const response = await axiosInstance.get(url.allSentRequest)
 
         if (response.data && response.status === 200) {
           setRequestData(response.data);

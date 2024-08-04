@@ -18,10 +18,10 @@ import Iconify from 'src/components/iconify';
 
 export default function SharedDataTRows({
   selected,
-  name,
+  title,
   company,
-  role,
-  validity,
+  email,
+  duration,
   status,
   handleClick,
   handleAddNoteModal,
@@ -53,16 +53,16 @@ export default function SharedDataTRows({
           <Stack direction="row" alignItems="center" spacing={2}>
             {/* <Avatar alt={name} src={avatarUrl} /> */}
             <Typography variant="subtitle2" noWrap>
-              {name}
+              {title}
             </Typography>
           </Stack>
         </TableCell>
 
-        <TableCell>{company}</TableCell>
+        {/* <TableCell>{company}</TableCell> */}
 
-        <TableCell>{role}</TableCell>
+        <TableCell>{email}</TableCell>
 
-        <TableCell align="center">{validity }</TableCell>
+        <TableCell align="center">{duration }</TableCell>
 
         <TableCell>
           <Label color={(status === 'expired' && 'error') || 'success'}>{status}</Label>
@@ -112,10 +112,10 @@ SharedDataTRows.propTypes = {
   handleClick: PropTypes.func,
   handleViewDetails: PropTypes.func,
   handleAddNoteModal: PropTypes.func,
-  name: PropTypes.any,
+  title: PropTypes.any,
   notificationCount: PropTypes.number,
-  validity: PropTypes.any,
-  role: PropTypes.any,
+  duration: PropTypes.any,
+  email: PropTypes.any,
   selected: PropTypes.any,
   status: PropTypes.string,
 };

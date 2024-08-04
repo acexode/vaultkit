@@ -100,10 +100,9 @@ export default function SharedTableView({filterName, selected, setSelected, hand
               onRequestSort={handleSort}
               onSelectAllClick={handleSelectAllClick}
               headLabel={[
-                { id: 'name', label: 'Access Name' },
-                { id: 'company', label: 'Access Code' },
-                { id: 'role', label: 'Guest Email' },
-                { id: 'validity', label: 'Access Validity', align: 'center' },
+                { id: 'title', label: 'Title' },
+                { id: 'email', label: 'Receiver Email' },
+                { id: 'duration', label: 'Duration', align: 'center' },
                 { id: 'status', label: 'Status' },
                 { id: '' },
               ]}
@@ -114,12 +113,12 @@ export default function SharedTableView({filterName, selected, setSelected, hand
                 .map((row) => (
                   <SharedDataTRows
                     key={row.id}
-                    name={row.name}
-                    role={row.role}
+                    title={row.title}
+                    email={row.email}
                     status={row.status}
                     company={row.company}
                     avatarUrl={row.avatarUrl}
-                    validity={row.validity}
+                    duration={row.duration}
                     selected={selected.indexOf(row.name) !== -1}
                     handleClick={(event) => handleClick(event, row.name)}
                     handleViewDetails={handleViewDetails}
