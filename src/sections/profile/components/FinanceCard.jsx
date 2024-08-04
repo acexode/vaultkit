@@ -65,7 +65,7 @@ const FinanceCard = ({ data, handleCurrentForm, path, title, redirect }) => {
     <Grid container alignItems="stretch" justifyContent="space-around">
          <ButtonGroup   variant="outlined" aria-label="Loading button group">
         {Cards.map(card => 
-            <Button onClick={()=> handleFintype(card)}>{card.title}</Button>
+            <Button variant={card.path === finType.path ? 'contained' : 'outlined'} onClick={()=> handleFintype(card)}>{card.title}</Button>
         )}
         </ButtonGroup>
       {data && data.map((d) => (
