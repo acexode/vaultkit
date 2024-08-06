@@ -15,8 +15,10 @@ import { requestDataEndpoint } from 'src/configs/endpoints';
 // import { Stack, Button } from '@mui/material';
 import TableToolbar from 'src/sections/table/user-table-toolbar';
 
-import SharedTableView from '../tables/shared-table';
 import RequestTableView from '../tables/request-table';
+import SharedDataTableView from '../tables/shared-data-table';
+import RecievedDataTableView from '../tables/recieved-data-table';
+import RecievedRequestTableView from '../tables/recieved-request-table';
 
 
 
@@ -61,7 +63,11 @@ export default function SharedTabSection({handleViewDetails}) {
   const [value, setValue] = useState(0);
   const [selected, setSelected] = useState([]);
   const [filterName, setFilterName] = useState('');
-  
+  const [requestData, setRequestData] = useState(null);
+  const [sharedData, setSharedData] = useState([]);
+  const [recievedData, setRecievedData] = useState([]);
+  const [recievedRequest, setReceivedRequest] = useState([])
+
   const {user} = useAuth()
   const handleChange = (event, newValue) => {
     console.log(newValue);
@@ -73,7 +79,7 @@ export default function SharedTabSection({handleViewDetails}) {
     setFilterName(event.target.value);
   };
 
-  const [requestData, setRequestData] = useState(null);
+  
   const { enqueueSnackbar } = useSnackbar();
   const approveRequest = async () => {
     try {
@@ -92,13 +98,82 @@ export default function SharedTabSection({handleViewDetails}) {
       console.log(error)
     }
   }
-  
+  // Shared Data 
   useEffect(() => {
     const fetchRequestData = async () => {
       try {
         const url = requestDataEndpoint(user.id)
-        const response = await axiosInstance.get(url.allSentRequest)
+        const response = await axiosInstance.get(url.sharedData)
 
+        
+        if (response.data && response.status === 200) {
+          setSharedData(response.data);
+        } else if (response.error) {
+          enqueueSnackbar(response.error.message, {
+            autoHideDuration: 1000,
+            anchorOrigin: {
+              vertical: 'top',
+              horizontal: 'right',
+            },
+            variant: 'error',
+          });
+        }
+      } catch (error) {
+        console.log(error);
+        enqueueSnackbar('An error occurred while fetching data.', {
+          autoHideDuration: 1000,
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'right',
+          },
+          variant: 'error',
+        });
+      }
+    };
+    fetchRequestData();
+  }, [enqueueSnackbar, setRequestData, user.id]);
+  
+  // Recieved Data
+  useEffect(() => {
+    const fetchRequestData = async () => {
+      try {
+        const url = requestDataEndpoint(user.id)
+        const response = await axiosInstance.get(url.recievedData)
+
+        console.log(response, "recieved Data")
+        if (response.data && response.status === 200) {
+          setRecievedData(response.data);
+        } else if (response.error) {
+          enqueueSnackbar(response.error.message, {
+            autoHideDuration: 1000,
+            anchorOrigin: {
+              vertical: 'top',
+              horizontal: 'right',
+            },
+            variant: 'error',
+          });
+        }
+      } catch (error) {
+        console.log(error);
+        enqueueSnackbar('An error occurred while fetching data.', {
+          autoHideDuration: 1000,
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'right',
+          },
+          variant: 'error',
+        });
+      }
+    };
+    fetchRequestData();
+  }, [enqueueSnackbar, setRequestData, user.id]);
+  // Data Request
+  useEffect(() => {
+    const fetchRequestData = async () => {
+      try {
+        const url = requestDataEndpoint(user.id)
+        const response = await axiosInstance.get(url.sentDataRequest)
+        console.log(response, "data request")
         if (response.data && response.status === 200) {
           setRequestData(response.data);
         } else if (response.error) {
@@ -126,7 +201,40 @@ export default function SharedTabSection({handleViewDetails}) {
     fetchRequestData();
   }, [enqueueSnackbar, setRequestData, user.id]);
 
-
+  // Recieved Request
+  useEffect(() => {
+    const fetchRequestData = async () => {
+      try {
+        const url = requestDataEndpoint(user.id)
+        const response = await axiosInstance.get(url.recievedDataRequest)
+        
+        if (response.data && response.status === 200) {
+          setReceivedRequest(response.data);
+        } else if (response.error) {
+          enqueueSnackbar(response.error.message, {
+            autoHideDuration: 1000,
+            anchorOrigin: {
+              vertical: 'top',
+              horizontal: 'right',
+            },
+            variant: 'error',
+          });
+        }
+      } catch (error) {
+        console.log(error);
+        enqueueSnackbar('An error occurred while fetching data.', {
+          autoHideDuration: 1000,
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'right',
+          },
+          variant: 'error',
+        });
+      }
+    };
+    fetchRequestData();
+  }, [enqueueSnackbar, setRequestData, user.id]);
+  
   return (
     <Box sx={{ width: '100%' }}>
       <TableToolbar
@@ -142,22 +250,25 @@ export default function SharedTabSection({handleViewDetails}) {
           scrollButtons="auto"
           aria-label="basic tabs example"
         >
-          <Tab label="Data Requests" {...a11yProps(0)} />
-          <Tab label="Shared Data" {...a11yProps(1)} />
-          <Tab label="Saved Categories" {...a11yProps(2)} />
-
+          <Tab label="Shared Data" {...a11yProps(0)} />
+          <Tab label="Recieved Data" {...a11yProps(1)} />
+          <Tab label="Sent Data Requests" {...a11yProps(2)} />
+          <Tab label="Recieved Data Request" {...a11yProps(3)} />
+          <Tab label="Saved Categories" {...a11yProps(4)} />
         </Tabs>
 
         <CustomTabPanel value={value} index={0}>
-            <RequestTableView requestData={requestData} approveRequest={approveRequest} filterName={filterName} selected={selected} setSelected={setSelected} handleViewDetails={handleViewDetails} />
+          <SharedDataTableView sharedData={sharedData} approveRequest={approveRequest} filterName={filterName} selected={selected} setSelected={setSelected} handleViewDetails={handleViewDetails} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-        <SharedTableView filterName={filterName} selected={selected} setSelected={setSelected} handleViewDetails={handleViewDetails} />
+          <RecievedDataTableView recievedData={recievedData} filterName={filterName} selected={selected} setSelected={setSelected} handleViewDetails={handleViewDetails} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
-        <SharedTableView filterName={filterName} selected={selected} setSelected={setSelected} handleViewDetails={handleViewDetails} />
+          <RequestTableView requestData={requestData} approveRequest={approveRequest} filterName={filterName} selected={selected} setSelected={setSelected} handleViewDetails={handleViewDetails} />
         </CustomTabPanel>
-
+        <CustomTabPanel value={value} index={3}>
+          <RecievedRequestTableView recievedRequest={recievedRequest} approveRequest={approveRequest} filterName={filterName} selected={selected} setSelected={setSelected} handleViewDetails={handleViewDetails} />
+        </CustomTabPanel>
        
       </Box>
 

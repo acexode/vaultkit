@@ -96,7 +96,7 @@ export default function ShareView({ handleCloseModal }) {
     finInfo: 'financial',
     idInfo: 'identification',
     resInfo: 'residential',
-    reInfo: 'real_estate',
+    reInfo: 'realestate',
   };
 
   const handleChange = (event, newValue) => {
