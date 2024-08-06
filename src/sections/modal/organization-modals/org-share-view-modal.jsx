@@ -169,7 +169,7 @@ export default function OrgShareView({ handleCloseModal, employees }) {
       }
     },
   });
-
+  // console.log("")
   const getDisabled = () => (
       formik.values.title === '' ||
       formik.values.receiver_email === '' ||
