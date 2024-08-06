@@ -44,7 +44,7 @@ export default function AppTasks({ title, subheader, list, ...other }) {
     <Card {...other}>
       <CardHeader title={title} subheader={subheader} />
       {list?.map((task) => {
-        console.log(`Rendering TaskItem: ${task.id} - ${task.title}`);
+        console.log(``);
         return (
           <TaskItem
             key={task.id}

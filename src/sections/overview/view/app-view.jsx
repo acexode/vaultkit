@@ -27,7 +27,7 @@ import AppOrderTimeline from '../app-order-timeline';
 export default function AppView() {
   const {getBasicInfo, user} = useAuth()
   const [requestData, setRequestData] = useState(null);
-  
+  console.log(requestData)
   const { enqueueSnackbar } = useSnackbar();
   useEffect(() => {
     if(user){
@@ -41,8 +41,8 @@ export default function AppView() {
     const fetchRequestData = async () => {
       try {
         const url = requestDataEndpoint(user.id)
-        const response = await axiosInstance.get(url.allAccessRequest)
-       
+        const response = await axiosInstance.get(url.recievedDataRequest)
+        console.log(response)
         if (response.data && response.status === 200) {
           setRequestData(response.data);
         } else if (response.error) {
