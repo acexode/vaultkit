@@ -258,7 +258,7 @@ export default function SharedTabSection({handleViewDetails}) {
         </Tabs>
 
         <CustomTabPanel value={value} index={0}>
-          {/* <SharedDataTableView sharedData={sharedData} approveRequest={approveRequest} filterName={filterName} selected={selected} setSelected={setSelected} handleViewDetails={handleViewDetails} /> */}
+          <SharedDataTableView sharedData={sharedData} approveRequest={approveRequest} filterName={filterName} selected={selected} setSelected={setSelected} handleViewDetails={handleViewDetails} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           <RecievedDataTableView recievedData={recievedData} filterName={filterName} selected={selected} setSelected={setSelected} handleViewDetails={handleViewDetails} />

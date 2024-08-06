@@ -95,9 +95,21 @@ export const getSingleProfileDataPatchUrl = (category, id) => {
     case 'personal-info':
       api = `${baseEndpoints.profile}/${id}`;
       break;
-    case 'financial-info':
-      api = `${baseEndpoints.profile}/finanacial_informations/${id}`;
-      break;
+      case 'fin-assets':
+        api = `${baseEndpoints.profiles}/financial_base/assets/${id}`
+        break;
+    case 'fin-insurance-info':
+         api = `${baseEndpoints.profiles}/financial_base/insurances/${id}`
+        break;
+    case 'fin-investment-info':
+        api = `${baseEndpoints.profiles}/financial_base/investments/${id}`
+        break;
+    case 'fin-liability-info':
+        api = `${baseEndpoints.profiles}/financial_base/liabilities/${id}`
+        break;
+    case 'fin-bank-details':
+        api = `${baseEndpoints.profiles}/financial_base/bank_details/${id}`
+        break;
     case 'identification-info':
       api = `${baseEndpoints.profile}/identification_informations/${id}`;
       break;

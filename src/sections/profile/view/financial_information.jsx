@@ -8,7 +8,7 @@ import useAuth from 'src/hooks/useAuth';
 import { profileAPIs } from 'src/apis';
 import { useGlobalContext } from 'src/context/context';
 
-import ListCard from '../components/ListCard';
+import FinanceCard from '../components/FinanceCard';
 
 const FinancialInfo = () => {
   
@@ -47,7 +47,7 @@ useEffect(() => {
 
   return (
     <Container>
-      <ListCard handleCurrentForm={handleCurrentForm} path="financial-info" redirect={4} data={data} title="Financial Info" />
+      <FinanceCard handleCurrentForm={handleCurrentForm} path="financial-info" redirect={4} data={data} title="Financial Info" />
     </Container>
   );
 };

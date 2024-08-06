@@ -953,6 +953,101 @@ export const ResidentialHistory = [
   },
 ];
 
+export const BankDetailsInfo = [
+  { label: 'Name', name: 'name', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Email', name: 'email', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Bank Name', name: 'bank_name', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Account Number', name: 'account_number', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Ifsc Code', name: 'ifsc_code', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Institution Number', name: 'institution_number', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Branch Number', name: 'branch_number', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Transit Number', name: 'transit_number', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Address', name: 'address', type: 'text', defaultValue: '', isForm: true },
+  { label: 'City', name: 'city', type: 'text', defaultValue: '', isForm: true },
+  { label: 'State', name: 'state', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Country', name: 'country', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Postal Code', name: 'postal_code', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Currency', name: 'currency', type: 'text', defaultValue: '', isForm: true }
+]
+export const LiabilityInfo = [
+  { label: 'Description', name: 'description', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Amount', name: 'amount', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Interest Rate', name: 'interest_rate', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Currency', name: 'currency', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Payment Frequency', name: 'payment_frequency', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Start Date', name: 'start_date', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Due Date', name: 'due_date', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Creditor Name', name: 'creditor_name', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Creditor Contact Info', name: 'creditor_contact_info', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Collateral Type', name: 'collateral_type', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Collateral Value', name: 'collateral_value', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Collateral Currency', name: 'collateral_currency', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Collateral Location', name: 'collateral_location', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Is Liquid', name: 'is_liquid', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Is Revolving', name: 'is_revolving', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Is Joint', name: 'is_joint', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Status', name: 'status', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Notes', name: 'notes', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Liability Type', name: 'liability_type', type: 'text', defaultValue: '', isForm: true }
+]
+
+export const AssetsInfo = [
+  { label: 'Asset Type', name: 'asset_type', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Description', name: 'description', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Value', name: 'value', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Currency', name: 'currency', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Purchase Date', name: 'purchase_date', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Location', name: 'location', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Is Liquid', name: 'is_liquid', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Ownership Status', name: 'ownership_status', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Serial Number', name: 'serial_number', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Notes', name: 'notes', type: 'text', defaultValue: '', isForm: true }
+]
+
+export const InvestmentInfo = [
+  { label: 'Name', name: 'name', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Investment Type', name: 'investment_type', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Description', name: 'description', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Value', name: 'value', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Currency', name: 'currency', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Purchase Date', name: 'purchase_date', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Location', name: 'location', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Is Liquid', name: 'is_liquid', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Ownership Status', name: 'ownership_status', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Serial Number', name: 'serial_number', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Notes', name: 'notes', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Investment Category', name: 'investment_category', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Investment Sub Category', name: 'investment_sub_category', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Investment Risk', name: 'investment_risk', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Annual Investment Return', name: 'annual_investment_return', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Investment Liquidity', name: 'investment_liquidity', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Investment Taxation', name: 'investment_taxation', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Investment Time Horizon', name: 'investment_time_horizon', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Investment Goal', name: 'investment_goal', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Investment Account Type', name: 'investment_account_type', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Investment Account Number', name: 'investment_account_number', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Investment Account Holder', name: 'investment_account_holder', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Investment Account Status', name: 'investment_account_status', type: 'text', defaultValue: '', isForm: true }
+]
+
+export const InsuranceInfo = [
+  { label: 'Insurance Type', name: 'insurance_type', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Provider Name', name: 'provider_name', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Policy Number', name: 'policy_number', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Coverage Type', name: 'coverage_type', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Start Date', name: 'start_date', type: 'text', defaultValue: '', isForm: true },
+  { label: 'End Date', name: 'end_date', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Network Type', name: 'network_type', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Premium Amount', name: 'premium_amount', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Currency', name: 'currency', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Notes', name: 'notes', type: 'text', defaultValue: '', isForm: true }
+]
+
+
+
+
+
+
 const getLabels = (arr) => arr.map((e) => ({label: e.label, name: e.name}));
 
 export const getFormFields = (slug, id) => {
@@ -972,8 +1067,20 @@ export const getFormFields = (slug, id) => {
     case 'employment-info':
       data = { form: EmployeeInfo, title: 'Employment Info', url: path.empInfo };
       break;
-    case 'financial-info':
-      data = { form: FinancialInfo, title: 'Financial Info', url: path.finInfo };
+    case 'fin-bank-details':
+      data = { form: BankDetailsInfo, title: 'Bank Details Info', url: path.finInfo };
+      break;
+    case 'fin-liability-info':
+      data = { form: LiabilityInfo, title: 'Liability Info', url: path.finInfo };
+      break;
+    case 'fin-assets':
+      data = { form: AssetsInfo, title: 'Assets Info', url: path.finInfo };
+      break;
+    case 'fin-insurance-info':
+      data = { form: InsuranceInfo, title: 'Insurance Info', url: path.finInfo };
+      break;
+    case 'fin-investment-info':
+      data = { form: InvestmentInfo, title: 'Investment Info', url: path.finInfo };
       break;
     case 'identification-info':
       data = {
