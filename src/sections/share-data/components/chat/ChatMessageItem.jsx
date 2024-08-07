@@ -48,7 +48,7 @@ ChatMessageItem.propTypes = {
 
 export default function ChatMessageItem({ message, conversation, ...other }) {
 //   console.log(conversation);
-  console.log(message);
+  // console.log(message);
   const sender = conversation.participants.find((participant) => participant.id === message.senderId);
   const senderDetails =
     message.senderId === '8864c717-587d-472a-929a-8e5f298024da-0'

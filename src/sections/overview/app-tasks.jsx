@@ -41,7 +41,7 @@ export default function AppTasks({ title, subheader, list, ...other }) {
   };
 
   return (
-    <Card {...other}>
+    <Card sx={{height: '100%'}} {...other}>
       <CardHeader title={title} subheader={subheader} />
       {list?.map((task) => {
         console.log(``);

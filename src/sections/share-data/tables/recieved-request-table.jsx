@@ -6,8 +6,6 @@ import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
-import { users } from 'src/_mock/user';
-
 import Scrollbar from 'src/components/scrollbar';
 
 import TableNoData from 'src/sections/table/table-no-data';
@@ -21,17 +19,20 @@ import { emptyRows, applyFilter, getComparator } from '../../user/utils';
 
 // ----------------------------------------------------------------------
 
-export default function RecievedRequestTableView({filterName, selected, setSelected, handleViewDetails, recievedRequest, approveRequest}) {
+export default function RecievedRequestTableView({
+  filterName,
+  selected,
+  setSelected,
+  handleViewDetails,
+  recievedRequest,
+  approveRequest,
+}) {
   const [page, setPage] = useState(0);
-  const [showAddNote, setshowAddNote] = useState(false)
-
-
+  const [showAddNote, setshowAddNote] = useState(false);
 
   const [order, setOrder] = useState('asc');
 
-
   const [orderBy, setOrderBy] = useState('title');
-
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -45,7 +46,7 @@ export default function RecievedRequestTableView({filterName, selected, setSelec
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = users.map((n) => n.name);
+      const newSelecteds = recievedRequest.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -82,14 +83,12 @@ export default function RecievedRequestTableView({filterName, selected, setSelec
     setshowAddNote(!showAddNote);
   };
 
-
-
   const dataFiltered = applyFilter({
     inputData: recievedRequest,
     comparator: getComparator(order, orderBy),
     filterName,
   });
-  
+
   const notFound = !dataFiltered?.length && !!filterName;
   return (
     <>
@@ -99,7 +98,7 @@ export default function RecievedRequestTableView({filterName, selected, setSelec
             <CommonTableHead
               order={order}
               orderBy={orderBy}
-              rowCount={users.length}
+              rowCount={recievedRequest.length}
               numSelected={selected.length}
               onRequestSort={handleSort}
               onSelectAllClick={handleSelectAllClick}
@@ -134,34 +133,38 @@ export default function RecievedRequestTableView({filterName, selected, setSelec
                   />
                 ))}
 
-              <TableEmptyRows height={77} emptyRows={emptyRows(page, rowsPerPage, users.length)} />
+              <TableEmptyRows
+                height={77}
+                emptyRows={emptyRows(page, rowsPerPage, recievedRequest.length)}
+              />
 
               {notFound && <TableNoData query={filterName} />}
             </TableBody>
           </Table>
         </TableContainer>
       </Scrollbar>
-
-      <TablePagination
-        page={page}
-        component="div"
-        count={users.length}
-        rowsPerPage={rowsPerPage}
-        onPageChange={handleChangePage}
-        rowsPerPageOptions={[5, 10, 25]}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      {recievedRequest.length > rowsPerPage && (
+        <TablePagination
+          page={page}
+          component="div"
+          count={recievedRequest.length}
+          rowsPerPage={rowsPerPage}
+          onPageChange={handleChangePage}
+          rowsPerPageOptions={[5, 10, 25]}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      )}
       <AddNotes open={showAddNote} setOpen={handleAddNoteModal} />
-            {/* <AlertDialog  maxWidth="lg" title="Generate Access Code" component={<SavedSuccessModal handleCloseModal={handleSharedModal} />} open={showAddNote} /> */}
+      {/* <AlertDialog  maxWidth="lg" title="Generate Access Code" component={<SavedSuccessModal handleCloseModal={handleSharedModal} />} open={showAddNote} /> */}
     </>
   );
 }
-  
+
 RecievedRequestTableView.propTypes = {
-    filterName: PropTypes.string,
-    selected: PropTypes.array,
-    setSelected: PropTypes.func,
-    approveRequest: PropTypes.func,
-    handleViewDetails: PropTypes.func,
-    recievedRequest: PropTypes.array,
-  };
+  filterName: PropTypes.string,
+  selected: PropTypes.array,
+  setSelected: PropTypes.func,
+  approveRequest: PropTypes.func,
+  handleViewDetails: PropTypes.func,
+  recievedRequest: PropTypes.array,
+};

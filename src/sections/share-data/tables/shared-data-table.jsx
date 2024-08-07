@@ -6,8 +6,6 @@ import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
-import { users } from 'src/_mock/user';
-
 import Scrollbar from 'src/components/scrollbar';
 
 import TableNoData from 'src/sections/table/table-no-data';
@@ -21,18 +19,20 @@ import { emptyRows, applyFilter, getComparator } from '../../user/utils';
 
 // ----------------------------------------------------------------------
 
-export default function SharedDataTableView({filterName, selected, setSelected, handleViewDetails, sharedData, approveRequest}) {
- 
+export default function SharedDataTableView({
+  filterName,
+  selected,
+  setSelected,
+  handleViewDetails,
+  sharedData,
+  approveRequest,
+}) {
   const [page, setPage] = useState(0);
-  const [showAddNote, setshowAddNote] = useState(false)
-
-
+  const [showAddNote, setshowAddNote] = useState(false);
 
   const [order, setOrder] = useState('asc');
 
-
   const [orderBy, setOrderBy] = useState('title');
-
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -46,7 +46,7 @@ export default function SharedDataTableView({filterName, selected, setSelected, 
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = users.map((n) => n.name);
+      const newSelecteds = sharedData.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -83,14 +83,14 @@ export default function SharedDataTableView({filterName, selected, setSelected, 
     setshowAddNote(!showAddNote);
   };
 
-console.log(users);
+  console.log(sharedData);
 
   const dataFiltered = applyFilter({
     inputData: sharedData,
     comparator: getComparator(order, orderBy),
     filterName,
   });
-  
+
   const notFound = !dataFiltered?.length && !!filterName;
   return (
     <>
@@ -100,7 +100,7 @@ console.log(users);
             <CommonTableHead
               order={order}
               orderBy={orderBy}
-              rowCount={users.length}
+              rowCount={sharedData.length}
               numSelected={selected.length}
               onRequestSort={handleSort}
               onSelectAllClick={handleSelectAllClick}
@@ -135,7 +135,10 @@ console.log(users);
                   />
                 ))}
 
-              <TableEmptyRows height={77} emptyRows={emptyRows(page, rowsPerPage, users.length)} />
+              <TableEmptyRows
+                height={77}
+                emptyRows={emptyRows(page, rowsPerPage, sharedData.length)}
+              />
 
               {notFound && <TableNoData query={filterName} />}
             </TableBody>
@@ -143,26 +146,28 @@ console.log(users);
         </TableContainer>
       </Scrollbar>
 
-      <TablePagination
-        page={page}
-        component="div"
-        count={users.length}
-        rowsPerPage={rowsPerPage}
-        onPageChange={handleChangePage}
-        rowsPerPageOptions={[5, 10, 25]}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      {sharedData.length > rowsPerPage && (
+        <TablePagination
+          page={page}
+          component="div"
+          count={sharedData.length}
+          rowsPerPage={rowsPerPage}
+          onPageChange={handleChangePage}
+          rowsPerPageOptions={[5, 10, 25]}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      )}
       <AddNotes open={showAddNote} setOpen={handleAddNoteModal} />
-            {/* <AlertDialog  maxWidth="lg" title="Generate Access Code" component={<SavedSuccessModal handleCloseModal={handleSharedModal} />} open={showAddNote} /> */}
+      {/* <AlertDialog  maxWidth="lg" title="Generate Access Code" component={<SavedSuccessModal handleCloseModal={handleSharedModal} />} open={showAddNote} /> */}
     </>
   );
 }
-  
+
 SharedDataTableView.propTypes = {
-    filterName: PropTypes.string,
-    selected: PropTypes.array,
-    setSelected: PropTypes.func,
-    approveRequest: PropTypes.func,
-    handleViewDetails: PropTypes.func,
-    sharedData: PropTypes.array,
-  };
+  filterName: PropTypes.string,
+  selected: PropTypes.array,
+  setSelected: PropTypes.func,
+  approveRequest: PropTypes.func,
+  handleViewDetails: PropTypes.func,
+  sharedData: PropTypes.array,
+};

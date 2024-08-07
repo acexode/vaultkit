@@ -6,8 +6,6 @@ import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
-import { users } from 'src/_mock/user';
-
 import Scrollbar from 'src/components/scrollbar';
 
 import TableNoData from 'src/sections/table/table-no-data';
@@ -21,8 +19,7 @@ import { emptyRows, applyFilter, getComparator } from '../../user/utils';
 
 // ----------------------------------------------------------------------
 
-export default function RequestTableView({filterName, selected, setSelected, handleViewDetails, requestData, approveRequest}) {
-  console.log(requestData, "dfkdskl")
+export default function SentRequestTableView({filterName, selected, setSelected, handleViewDetails, sentrequest, approveRequest}) {
   const [page, setPage] = useState(0);
   const [showAddNote, setshowAddNote] = useState(false)
 
@@ -46,7 +43,7 @@ export default function RequestTableView({filterName, selected, setSelected, han
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = users.map((n) => n.name);
+      const newSelecteds = sentrequest.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -83,10 +80,8 @@ export default function RequestTableView({filterName, selected, setSelected, han
     setshowAddNote(!showAddNote);
   };
 
-console.log(users);
-
   const dataFiltered = applyFilter({
-    inputData: requestData,
+    inputData: sentrequest,
     comparator: getComparator(order, orderBy),
     filterName,
   });
@@ -100,7 +95,7 @@ console.log(users);
             <CommonTableHead
               order={order}
               orderBy={orderBy}
-              rowCount={users.length}
+              rowCount={sentrequest.length}
               numSelected={selected.length}
               onRequestSort={handleSort}
               onSelectAllClick={handleSelectAllClick}
@@ -135,34 +130,36 @@ console.log(users);
                   />
                 ))}
 
-              <TableEmptyRows height={77} emptyRows={emptyRows(page, rowsPerPage, users.length)} />
+              <TableEmptyRows height={77} emptyRows={emptyRows(page, rowsPerPage, sentrequest.length)} />
 
               {notFound && <TableNoData query={filterName} />}
             </TableBody>
           </Table>
         </TableContainer>
       </Scrollbar>
-
-      <TablePagination
-        page={page}
-        component="div"
-        count={users.length}
-        rowsPerPage={rowsPerPage}
-        onPageChange={handleChangePage}
-        rowsPerPageOptions={[5, 10, 25]}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      {sentrequest.length > rowsPerPage && (
+        <TablePagination
+          page={page}
+          component="div"
+          count={sentrequest.length}
+          rowsPerPage={rowsPerPage}
+          onPageChange={handleChangePage}
+          rowsPerPageOptions={[5, 10, 25]}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />)
+        
+      }
       <AddNotes open={showAddNote} setOpen={handleAddNoteModal} />
             {/* <AlertDialog  maxWidth="lg" title="Generate Access Code" component={<SavedSuccessModal handleCloseModal={handleSharedModal} />} open={showAddNote} /> */}
     </>
   );
 }
   
-RequestTableView.propTypes = {
+SentRequestTableView.propTypes = {
     filterName: PropTypes.string,
     selected: PropTypes.array,
     setSelected: PropTypes.func,
     approveRequest: PropTypes.func,
     handleViewDetails: PropTypes.func,
-    requestData: PropTypes.array,
+    sentrequest: PropTypes.array,
   };

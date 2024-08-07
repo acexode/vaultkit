@@ -211,7 +211,7 @@ export default function OrgShareView({ handleCloseModal, employees }) {
             flexGrow: 1,
             bgcolor: 'background.paper',
             display: 'flex',
-            height: 450,
+            minHeight: 450,
             flexDirection: isMobile ? 'column' : 'horizontal',
           }}
         >

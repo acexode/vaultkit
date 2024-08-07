@@ -9,6 +9,8 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
 import { useState, useEffect } from 'react';
 
+import { Card } from '@mui/material';
+
 import useAuth from 'src/hooks/useAuth';
 
 import axiosInstance from 'src/utils/axios';
@@ -21,28 +23,26 @@ import AppTasks from '../app-tasks';
 import AppWelcome from '../AppWelcome';
 import AppOrderTimeline from '../app-order-timeline';
 
-
 // ----------------------------------------------------------------------
 
 export default function AppView() {
-  const {getBasicInfo, user} = useAuth()
+  const { getBasicInfo, user } = useAuth();
   const [requestData, setRequestData] = useState(null);
-  console.log(requestData)
+  console.log(requestData);
   const { enqueueSnackbar } = useSnackbar();
   useEffect(() => {
-    if(user){
-      getBasicInfo()
+    if (user) {
+      getBasicInfo();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const fetchRequestData = async () => {
       try {
-        const url = requestDataEndpoint(user.id)
-        const response = await axiosInstance.get(url.recievedDataRequest)
-        console.log(response)
+        const url = requestDataEndpoint(user.id);
+        const response = await axiosInstance.get(url.sentDataRequest);
+        console.log(response);
         if (response.data && response.status === 200) {
           setRequestData(response.data);
         } else if (response.error) {
@@ -72,27 +72,20 @@ export default function AppView() {
 
   return (
     <Container maxWidth="xl">
-
-      <Grid container spacing={3}>
-      <Grid item xs={12} md={12}>
-            <AppWelcome displayName={user?.basic?.first_name} />
-          </Grid>
-
-
-
-        <Grid xs={12} md={6} lg={8}>
-        {requestData ? (
-             <AppTasks
-             title="Profile Access Request"
-             list={requestData}
-           />
-        ): (
-          <EmptyContent
-              title="You Don't Have Data Request"
-              
-            />
-        )}
-       
+      <Grid container spacing={3} alignItems="stretch">
+        <Grid item xs={12} md={12} >
+          <AppWelcome displayName={user?.basic?.first_name} />
+        </Grid>
+      </Grid>
+      <Grid container spacing={3} alignItems="stretch">
+        <Grid xs={12} md={6} lg={8} >
+          {requestData && requestData.length > 0 ? (
+            <AppTasks title="Profile Access Request" list={requestData} />
+          ) : (
+            <Card sx={{height: '100%'}}>
+              <EmptyContent title="You Don't Have Data Request" />
+            </Card>
+          )}
         </Grid>
 
         <Grid xs={12} md={6} lg={4}>
@@ -111,8 +104,6 @@ export default function AppView() {
             }))}
           />
         </Grid>
-
-
       </Grid>
     </Container>
   );
