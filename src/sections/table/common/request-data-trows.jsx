@@ -100,7 +100,7 @@ export default function RequestDataTRows({
           sx: { width: 140 },
         }}
       >
-        <MenuItem onClick={()=> handleViewDetails('data-details')}>
+        <MenuItem onClick={()=> handleViewDetails()}>
           <Iconify icon="eva:eye-outline" sx={{ mr: 2 }} />
           View
         </MenuItem>
