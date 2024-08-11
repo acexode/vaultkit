@@ -6,12 +6,15 @@ import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
+import useDialogState from 'src/routes/hooks/useSharedData';
+
 import Scrollbar from 'src/components/scrollbar';
 
 import TableNoData from 'src/sections/table/table-no-data';
 import CommonTableHead from 'src/sections/table/user-table-head';
 import TableEmptyRows from 'src/sections/table/table-empty-rows';
 
+import DataDetails from '../view-data';
 // import AlertDialog from '../modal/modal';
 import AddNotes from '../components/chat/AddNotes';
 import RequestDataTRows from '../../table/common/request-data-trows';
@@ -23,13 +26,21 @@ export default function RecievedRequestTableView({
   filterName,
   selected,
   setSelected,
-  handleViewDetails,
   recievedRequest,
   approveRequest,
 }) {
   const [page, setPage] = useState(0);
   const [showAddNote, setshowAddNote] = useState(false);
-
+  const [selectedRowData, setSelectedRowData] = useState(null);
+  const { openDialog, closeDialog, isDialogOpen } = useDialogState();
+  const card = {
+     assignee: [
+      {
+          "id": "473d2720-341c-49bf-94ed-556999cf6ef7",
+          "avatar": "/static/mock-images/avatars/avatar_2.jpg",
+          "name": "Soren Durham"
+      }
+  ],}
   const [order, setOrder] = useState('asc');
 
   const [orderBy, setOrderBy] = useState('title');
@@ -88,7 +99,10 @@ export default function RecievedRequestTableView({
     comparator: getComparator(order, orderBy),
     filterName,
   });
-
+  const handleViewDetails = (row) => {
+    setSelectedRowData(row); 
+    openDialog('data-details'); 
+  }
   const notFound = !dataFiltered?.length && !!filterName;
   return (
     <>
@@ -128,7 +142,7 @@ export default function RecievedRequestTableView({
                     handleClick={(event) => handleClick(event, row.name)}
                     handleAddNoteModal={handleAddNoteModal}
                     notificationCount={row.notificationCount}
-                    handleViewDetails={handleViewDetails}
+                    handleViewDetails={() => handleViewDetails(row)}
                     approveRequest={approveRequest}
                   />
                 ))}
@@ -155,6 +169,7 @@ export default function RecievedRequestTableView({
         />
       )}
       <AddNotes open={showAddNote} setOpen={handleAddNoteModal} />
+      <DataDetails isOpen={isDialogOpen('data-details')} card={card} data={selectedRowData} onClose={closeDialog} />
       {/* <AlertDialog  maxWidth="lg" title="Generate Access Code" component={<SavedSuccessModal handleCloseModal={handleSharedModal} />} open={showAddNote} /> */}
     </>
   );
@@ -165,6 +180,5 @@ RecievedRequestTableView.propTypes = {
   selected: PropTypes.array,
   setSelected: PropTypes.func,
   approveRequest: PropTypes.func,
-  handleViewDetails: PropTypes.func,
   recievedRequest: PropTypes.array,
 };

@@ -29,6 +29,7 @@ DataDetails.propTypes = {
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
   card: PropTypes.object,
+  data: PropTypes.object
 };
 
 const LabelStyle = styled(Typography)(({ theme }) => ({
@@ -41,15 +42,15 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function DataDetails({ card, isOpen, onClose }) {
-  const [taskCompleted, setTaskCompleted] = useState(card.completed);
+export default function DataDetails({ card, isOpen, onClose, data }) {
+  const [taskCompleted, setTaskCompleted] = useState(false);
 
-  const { name, description, assignee } = card;
+  const { assignee } = card;
 
   const handleToggleCompleted = () => {
     setTaskCompleted((prev) => !prev);
   };
-  console.log(isOpen);
+ 
 
   return (
     <Drawer
@@ -85,7 +86,7 @@ export default function DataDetails({ card, isOpen, onClose }) {
             multiline
             size="small"
             placeholder="Task name"
-            value={name}
+            value={data?.title}
             sx={{
               typography: 'h6',
               '& .MuiOutlinedInput-notchedOutline': { borderColor: 'transparent' },
@@ -107,7 +108,7 @@ export default function DataDetails({ card, isOpen, onClose }) {
 
           <Stack direction="row" alignItems="center">
             <LabelStyle> Due date</LabelStyle>
-            <LabelStyle> 21 - 22 Jun</LabelStyle>
+            <LabelStyle> {data?.end_time.split(" ")[0]}</LabelStyle>
           </Stack>
 
           <Stack direction="row">
@@ -118,7 +119,7 @@ export default function DataDetails({ card, isOpen, onClose }) {
               rows={3}
               size="small"
               placeholder="Task name"
-              value={description}
+              value={data?.title}
               sx={{ typography: 'body2' }}
             />
           </Stack>

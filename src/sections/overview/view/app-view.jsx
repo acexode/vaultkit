@@ -42,7 +42,7 @@ export default function AppView() {
       try {
         const url = requestDataEndpoint(user.id);
         const response = await axiosInstance.get(url.sentDataRequest);
-        console.log(response);
+       
         if (response.data && response.status === 200) {
           setRequestData(response.data);
         } else if (response.error) {
