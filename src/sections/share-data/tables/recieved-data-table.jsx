@@ -36,8 +36,6 @@ export default function RecievedDataTableView({
   const { openDialog, closeDialog, isDialogOpen } = useDialogState();
   const [order, setOrder] = useState('asc');
   const card = {
-    name: 'lorem ipsum dolor',
-     description: 'Basic Info, Contact Info, Employment Info, Education Info',
      assignee: [
       {
           "id": "473d2720-341c-49bf-94ed-556999cf6ef7",
