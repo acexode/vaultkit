@@ -62,6 +62,7 @@ RequestDataView.propTypes = {
 export default function RequestDataView({ handleClose }) {
   const {user} = useAuth()
   const [selectedCategory, setselectedCategory] = useState([]);
+  const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const validationSchema = Yup.object({
     email: Yup.string().email('Invalid email address').required('Email is required'),
@@ -97,6 +98,7 @@ export default function RequestDataView({ handleClose }) {
      
     
       try {
+        setLoading(true)
         const url = requestDataEndpoint(user.id)
         const response = await axiosInstance.post(url.request, data);
         if(response.status === 200){
@@ -105,7 +107,9 @@ export default function RequestDataView({ handleClose }) {
           });
           handleClose('request-data-view')
         }
+        setLoading(false)
       } catch (error) {
+        setLoading(false)
         if(error.response && error.response.status === 422){
           enqueueSnackbar(error.response.data.error, {
             variant: 'error',
@@ -201,6 +205,7 @@ export default function RequestDataView({ handleClose }) {
           size="large"
           type="submit"
           variant="contained"
+          loading={loading}
         >
           Request Data
         </LoadingButton>

@@ -34,11 +34,22 @@ const formatDate = (dateString) => {
   return `${year}-${month}-${day}`;
 };
 
+function mapShareableTypes(arrayOfObjects) {
+  return arrayOfObjects?.map((obj) => {
+    if (obj.shareable_type === 'ContactInformation') {
+      return 'Contact';
+    } if (obj.shareable_type === 'EmploymentHistory') {
+      return 'Employment';
+    }
+    return obj.shareable_type; 
+  });
+}
 
 
-const ViewRequest = ({ data }) => {
+const ViewRequest = ({ data, handleCloseModal }) => {
  
   const [loading, setLoading] = useState()
+  const types = mapShareableTypes(data?.shareable_informations)
   
   const { enqueueSnackbar } = useSnackbar();
   const approveRequest = async () => {
@@ -57,9 +68,19 @@ const ViewRequest = ({ data }) => {
           variant: 'success',
         });
       }
+      handleCloseModal()
     } catch (error) {
       setLoading(false)
-      console.log(error)
+      if(error.response.status === 500){
+        enqueueSnackbar("Server error", {
+          autoHideDuration: 1000,
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'right',
+          },
+          variant: 'error',
+        });
+      }
     }
   }
   
@@ -82,7 +103,11 @@ const ViewRequest = ({ data }) => {
         </ItemsStyle>
         <ItemsStyle item xs={12} md={12}>
           <Stack sx={{ width: '100%' }} direction="row" justifyContent="space-between">
-            <Box sx={{ width: '50%' }}>Data Requested:</Box> <Box textAlign="right">{data?.selectedRequest ?? ""}</Box>
+            <Box sx={{ width: '50%' }}>Data Requested:</Box> <Box textAlign="right">
+              {types?.map((type) => (
+                <Typography>{type}</Typography>
+              ))}
+            </Box>
           </Stack>
         </ItemsStyle>
         <ItemsStyle item xs={12} md={12} bgcolor>
@@ -121,11 +146,13 @@ ViewRequest.propTypes = {
     created_at: PropTypes.string.isRequired,
     updated_at: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
+    shareable_informations: PropTypes.array.isRequired,
     sender_type: PropTypes.string.isRequired,
     receiver_type: PropTypes.string.isRequired,
     selectedRequest: PropTypes.string.isRequired,
     requester: PropTypes.string.isRequired,
   }).isRequired,
+  handleCloseModal: PropTypes.func.isRequired
 };
 
 export default ViewRequest;

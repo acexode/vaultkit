@@ -1,7 +1,9 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { set, sub } from 'date-fns';
+// import { set, sub } from 'date-fns';
+import { useState, useEffect } from 'react';
 // import { faker } from '@faker-js/faker';
+
+import { enqueueSnackbar } from 'notistack';
 
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -10,7 +12,7 @@ import Badge from '@mui/material/Badge';
 // import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
-import Tooltip from '@mui/material/Tooltip';
+// import Tooltip from '@mui/material/Tooltip';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
@@ -21,40 +23,29 @@ import ListItemButton from '@mui/material/ListItemButton';
 
 import { useRouter } from 'src/routes/hooks';
 
+import useAuth from 'src/hooks/useAuth';
+
+import axiosInstance from 'src/utils/axios';
 import { fToNow } from 'src/utils/format-time';
+
+import { notificationEndpoint } from 'src/configs/endpoints';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
 // ----------------------------------------------------------------------
 
-const NOTIFICATIONS = [
-  {
-    id: '1',
-    title: 'Nnamdi Viewed Your Profile ',
-    description: '',
-    avatar: null,
-    type: 'order_placed',
-    createdAt: set(new Date(), { hours: 10, minutes: 30 }),
-    isUnRead: true,
-  },
-  {
-    id: '2',
-    title: 'Nnamdi request access to your profile',
-    description: '',
-    avatar: '/assets/images/avatars/avatar_2.jpg',
-    type: 'friend_interactive',
-    createdAt: sub(new Date(), { hours: 3, minutes: 30 }),
-    isUnRead: true,
-  },
 
-];
+
+
 
 export default function NotificationsPopover() {
-  const [notifications, setNotifications] = useState(NOTIFICATIONS);
+  const [notifications, setNotifications] = useState([]);
+  const [unreadNotification, setUnreadNotification] = useState([]);
+  const {user} = useAuth()
+  
   const router = useRouter();
-  const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
-
+  
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
@@ -69,19 +60,59 @@ export default function NotificationsPopover() {
     router.push('/dashboard/notifications');
   };
 
-  const handleMarkAllAsRead = () => {
-    setNotifications(
-      notifications.map((notification) => ({
-        ...notification,
-        isUnRead: false,
-      }))
-    );
-  };
+  // const handleMarkAllAsRead = () => {
+  //   setNotifications(
+  //     notifications.map((notification) => ({
+  //       ...notification,
+  //       isUnRead: false,
+  //     }))
+  //   );
+  // };
 
+  useEffect(() => {
+    const url = notificationEndpoint(user.id);
+
+    const fetchNotifications = async () => {
+      try {
+        // Fetch all notifications
+        const allNotificationsResponse = await axiosInstance.get(url.allNotification);
+        if (allNotificationsResponse?.status === 200) {
+          setNotifications(allNotificationsResponse.data.data);
+        } else if (allNotificationsResponse.error) {
+          enqueueSnackbar(allNotificationsResponse.error.message, {
+            autoHideDuration: 1000,
+            anchorOrigin: {
+              vertical: 'top',
+              horizontal: 'right',
+            },
+            variant: 'error',
+          });
+        }
+
+        // Fetch unread notifications
+        const unreadNotificationsResponse = await axiosInstance.get(url.unreadNotification);
+        if (unreadNotificationsResponse?.status === 200) {
+          setUnreadNotification(unreadNotificationsResponse.data.data);
+        }
+      } catch (error) {
+        enqueueSnackbar('An error occurred while fetching data.', {
+          autoHideDuration: 1000,
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'right',
+          },
+          variant: 'error',
+        });
+      }
+    };
+
+    fetchNotifications();
+  }, [user.id]);
+  
   return (
     <>
       <IconButton color={open ? 'primary' : 'default'} onClick={handleOpen}>
-        <Badge badgeContent={totalUnRead} color="error">
+        <Badge badgeContent={unreadNotification.length} color="error">
           <Iconify width={24} icon="solar:bell-bing-bold-duotone" />
         </Badge>
       </IconButton>
@@ -103,18 +134,18 @@ export default function NotificationsPopover() {
         <Box sx={{ display: 'flex', alignItems: 'center', py: 2, px: 2.5 }}>
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="subtitle1">Notifications</Typography>
-            {/* <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              You have {totalUnRead} unread messages
-            </Typography> */}
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              You have {notifications.length === 0 && "no"} unread messages
+            </Typography>
           </Box>
 
-          {totalUnRead > 0 && (
+          {/* {totalUnRead > 0 && (
             <Tooltip title=" Mark all as read">
               <IconButton color="primary" onClick={handleMarkAllAsRead}>
                 <Iconify icon="eva:done-all-fill" />
               </IconButton>
             </Tooltip>
-          )}
+          )} */}
         </Box>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
@@ -128,9 +159,15 @@ export default function NotificationsPopover() {
               </ListSubheader>
             }
           >
-            {notifications.map((notification) => (
-              <NotificationItem key={notification.id} notification={notification} />
-            ))}
+            {notifications.length > 0 ? (
+              notifications.map((notification) => (
+                <NotificationItem key={notification.id} notification={notification} />
+              ))
+            ):(
+              <Typography variant="body2" sx={{ color: 'text.secondary', px: 2.5 }}>
+                You have {notifications.length} notification
+               </Typography>
+            )}
           </List>
 
           {/* <List
@@ -150,9 +187,12 @@ export default function NotificationsPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Box sx={{ p: 1 }}>
-          <Button fullWidth disableRipple onClick={handleNavigate}>
+          {notifications.length > 3 && (
+            <Button fullWidth disableRipple onClick={handleNavigate}>
             View All
-          </Button>
+            </Button>
+          )}
+          
         </Box>
       </Popover>
     </>
@@ -214,7 +254,6 @@ function NotificationItem({ notification }) {
 // ----------------------------------------------------------------------
 
 function renderContent(notification) {
-  console.log(notification);
   const title = (
     <Typography variant="subtitle2">
       {notification.title}

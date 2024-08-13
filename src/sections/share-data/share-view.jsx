@@ -7,6 +7,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
+import LoadingButton from '@mui/lab/LoadingButton';
 import {
   Stack,
   Button,
@@ -85,6 +86,7 @@ export default function ShareView({ handleCloseModal }) {
   const themes = useTheme();
   const isMobile = useMediaQuery(themes.breakpoints.down('sm'));
   const [value, setValue] = useState(0);
+  const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuth();
   const fieldData = getFormFields('field-labels', user.id);
@@ -135,8 +137,9 @@ export default function ShareView({ handleCloseModal }) {
           sharer_id: user?.id,
         },
       };
-      console.log(data);
+      
       try {
+        setLoading(true)
         const url = requestDataEndpoint(user.id);
         const response = await axiosInstance.post(url.share, data);
         if (response.status === 200) {
@@ -144,9 +147,11 @@ export default function ShareView({ handleCloseModal }) {
             variant: 'success',
           });
         }
+        setLoading(false)
         handleClose('share-data-view');
       } catch (error) {
         console.log(error);
+        setLoading(false)
         if (error?.response?.status === 422) {
           enqueueSnackbar(error.response.data.error, {
             variant: 'error',
@@ -190,9 +195,9 @@ export default function ShareView({ handleCloseModal }) {
             >
               {value === 8 ? 'Previous' : 'Save & Next'}
             </Button>
-            <Button variant="contained" sx={{ flex: 1 }} type="submit" autoFocus>
+            <LoadingButton variant="contained" sx={{ flex: 1 }} type="submit" autoFocus loading={loading}>
               Share Data
-            </Button>
+            </LoadingButton>
           </Box>
         </Stack>
         <Box

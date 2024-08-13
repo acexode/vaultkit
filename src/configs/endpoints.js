@@ -36,6 +36,13 @@ export const profileEndpoint = (path, id) => ({
     resInfo: `${path}/${ id}/residential_histories`,
   })
 
+  export const notificationEndpoint = (userId, id) => ({
+    allNotification: `${serverBaseUrl}/notifications/users/${userId}/notifications`,
+    unreadNotification: `${serverBaseUrl}/notifications/users/${userId}/notifications/unread`,
+    updateNotification: `${serverBaseUrl}/users/${userId}/notifications/${id}`,
+    allActivities: `${serverBaseUrl}/users/${userId}/activity_log/`,
+  })
+
 export const requestDataEndpoint = (id) => ({
     request: `${baseEndpoints.share}`,
     share: `${baseEndpoints.share}/share_data`,
