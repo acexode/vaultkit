@@ -13,7 +13,6 @@ import Iconify from 'src/components/iconify';
 import AlertDialog from 'src/sections/modal/modal';
 
 import ShareView from './share-view';
-import DataDetails from './view-data';
 import RequestDataView from '../access/request-data-view';
 import SavedSuccessModal from '../modal/saved-success-modal';
 import SharedTabSection from './components/shared-tab-section';
@@ -25,17 +24,17 @@ export default function SharedDataView() {
   const isMobile = useMediaQuery(themes.breakpoints.down('sm'));
 
   const { openDialog, closeDialog, isDialogOpen } = useDialogState();
-  const card = {
-    name: 'lorem ipsum dolor',
-     description: 'Basic Info, Contact Info, Employment Info, Education Info',
-     assignee: [
-      {
-          "id": "473d2720-341c-49bf-94ed-556999cf6ef7",
-          "avatar": "/static/mock-images/avatars/avatar_2.jpg",
-          "name": "Soren Durham"
-      }
-  ],
-  }
+  // const card = {
+  //   name: 'lorem ipsum dolor',
+  //    description: 'Basic Info, Contact Info, Employment Info, Education Info',
+  //    assignee: [
+  //     {
+  //         "id": "473d2720-341c-49bf-94ed-556999cf6ef7",
+  //         "avatar": "/static/mock-images/avatars/avatar_2.jpg",
+  //         "name": "Soren Durham"
+  //     }
+  // ],
+  // }
 
   return (
     <Container maxWidth="xl">
@@ -64,7 +63,7 @@ export default function SharedDataView() {
       </Stack>
 
       <Card>
-        <SharedTabSection handleViewDetails={openDialog} />
+        <SharedTabSection />
       </Card>
       <AlertDialog
         fullWidth
@@ -88,7 +87,7 @@ export default function SharedDataView() {
         component={<SavedSuccessModal handleCloseModal={closeDialog} />}
         open={isDialogOpen('success-view')}
       />
-      <DataDetails isOpen={isDialogOpen('data-details')} card={card} onClose={closeDialog} />
+      {/* <DataDetails isOpen={isDialogOpen('data-details')} card={card} onClose={closeDialog} /> */}
     </Container>
   );
 }

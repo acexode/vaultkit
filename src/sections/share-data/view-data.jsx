@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 // material
 
+import { useNavigate } from 'react-router-dom';
 import checkmarkFill from '@iconify/icons-eva/checkmark-fill';
 import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
 
+import LoadingButton from '@mui/lab/LoadingButton';
 import {
   Stack,
   Drawer,
@@ -29,6 +31,8 @@ DataDetails.propTypes = {
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
   card: PropTypes.object,
+  data: PropTypes.object,
+  description: PropTypes.string
 };
 
 const LabelStyle = styled(Typography)(({ theme }) => ({
@@ -40,16 +44,33 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 }));
 
 // ----------------------------------------------------------------------
-
-export default function DataDetails({ card, isOpen, onClose }) {
-  const [taskCompleted, setTaskCompleted] = useState(card.completed);
-
-  const { name, description, assignee } = card;
+function mapShareableTypes(arrayOfObjects) {
+  return arrayOfObjects?.map((obj) => {
+    if (obj.shareable_type === 'ContactInformation') {
+      return 'Contact';
+    } if (obj.shareable_type === 'EducationDatum') {
+      return 'Education';
+    }if(obj.shareable_type === 'EmploymentInformation'){
+      return 'Employment'
+    }
+    return obj.shareable_type; 
+  });
+}
+export default function DataDetails({ card, isOpen, onClose, data, description }) {
+  const [taskCompleted, setTaskCompleted] = useState(false);
+  const types = mapShareableTypes(data?.shareable_informations)
+  const navigate = useNavigate();
+  const { assignee } = card;
 
   const handleToggleCompleted = () => {
     setTaskCompleted((prev) => !prev);
   };
-  console.log(isOpen);
+  
+  const handleViewData = () => {
+    sessionStorage.setItem("data", JSON.stringify(data))
+    const url = `/dashboard/download-view?id=${data.id}`;
+    navigate(url);
+  }
 
   return (
     <Drawer
@@ -85,7 +106,7 @@ export default function DataDetails({ card, isOpen, onClose }) {
             multiline
             size="small"
             placeholder="Task name"
-            value={name}
+            value={data?.title}
             sx={{
               typography: 'h6',
               '& .MuiOutlinedInput-notchedOutline': { borderColor: 'transparent' },
@@ -107,18 +128,18 @@ export default function DataDetails({ card, isOpen, onClose }) {
 
           <Stack direction="row" alignItems="center">
             <LabelStyle> Due date</LabelStyle>
-            <LabelStyle> 21 - 22 Jun</LabelStyle>
+            <LabelStyle> {data?.end_time.split(" ")[0]}</LabelStyle>
           </Stack>
 
           <Stack direction="row">
-            <LabelStyle sx={{ mt: 2 }}>Description</LabelStyle>
+            <LabelStyle sx={{ mt: 2 }}>{description}</LabelStyle>
             <OutlinedInput
               fullWidth
               multiline
               rows={3}
               size="small"
               placeholder="Task name"
-              value={description}
+              value={types}
               sx={{ typography: 'body2' }}
             />
           </Stack>
@@ -129,6 +150,15 @@ export default function DataDetails({ card, isOpen, onClose }) {
               <LabelStyle sx={{ mt: 2 }}>No Attachments</LabelStyle>
             </Stack>
           </Stack>
+          {description &&  <LoadingButton
+          onClick={handleViewData}
+          size="large"
+          type="button"
+          variant="contained"
+         
+        >
+          View Data
+        </LoadingButton>}
         </Stack>
       </Scrollbar>
 

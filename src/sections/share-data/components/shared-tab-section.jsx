@@ -45,7 +45,7 @@ function a11yProps(index) {
   };
 }
 
-export default function SharedTabSection({ handleViewDetails }) {
+export default function SharedTabSection() {
   const [value, setValue] = useState(0);
   const [selected, setSelected] = useState([]);
   const [filterName, setFilterName] = useState('');
@@ -53,10 +53,10 @@ export default function SharedTabSection({ handleViewDetails }) {
   const [receivedData, setReceivedData] = useState([]);
   const [receivedRequest, setReceivedRequest] = useState([]);
   const [sentRequest, setSentRequest] = useState([]);
-
+  
   const { user } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
-
+  
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -148,17 +148,16 @@ export default function SharedTabSection({ handleViewDetails }) {
             filterName={filterName}
             selected={selected}
             setSelected={setSelected}
-            handleViewDetails={handleViewDetails}
+            
           />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          {/* {JSON.stringify(receivedData)} */}
           <RecievedDataTableView
             recievedData={receivedData}
             filterName={filterName}
             selected={selected}
             setSelected={setSelected}
-            handleViewDetails={handleViewDetails}
+            
           />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
@@ -168,7 +167,7 @@ export default function SharedTabSection({ handleViewDetails }) {
             filterName={filterName}
             selected={selected}
             setSelected={setSelected}
-            handleViewDetails={handleViewDetails}
+            
           />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={3}>
@@ -178,14 +177,15 @@ export default function SharedTabSection({ handleViewDetails }) {
             filterName={filterName}
             selected={selected}
             setSelected={setSelected}
-            handleViewDetails={handleViewDetails}
+            
           />
         </CustomTabPanel>
       </Box>
+     
     </Box>
   );
 }
 
-SharedTabSection.propTypes = {
-  handleViewDetails: PropTypes.func.isRequired,
-};
+// SharedTabSection.propTypes = {
+//   handleViewDetails: PropTypes.func.isRequired,
+// };

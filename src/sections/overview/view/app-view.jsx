@@ -1,21 +1,16 @@
 import { faker } from '@faker-js/faker';
-
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Unstable_Grid2';
-// import Typography from '@mui/material/Typography';
-
-// import Iconify from 'src/components/iconify';
-
 import { useSnackbar } from 'notistack';
 import { useState, useEffect } from 'react';
 
 import { Card } from '@mui/material';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Unstable_Grid2';
 
 import useAuth from 'src/hooks/useAuth';
 
 import axiosInstance from 'src/utils/axios';
 
-import { requestDataEndpoint } from 'src/configs/endpoints';
+import { requestDataEndpoint, notificationEndpoint } from 'src/configs/endpoints';
 
 import EmptyContent from 'src/components/common/EmptyContent';
 
@@ -23,13 +18,13 @@ import AppTasks from '../app-tasks';
 import AppWelcome from '../AppWelcome';
 import AppOrderTimeline from '../app-order-timeline';
 
-// ----------------------------------------------------------------------
-
 export default function AppView() {
   const { getBasicInfo, user } = useAuth();
   const [requestData, setRequestData] = useState(null);
-  console.log(requestData);
+  const [activities, setActivities] = useState(null);
+  
   const { enqueueSnackbar } = useSnackbar();
+
   useEffect(() => {
     if (user) {
       getBasicInfo();
@@ -38,11 +33,43 @@ export default function AppView() {
   }, []);
 
   useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        const url = notificationEndpoint(user.id);
+        const response = await axiosInstance.get(url.allActivities);
+        if (response.data && response.status === 200) {
+          setActivities(response.data.activity_log.slice(0, 5));
+        } else if (response.error) {
+          enqueueSnackbar(response.error.message, {
+            autoHideDuration: 1000,
+            anchorOrigin: {
+              vertical: 'top',
+              horizontal: 'right',
+            },
+            variant: 'error',
+          });
+        }
+      } catch (error) {
+        console.log(error);
+        enqueueSnackbar('An error occurred while fetching data.', {
+          autoHideDuration: 1000,
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'right',
+          },
+          variant: 'error',
+        });
+      }
+    };
+    fetchActivities();
+  }, [enqueueSnackbar, user.id]);
+
+  useEffect(() => {
     const fetchRequestData = async () => {
       try {
         const url = requestDataEndpoint(user.id);
         const response = await axiosInstance.get(url.sentDataRequest);
-        console.log(response);
+       
         if (response.data && response.status === 200) {
           setRequestData(response.data);
         } else if (response.error) {
@@ -88,21 +115,22 @@ export default function AppView() {
           )}
         </Grid>
 
-        <Grid xs={12} md={6} lg={4}>
-          <AppOrderTimeline
-            title="Recent Activities"
-            list={[...Array(4)].map((_, index) => ({
-              id: faker.string.uuid(),
-              title: [
-                'Acess granted to John Does',
-                'You updated your profile',
-                'Acess code generated for Sarah',
-                'Deleted request from Wakanda',
-              ][index],
-              type: `order${index + 1}`,
-              time: faker.date.past(),
-            }))}
-          />
+        <Grid xs={12} md={6} lg={4} >
+          {activities && activities.length > 0 ? (
+            <AppOrderTimeline
+              title="Recent Activities"
+              list={activities.map((activity, index) => ({
+                id: faker.string.uuid(),
+                title: `Item type: ${activity.item_type}`,
+                type: `order${index + 1}`,
+                time: new Date(activity.created_at).toLocaleString(),
+              }))}
+            />
+          ) : (
+            <Card sx={{height: '100%'}}>
+              <EmptyContent title="No Recent Activities" />
+            </Card>
+          )}
         </Grid>
       </Grid>
     </Container>
