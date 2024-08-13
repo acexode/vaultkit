@@ -171,7 +171,7 @@ export default function RecievedDataTableView({
         />
       )}
       <AddNotes open={showAddNote} setOpen={handleAddNoteModal} />
-      <DataDetails  isOpen={isDialogOpen('data-details')} card={card} data={selectedRowData} onClose={closeDialog} />
+      <DataDetails description="Received Data"  isOpen={isDialogOpen('data-details')} card={card} data={selectedRowData} onClose={closeDialog} />
       {/* <AlertDialog  maxWidth="lg" title="Generate Access Code" component={<SavedSuccessModal handleCloseModal={handleSharedModal} />} open={showAddNote} /> */}
     </>
   );
