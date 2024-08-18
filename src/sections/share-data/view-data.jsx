@@ -67,7 +67,6 @@ export default function DataDetails({ card, isOpen, onClose, data, description }
   };
   
   const handleViewData = () => {
-    sessionStorage.setItem("data", JSON.stringify(data))
     const url = `/dashboard/download-view?id=${data.id}`;
     navigate(url);
   }
