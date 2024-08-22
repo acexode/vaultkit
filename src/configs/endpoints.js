@@ -43,6 +43,10 @@ export const notificationEndpoint = (userId, id) => ({
   allActivities: `${serverBaseUrl}/users/${userId}/activity_log/`,
 });
 
+  export const downloadEndpoint = (userId) => ({
+    allDetails: `${baseEndpoints.share}/${userId}`,
+  })
+
 export const requestDataEndpoint = (id) => ({
   request: `${baseEndpoints.share}`,
   share: `${baseEndpoints.share}/share_data`,
