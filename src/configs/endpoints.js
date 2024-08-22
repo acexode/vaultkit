@@ -26,32 +26,32 @@ export const sharedDataEndpoint = {
   share: `${baseEndpoints.extractApproval}/share`,
 };
 export const profileEndpoint = (path, id) => ({
-    basic: `${path}/basic_info`,
-    contact: `${path}/${ id}/contact_information`,
-    eduInfo: `${path}/${ id}/education_data`,
-    empInfo: `${path}/${ id}/employment_informations`,
-    finInfo: `${path}/${ id}/fin-info`,
-    idInfo: `${path}/${ id}/id-info`,
-    realInfo: `${path}/${ id}/real_estate_informations`,
-    resInfo: `${path}/${ id}/residential_histories`,
-  })
+  basic: `${path}/basic_info`,
+  contact: `${path}/${id}/contact_information`,
+  eduInfo: `${path}/${id}/education_data`,
+  empInfo: `${path}/${id}/employment_informations`,
+  finInfo: `${path}/${id}/fin-info`,
+  idInfo: `${path}/${id}/id-info`,
+  realInfo: `${path}/${id}/real_estate_informations`,
+  resInfo: `${path}/${id}/residential_histories`,
+});
 
-  export const notificationEndpoint = (userId, id) => ({
-    allNotification: `${serverBaseUrl}/notifications/users/${userId}/notifications`,
-    unreadNotification: `${serverBaseUrl}/notifications/users/${userId}/notifications/unread`,
-    updateNotification: `${serverBaseUrl}/users/${userId}/notifications/${id}`,
-    allActivities: `${serverBaseUrl}/users/${userId}/activity_log/`,
-  })
+export const notificationEndpoint = (userId, id) => ({
+  allNotification: `${serverBaseUrl}/notifications/users/${userId}/notifications`,
+  unreadNotification: `${serverBaseUrl}/notifications/users/${userId}/notifications/unread`,
+  updateNotification: `${serverBaseUrl}/users/${userId}/notifications/${id}`,
+  allActivities: `${serverBaseUrl}/users/${userId}/activity_log/`,
+});
 
 export const requestDataEndpoint = (id) => ({
-    request: `${baseEndpoints.share}`,
-    share: `${baseEndpoints.share}/share_data`,
-    approve: `${baseEndpoints.share}/${id}/approve_request`,
-    recievedDataRequest: `${baseEndpoints.share}/received_data_requests`,
-    sentDataRequest: `${baseEndpoints.share}/sent_data_requests`,
-    sharedData: `${baseEndpoints.share}/shared_data`,
-    recievedData: `${baseEndpoints.share}/received_data`,
-  })
+  request: `${baseEndpoints.share}`,
+  share: `${baseEndpoints.share}/share_data`,
+  approve: `${baseEndpoints.share}/${id}/approve_request`,
+  recievedDataRequest: `${baseEndpoints.share}/received_data_requests`,
+  sentDataRequest: `${baseEndpoints.share}/sent_data_requests`,
+  sharedData: `${baseEndpoints.share}/shared_data`,
+  recievedData: `${baseEndpoints.share}/received_data`,
+});
 
 export const getSingleProfileUrl = (category, id, userId) => {
   let api = null;
@@ -69,7 +69,14 @@ export const getSingleProfileUrl = (category, id, userId) => {
       api = `${baseEndpoints.profile}/basic_info`;
       break;
     case 'financial-info':
-      api = `${baseEndpoints.profile}/finanacial_informations/${id}`;
+      api = `${baseEndpoints.profile}/${userId}/financial_information`;
+      break;
+    case 'bank_details':
+    case 'liabilities':
+    case 'assets':
+    case 'insurances':
+    case 'investments':
+      api = `${baseEndpoints.profile}/financial_base/${category}/${id}`;
       break;
     case 'identification-info':
       api = `${baseEndpoints.profile}/identification_informations/${id}`;
@@ -102,21 +109,16 @@ export const getSingleProfileDataPatchUrl = (category, id) => {
     case 'personal-info':
       api = `${baseEndpoints.profile}/${id}`;
       break;
-      case 'fin-assets':
-        api = `${baseEndpoints.profiles}/financial_base/assets/${id}`
-        break;
-    case 'fin-insurance-info':
-         api = `${baseEndpoints.profiles}/financial_base/insurances/${id}`
-        break;
-    case 'fin-investment-info':
-        api = `${baseEndpoints.profiles}/financial_base/investments/${id}`
-        break;
-    case 'fin-liability-info':
-        api = `${baseEndpoints.profiles}/financial_base/liabilities/${id}`
-        break;
-    case 'fin-bank-details':
-        api = `${baseEndpoints.profiles}/financial_base/bank_details/${id}`
-        break;
+    case 'financial-info':
+      api = `${baseEndpoints.profile}/financial_informations/${id}`;
+      break;
+    case 'bank_details':
+    case 'liabilities':
+    case 'assets':
+    case 'insurances':
+    case 'investments':
+      api = `${baseEndpoints.profile}/financial_base/${category}/${id}`;
+      break;
     case 'identification-info':
       api = `${baseEndpoints.profile}/identification_informations/${id}`;
       break;

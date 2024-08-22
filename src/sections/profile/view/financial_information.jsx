@@ -11,43 +11,45 @@ import { useGlobalContext } from 'src/context/context';
 import FinanceCard from '../components/FinanceCard';
 
 const FinancialInfo = () => {
-  
-  const {handleCurrentForm} = useGlobalContext()
-  const [data, setData] = useState([])
+  const { handleCurrentForm } = useGlobalContext();
+  const [data, setData] = useState({});
   const { enqueueSnackbar } = useSnackbar();
-  const {user} = useAuth()
-useEffect(() => {
-  const fetchData = async () => {
-   try {
-    const api = profileAPIs(user?.id)
-    const response = await api.financialAPI._readMany()
- 
-    if(response.data) {
-      setData(response.data)
-    }
-    if(response.error){
-      enqueueSnackbar(response.error.message, { 
-        autoHideDuration: 1000,
-        anchorOrigin: {
-          vertical: "top",
-          horizontal: "right"
-        },
-        variant: "error"
-      })
-    }
-    console.log(response)
-   } catch (error) {
-    console.log(error)
-   }
-  }
-  fetchData()
- },[enqueueSnackbar, user?.id])
-  
-
+  const { user } = useAuth();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const api = profileAPIs(user?.id);
+        const response = await api.finInfoAPI._readMany();
+        if (response.data) {
+          setData(response.data);
+        }
+        if (response.error) {
+          enqueueSnackbar(response.error.message, {
+            autoHideDuration: 1000,
+            anchorOrigin: {
+              vertical: 'top',
+              horizontal: 'right',
+            },
+            variant: 'error',
+          });
+        }
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, [enqueueSnackbar, user?.id]);
 
   return (
     <Container>
-      <FinanceCard handleCurrentForm={handleCurrentForm} path="financial-info" redirect={4} data={data} title="Financial Info" />
+      <FinanceCard
+        finInfo={data}
+        handleCurrentForm={handleCurrentForm}
+        path="financial-info"
+        redirect={4}
+        title="Financial Info"
+      />
     </Container>
   );
 };

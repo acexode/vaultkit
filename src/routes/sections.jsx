@@ -101,6 +101,10 @@ export default function Router() {
       element: <ResetPasswordPage />,
     },
     {
+      path: 'new-user',
+      element: <ResetPasswordPage />,
+    },
+    {
       path: 'password/edit',
       element: <ResetPasswordPage />,
     },

@@ -15,7 +15,7 @@ const NewButton = styled(IconButton)(({ theme, width, height }) => ({
   '&:hover': { opacity: 0.72, cursor: 'pointer' },
 }));
 
-const AddFinanceCard = ({ handleCurrentForm,  redirect, fintype }) => {
+const AddFinanceCard = ({ handleCurrentForm,  redirect, fintype, fin_info_id }) => {
   console.log('add card');
   return (
     <Grid container alignItems="stretch" justifyContent="space-around">
@@ -38,7 +38,7 @@ const AddFinanceCard = ({ handleCurrentForm,  redirect, fintype }) => {
           edge="end"
           variant="contained"
           size="medium"
-          onClick={() => handleCurrentForm(fintype.path, null, redirect)}
+          onClick={() => handleCurrentForm(fintype.path, null, redirect, fin_info_id)}
         >
           <Icon width={40} icon={closeFill} />
         </NewButton>
@@ -51,5 +51,6 @@ AddFinanceCard.propTypes = {
   handleCurrentForm: PropTypes.func,
   redirect: PropTypes.number.isRequired,
   fintype: PropTypes.string.isRequired,
+  fin_info_id: PropTypes.string.isRequired,
 };
 export default AddFinanceCard;

@@ -952,7 +952,16 @@ export const ResidentialHistory = [
     isForm: true,
   },
 ];
-
+export const FinancialInformation = [
+  { label: 'Sources of Income', name: 'sources_of_income', type: 'select',
+    options: [
+      { label: 'Freelance', value: 'Freelance' },
+      { label: 'Salary', value: 'Salary' },
+    ], defaultValue: '', isForm: true },
+  { label: 'Annual Income', name: 'annual_income', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Credit Score', name: 'credit_score', type: 'text', defaultValue: '', isForm: true },
+  { label: 'Credit History', name: 'credit_history', type: 'text', defaultValue: '', isForm: true },
+]
 export const BankDetailsInfo = [
   { label: 'Name', name: 'name', type: 'text', defaultValue: '', isForm: true },
   { label: 'Email', name: 'email', type: 'text', defaultValue: '', isForm: true },
@@ -1067,19 +1076,22 @@ export const getFormFields = (slug, id) => {
     case 'employment-info':
       data = { form: EmployeeInfo, title: 'Employment Info', url: path.empInfo };
       break;
-    case 'fin-bank-details':
+    case 'financial-info':
+      data = { form: FinancialInformation, title: 'Financial  Info', url: path.finInfo };
+      break;
+    case 'bank_details':
       data = { form: BankDetailsInfo, title: 'Bank Details Info', url: path.finInfo };
       break;
-    case 'fin-liability-info':
+    case 'liabilities':
       data = { form: LiabilityInfo, title: 'Liability Info', url: path.finInfo };
       break;
-    case 'fin-assets':
+    case 'assets':
       data = { form: AssetsInfo, title: 'Assets Info', url: path.finInfo };
       break;
-    case 'fin-insurance-info':
+    case 'insurances':
       data = { form: InsuranceInfo, title: 'Insurance Info', url: path.finInfo };
       break;
-    case 'fin-investment-info':
+    case 'investments':
       data = { form: InvestmentInfo, title: 'Investment Info', url: path.finInfo };
       break;
     case 'identification-info':

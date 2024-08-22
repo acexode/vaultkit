@@ -21,6 +21,8 @@ import { requestDataEndpoint } from 'src/configs/endpoints';
 
 // import NestedSelect from 'src/components/common/NestedSelect';
 
+import { formatDateToYYYYMMDD } from 'src/utils/format-time';
+
 import CategorySelectCheckmarks from './category-select';
 
 // ----------------------------------------------------------------------
@@ -52,7 +54,7 @@ const categories = [
   },
   {
     label:  'Residential Information',
-    value: "realestate"
+    value: "residential"
   }
 ];
 RequestDataView.propTypes = {
@@ -168,7 +170,9 @@ export default function RequestDataView({ handleClose }) {
           name="start_time"
           label="Start time"
           type='date'
-          InputLabelProps={{ shrink: true }}
+          min="2024-08-20"
+          InputLabelProps={{ shrink: true, }}
+          inputProps={{ min: formatDateToYYYYMMDD(new Date())  }}
           value={formik.values.start_time}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -181,6 +185,7 @@ export default function RequestDataView({ handleClose }) {
           label="End time"
           type="date"
           InputLabelProps={{ shrink: true }}
+          inputProps={{ min: formatDateToYYYYMMDD(new Date())  }}
           value={formik.values.end_time}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}

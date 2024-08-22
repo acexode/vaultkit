@@ -45,10 +45,10 @@ export const GlobalProvider = ({ children }) => {
     dispatch({ type: FORM_UPDATE_FIELD, field, value });
   };
   const handleCurrentForm = useCallback(
-    (value, id=null, redirectPath) => {
+    (value, id=null, redirectPath, fin_info_id=null) => {
       console.log(value, 'value ');
       dispatch({ type: CURRENT_FORM, value });
-      router.push(`dashboard/form?tag=${  value}&id=${id}&redirect=${redirectPath}`);
+      router.push(`dashboard/form?tag=${value}&id=${id}&redirect=${redirectPath}&fin_info_id=${fin_info_id}`);
       
     },
     [router]
