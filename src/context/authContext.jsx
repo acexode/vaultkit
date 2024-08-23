@@ -13,13 +13,12 @@ import { authEndpoints, serverBaseUrl, profileEndpoint } from 'src/configs/endpo
 
 // utils
 
-
 // ----------------------------------------------------------------------
 
 const initialState = {
   isAuthenticated: false,
   isInitialized: false,
-  user: null
+  user: null,
 };
 
 const handlers = {
@@ -29,7 +28,7 @@ const handlers = {
       ...state,
       isAuthenticated,
       isInitialized: true,
-      user
+      user,
     };
   },
   LOGIN: (state, action) => {
@@ -38,13 +37,13 @@ const handlers = {
     return {
       ...state,
       isAuthenticated: true,
-      user
+      user,
     };
   },
   LOGOUT: (state) => ({
     ...state,
     isAuthenticated: false,
-    user: null
+    user: null,
   }),
   REGISTER: (state, action) => {
     const { user } = action.payload;
@@ -52,12 +51,13 @@ const handlers = {
     return {
       ...state,
       isAuthenticated: true,
-      user
+      user,
     };
-  }
+  },
 };
 
-const reducer = (state, action) => (handlers[action.type] ? handlers[action.type](state, action) : state);
+const reducer = (state, action) =>
+  handlers[action.type] ? handlers[action.type](state, action) : state;
 
 const AuthContext = createContext({
   ...initialState,
@@ -65,44 +65,41 @@ const AuthContext = createContext({
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
   register: () => Promise.resolve(),
-  getBasicInfo: () => Promise.resolve()
+  getBasicInfo: () => Promise.resolve(),
 });
 
 AuthProvider.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
 };
 
 function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const router = useRouter()
+  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   useEffect(() => {
     const initialize = async () => {
       try {
         const accessToken = window.sessionStorage.getItem('authToken');
         const cachedUser = window.sessionStorage.getItem('user');
-         console.log(cachedUser, isValidToken(accessToken))
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
-          
           const user = JSON.parse(cachedUser);
-          console.log("USER")
           dispatch({
             type: 'INITIALIZE',
             payload: {
               isAuthenticated: true,
-              user
-            }
+              user,
+            },
           });
         } else {
           dispatch({
             type: 'INITIALIZE',
             payload: {
               isAuthenticated: false,
-              user: null
-            }
+              user: null,
+            },
           });
-          router.push('/login')
+          router.push('/login');
         }
       } catch (err) {
         console.error(err);
@@ -110,92 +107,93 @@ function AuthProvider({ children }) {
           type: 'INITIALIZE',
           payload: {
             isAuthenticated: false,
-            user: null
-          }
+            user: null,
+          },
         });
       }
     };
 
     initialize();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const getBasicInfo = async () => {
-    const url = `${serverBaseUrl  }/users`;
+    const url = `${serverBaseUrl}/users`;
     const path = profileEndpoint(url);
     try {
-      
       const basicInfoResponse = await axiosInstance.get(path.basic);
-      console.log(basicInfoResponse)
-      const user = {...state.user, basic: basicInfoResponse.data}
-      console.log(user, "USER")
+      const user = { ...state.user, basic: basicInfoResponse.data };
       dispatch({
         type: 'INITIALIZE',
         payload: {
           isAuthenticated: true,
-          user
-        }
+          user,
+        },
       });
-      
     } catch (error) {
-      enqueueSnackbar(error.response?.message)
+      enqueueSnackbar(error.response?.message);
     }
-  }
+  };
   const login = async (values) => {
     const response = await axios.post(authEndpoints.login, values);
-   
+
     const token = response.headers.authorization;
-    
+
     const { data } = response.data.status;
-    
-    cacheUser(data.user)
+
+    cacheUser(data.user);
     setSession(token);
     dispatch({
       type: 'LOGIN',
       payload: {
-        user: data.user
-      }
+        user: data.user,
+      },
     });
-    return response
+    return response;
   };
 
   const registerIndiviual = async (values) => {
-    const user = values
+    const user = values;
 
     const response = await axios.post(authEndpoints.signupUser, {
-      user
+      user,
     });
     const token = response.headers.authorization;
     const { data } = response.data;
-    cacheUser(data)
+    cacheUser(data);
     setSession(token);
     dispatch({
       type: 'REGISTER',
       payload: {
-        user: data
-      }
+        user: data,
+      },
     });
-    return response
+    return response;
   };
 
   const registerOrganization = async (values) => {
-
-    const organization =  {email: values.email, password: values.password, name: values.name, password_confirmation: values.password, business_type: values.business_type, description: values.description} ;
+    const organization = {
+      email: values.email,
+      password: values.password,
+      name: values.name,
+      password_confirmation: values.password,
+      business_type: values.business_type,
+      description: values.description,
+    };
 
     const response = await axios.post(authEndpoints.signupCompany, {
-      organization
+      organization,
     });
     const token = response.headers.authorization;
     const { data } = response.data;
-    console.log(token, response)
-    cacheUser(data)
+    cacheUser(data);
     setSession(token);
     dispatch({
       type: 'REGISTER',
       payload: {
-        user: data
-      }
+        user: data,
+      },
     });
-    return response
+    return response;
   };
 
   const logout = async () => {
@@ -206,16 +204,14 @@ function AuthProvider({ children }) {
   // eslint-disable-next-line consistent-return
   const resetPassword = async (data) => {
     try {
-      console.log(data)
-      const response = await axios.post(authEndpoints.resetPassword, data)
-      if(response?.status === 200) {
-        return response
+      const response = await axios.post(authEndpoints.resetPassword, data);
+      if (response?.status === 200) {
+        return response;
       }
     } catch (error) {
       console.log(error?.response);
       throw new Error(error?.response?.data?.message || 'Something went wrong');
     }
-    
   };
 
   const updateProfile = () => {};
@@ -231,7 +227,7 @@ function AuthProvider({ children }) {
         resetPassword,
         updateProfile,
         registerOrganization,
-        getBasicInfo
+        getBasicInfo,
       }}
     >
       {children}

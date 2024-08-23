@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import { enqueueSnackbar } from 'notistack';
 import React, { useState, useEffect } from 'react';
 
 import { Grid } from '@mui/material';
@@ -13,7 +14,6 @@ import ContactInfoCard from './ContactInfoCard'; // Ensure this import is correc
 import Overview from './overview';
 import PersonalInfoCard from './personalInfoCard';
 import TimeLineInfoCard from './EducationInfoCard';
-import { enqueueSnackbar } from 'notistack';
 
 const DownloadView = () => {
   

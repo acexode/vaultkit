@@ -30,6 +30,7 @@ import DataConfigView from './components/data-config';
 import { initialValues } from './constants/initialValues';
 import MultiDataShare from './components/multi-data-share';
 import SelectDataToShare from './components/select-data-share';
+import FinancialDataShare from './components/financial-data-share';
 
 const SelectAllCheck = ({ handleSelectAll, values, field, category, setFieldValue }) => (
   <FormGroup>
@@ -121,6 +122,7 @@ export default function ShareView({ handleCloseModal }) {
       setFieldValue(`${category}.${field}`, checked);
     });
   };
+  console.log(initialValues);
 
   const formik = useFormik({
     initialValues: { ...initialValues, eduInfo: [], empInfo: [], reInfo: [], resInfo: [] },
@@ -222,8 +224,8 @@ export default function ShareView({ handleCloseModal }) {
             <Tab disabled={getDisabled()} label="Personal Information" {...a11yProps(1)} />
             <Tab disabled={getDisabled()} label="Contact" {...a11yProps(2)} />
             <Tab disabled={getDisabled()} label="Employment" {...a11yProps(3)} />
-            <Tab disabled={getDisabled()} label="Education" {...a11yProps(4)} />
-            <Tab disabled={getDisabled()} label="Financial" {...a11yProps(5)} />
+            <Tab label="Education" {...a11yProps(4)} />
+            <Tab  label="Financial" {...a11yProps(5)} />
             <Tab disabled={getDisabled()} label="Identification" {...a11yProps(6)} />
             <Tab disabled={getDisabled()} label="Real Estate" {...a11yProps(7)} />
             <Tab disabled={getDisabled()} label="Residential Histories" {...a11yProps(8)} />
@@ -313,7 +315,7 @@ export default function ShareView({ handleCloseModal }) {
               category="finInfo"
               handleSelectAll={handleSelectAll}
             />
-            <SelectDataToShare
+            <FinancialDataShare
               fieldData={fieldData}
               values={formik.values}
               name="finInfo"

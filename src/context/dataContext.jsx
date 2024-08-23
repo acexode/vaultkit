@@ -21,7 +21,7 @@ export const DataProvider = ({ children }) => {
           const contact = await api.contactAPI._readMany();
           const employment = await api.employmentAPI._readMany();
           const education = await api.educationAPI._readMany();
-        //   const financial = await api.financialAPI._readMany();
+          const financial = await api.finInfoAPI._readMany();
           const realestate = await api.realEstateAPI._readMany();
           const residential = await api.residentialHistoryAPI._readMany();
 
@@ -30,7 +30,7 @@ export const DataProvider = ({ children }) => {
             contact: contact.data || [],
             empInfo: employment.data || [],
             eduInfo: education.data || [],
-            finInfo: null,
+            finInfo: financial.data || {},
             reInfo: realestate.data || [],
             resInfo: residential.data || [],
           });

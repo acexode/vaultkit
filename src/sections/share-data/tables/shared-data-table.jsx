@@ -35,14 +35,14 @@ export default function SharedDataTableView({
   const { openDialog, closeDialog, isDialogOpen } = useDialogState();
   const [order, setOrder] = useState('asc');
   const card = {
-  
-     assignee: [
+    assignee: [
       {
-          "id": "473d2720-341c-49bf-94ed-556999cf6ef7",
-          "avatar": "/static/mock-images/avatars/avatar_2.jpg",
-          "name": "Soren Durham"
-      }
-  ],}
+        id: '473d2720-341c-49bf-94ed-556999cf6ef7',
+        avatar: '/static/mock-images/avatars/avatar_2.jpg',
+        name: 'Soren Durham',
+      },
+    ],
+  };
   const [orderBy, setOrderBy] = useState('title');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -94,8 +94,6 @@ export default function SharedDataTableView({
     setshowAddNote(!showAddNote);
   };
 
-  console.log(sharedData);
-
   const dataFiltered = applyFilter({
     inputData: sharedData,
     comparator: getComparator(order, orderBy),
@@ -103,9 +101,9 @@ export default function SharedDataTableView({
   });
 
   const handleViewDetails = (row) => {
-    setSelectedRowData(row); 
-    openDialog('data-details'); 
-  }
+    setSelectedRowData(row);
+    openDialog('data-details');
+  };
   const notFound = !dataFiltered?.length && !!filterName;
   return (
     <>
@@ -174,7 +172,13 @@ export default function SharedDataTableView({
         />
       )}
       <AddNotes open={showAddNote} setOpen={handleAddNoteModal} />
-      <DataDetails description="Shared Data" isOpen={isDialogOpen('data-details')} card={card} data={selectedRowData} onClose={closeDialog} />
+      <DataDetails
+        description="Shared Data"
+        isOpen={isDialogOpen('data-details')}
+        card={card}
+        data={selectedRowData}
+        onClose={closeDialog}
+      />
       {/* <AlertDialog  maxWidth="lg" title="Generate Access Code" component={<SavedSuccessModal handleCloseModal={handleSharedModal} />} open={showAddNote} /> */}
     </>
   );

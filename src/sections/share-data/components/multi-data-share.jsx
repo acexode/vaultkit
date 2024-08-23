@@ -22,11 +22,13 @@ const MultiDataShare = ({ fields, name, setFieldValue, values, fieldData }) => {
 
     const {data} = useUserData()
     const mapped = data[name] ? mapShareViewFields(data[name], name) : null
+    console.log(values);
     const initialValues = mapped.reduce((accumulator, current) => {
         const d = values[name].reduce((a, v) => ({...a, [v]: v}), {})
         accumulator[current.id] = d[current.id] || false;
         return accumulator;
     }, {});
+    console.log(mapped, initialValues);
 
   const formik = useFormik({
     initialValues,
