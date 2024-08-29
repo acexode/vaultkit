@@ -3,8 +3,17 @@ import { getSingleProfileDataPatchUrl } from 'src/configs/endpoints';
 
 import axiosInstance from './axios';
 
-export const handleProfileDataSubmit = async (values, tag, id, router, userId, enqueueSnackbar) => {
-  const api = profileRequestMapper(tag, userId);
+export const handleProfileDataSubmit = async (
+  values,
+  tag,
+  id,
+  router,
+  userId,
+  enqueueSnackbar,
+  fin_info_id
+) => {
+  const api = profileRequestMapper(tag, userId, fin_info_id);
+  console.log(tag, id, fin_info_id);
   const singleUrl = getSingleProfileDataPatchUrl(tag, id);
   let response;
 
@@ -18,7 +27,7 @@ export const handleProfileDataSubmit = async (values, tag, id, router, userId, e
   };
 
   const handleResponse = async (apiResponse, msg) => {
-    if (apiResponse.status === 200) {
+    if (apiResponse.status === 200 || apiResponse.status === 201) {
       router.push('/dashboard/user');
       enqueueSnackbar(msg, {
         variant: 'success',
@@ -31,80 +40,94 @@ export const handleProfileDataSubmit = async (values, tag, id, router, userId, e
     'contact-info': async () => {
       const formData = createFormData('contact_information');
       response = id ? await axiosInstance.patch(singleUrl, formData) : await api._create(formData);
-      const msg = successMsg("Contact", id)
+      const msg = successMsg('Contact', id);
       return handleResponse(response, msg);
     },
     'education-info': async () => {
       const formData = createFormData('education_data');
       response = id ? await axiosInstance.patch(singleUrl, formData) : await api._create(formData);
-      const msg = successMsg("Education", id)
+      const msg = successMsg('Education', id);
       return handleResponse(response, msg);
     },
     'employment-info': async () => {
       const formData = createFormData();
       response = id ? await axiosInstance.patch(singleUrl, formData) : await api._create(formData);
-      const msg = successMsg("Employment", id)
+      const msg = successMsg('Employment', id);
       return handleResponse(response, msg);
     },
     'personal-info': async () => {
       const data = { basic_info: { ...values } };
       response = await api._create(data);
-      const msg = successMsg("Personal", id)
+      const msg = successMsg('Personal', id);
       return handleResponse(response, msg);
     },
-    'fin-assets': async () => {
+    'assets': async () => {
       const payload = { asset: { ...values } };
-      response = id ? await axiosInstance.patch(singleUrl, values) : await api._create(payload);
-      const msg = successMsg("Financial Assets", id)
+      response = id ? await axiosInstance.patch(singleUrl, payload) : await api._create(payload);
+      const msg = successMsg('Financial Assets', id);
       return handleResponse(response, msg);
     },
-    'fin-bank-details': async () => {
+    'financial-info': async () => {
+      const payload = { financial_information: { ...values } };
+      const updatePayload = {
+        financial_information: {
+          sources_of_income: [values.sources_of_income],
+          annual_income: values.annual_income,
+          credit_score: values.credit_score,
+          credit_history: values.credit_history,
+        },
+      };
+      console.log(payload, singleUrl);
+      response = id ? await axiosInstance.patch(singleUrl, updatePayload) : await api._create(payload);
+      const msg = successMsg('Financial Information', id);
+      return handleResponse(response, msg);
+    },
+    'bank_details': async () => {
       const payload = { bank_detail: { ...values } };
-      response = id ? await axiosInstance.patch(singleUrl, values) : await api._create(payload);
-      const msg = successMsg("Bank Details", id)
+      response = id ? await axiosInstance.patch(singleUrl, payload) : await api._create(payload);
+      const msg = successMsg('Financial Information', id);
       return handleResponse(response, msg);
     },
-    'fin-liability-info': async () => {
+    'liabilities': async () => {
       const payload = { liability: { ...values } };
-      response = id ? await axiosInstance.patch(singleUrl, values) : await api._create(payload);
-      const msg = successMsg("Financial Liability", id)
+      response = id ? await axiosInstance.patch(singleUrl, payload) : await api._create(payload);
+      const msg = successMsg('Financial Liability', id);
       return handleResponse(response, msg);
     },
-    'fin-insurance-info': async () => {
+    'insurances': async () => {
       const payload = { insurance: { ...values } };
-      response = id ? await axiosInstance.patch(singleUrl, values) : await api._create(payload);
-      const msg = successMsg("Financial Insurance", id)
+      response = id ? await axiosInstance.patch(singleUrl, payload) : await api._create(payload);
+      const msg = successMsg('Financial Insurance', id);
       return handleResponse(response, msg);
     },
-    'fin-investment-info': async () => {
+    'investments': async () => {
       const payload = { investment: { ...values } };
-      response = id ? await axiosInstance.patch(singleUrl, values) : await api._create(payload);
-      const msg = successMsg("Financial Investment", id)
+      response = id ? await axiosInstance.patch(singleUrl, payload) : await api._create(payload);
+      const msg = successMsg('Financial Investment', id);
       return handleResponse(response, msg);
     },
-    'identification-info': async () => 
+    'identification-info': async () =>
       // Implement identification-info logic here
-       handleResponse(response)
-    ,
+      handleResponse(response),
     'realestate-info': async () => {
       const formData = createFormData('real_estate_informations');
       response = id ? await axiosInstance.patch(singleUrl, formData) : await api._create(formData);
-      const msg = successMsg("Real Estate", id)
+      const msg = successMsg('Real Estate', id);
       return handleResponse(response, msg);
     },
     'residential-info': async () => {
       const formData = createFormData('residential_history');
       response = id ? await axiosInstance.patch(singleUrl, formData) : await api._create(formData);
-      const msg = successMsg("Residential History", id)
+      const msg = successMsg('Residential History', id);
       return handleResponse(response, msg);
     },
   };
 
-
   if (tagHandlers[tag]) {
+    console.log(tag);
     return tagHandlers[tag]();
   }
-    console.error(`No handler for tag: ${tag}`);
+  console.error(`No handler for tag: ${tag}`);
 
   return response;
 };
@@ -132,4 +155,7 @@ export const validationFieldMapper = (fields, validationSchema, Yup) => {
   return vals;
 };
 
-const successMsg = (category, id) => id ? ` ${category} Information Updated Successfully` : `${category} Information Created Successfully`
+const successMsg = (category, id) =>
+  id
+    ? ` ${category} Information Updated Successfully`
+    : `${category} Information Created Successfully`;

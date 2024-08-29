@@ -121,7 +121,8 @@ export default function RecievedDataTableView({
                 { id: 'title', label: 'Title' },
                 // { id: 'company', label: 'Access Code' },
                 { id: 'role', label: 'Guest Email' },
-                { id: 'access_duration', label: 'Access Duration', align: 'center' },
+                { id: 'access_duration', label: 'Start time', align: 'center' },
+                { id: 'access_duration', label: 'End Time', align: 'center' },
                 { id: 'status', label: 'Status' },
                 { id: '' },
               ]}

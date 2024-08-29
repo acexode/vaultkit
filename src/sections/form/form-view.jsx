@@ -39,6 +39,8 @@ import { UploadSingleFile } from 'src/components/uploads';
 
 import SocialMediaInput from './socialMediaInput';
 
+const finTags = [ 'bank_details', 'liabilities', 'assets', 'insurances', 'investments']
+
 const MyFormComponent = ({ fields, title, url, tag }) => {
   const { user } = useAuth();
   const {handleRedirect} = useGlobalContext()
@@ -50,6 +52,8 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
   const location = useLocation();
   const queryObject = queryParamsToObject(location.search);
   const id = getValueType(queryObject.id)
+  const fin_info_id = getValueType(queryObject.fin_info_id)
+
   const [autocompleteValues, setAutocompleteValues] = useState({});
 
   useEffect(() => {
@@ -57,8 +61,17 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
     
     setinitialValues(vals);
     const singleUrl = getSingleProfileUrl(tag, id, user?.id);
-    if (id) {
+    if (id && !finTags.includes(tag)) {
       const getData = async () => {
+        const response = await axiosInstance.get(singleUrl);
+        const res = response.data.data || response.data
+      
+        setinitialValues(res);
+      };
+      getData();
+    }else{
+      const getData = async () => {
+        console.log(singleUrl);
         const response = await axiosInstance.get(singleUrl);
         const res = response.data.data || response.data
       
@@ -71,7 +84,7 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
  
   const handleSubmit = (values) => {
     console.log(id, user.id)
-    return handleProfileDataSubmit(values, tag, id, router, user.id, enqueueSnackbar)
+    return handleProfileDataSubmit(values, tag, id, router, user.id, enqueueSnackbar, fin_info_id)
   }
 
   const formik = useFormik({

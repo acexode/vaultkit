@@ -17,11 +17,12 @@ export const identityAPI = new API('Identity', profileEndpoint.idInfo, 'MCRUDP')
 export const realEstateAPI = new API('RealEstate', profileEndpoint.realInfo, 'MCRUDP');
 export const residentialHistoryAPI = new API('ResidentialHistory', profileEndpoint.resInfo, 'MCRUDP');
 // eslint-disable-next-line arrow-body-style
-export const profileAPIs = (id, financeId, finPath) => {
+export const profileAPIs = (userId, fin_info_id, category) => {
     const url = `${serverBaseUrl  }/users`;
     const basicUrl = `${serverBaseUrl  }/users/basic_info`;
-    const financeUrl = `${serverBaseUrl  }/users/financial_informations/${financeId}/financial_base/${finPath}`;
-    const path = profileEndpoint(url, id);
+    const financeUrl = `${serverBaseUrl  }/users/financial_informations/${fin_info_id}/financial_base/${category}`;
+    const finInfoUrl = `${serverBaseUrl  }/users/${userId}/financial_information`;
+    const path = profileEndpoint(url, userId);
     
     return {
         contactAPI : new API('Contact', path.contact, 'MCRUDP'),
@@ -30,16 +31,15 @@ export const profileAPIs = (id, financeId, finPath) => {
         basicAPI : new API('Basic', basicUrl, 'MCRUDP'),
         basicInfoAPI : new API('Basic', path.basic, 'MCRUDP'),
         financialAPI : new API('Financial', financeUrl, 'MCRUDP'),
+        finInfoAPI : new API('Financial', finInfoUrl, 'MCRUDP'),
         identityAPI : new API('Identity', path.idInfo, 'MCRUDP'),
         realEstateAPI : new API('RealEstate', path.realInfo, 'MCRUDP'),
         residentialHistoryAPI : new API('ResidentialHistory', path.resInfo, 'MCRUDP')
     }
 }
-export const profileRequestMapper = (category, id) => {
+export const profileRequestMapper = (category, userId, fin_info_id) => {
     let api = null;
-    const finPath = getFinanceType(category)
-    const financeId = 'bank_details'
-    const profiles = profileAPIs(id, financeId, finPath)
+    const profiles = profileAPIs(userId, fin_info_id, category)
     console.log(category);
     switch (category) {
         case 'contact-info':
@@ -54,11 +54,14 @@ export const profileRequestMapper = (category, id) => {
         case 'personal-info':
             api = profiles.basicAPI
             break;
-        case 'fin-bank-details':
-        case 'fin-liability-info':
-        case 'fin-assets':
-        case 'fin-insurance-info':
-        case 'fin-investment-info':
+        case 'financial-info':
+            api = profiles.finInfoAPI
+            break;
+        case 'bank_details':
+        case 'liabilities':
+        case 'assets':
+        case 'insurances':
+        case 'investments':
             api = profiles.financialAPI
             break;
         case 'identification-info':
@@ -81,19 +84,19 @@ export const getFinanceType = (tag) =>{
     let path = ''
 
     switch (tag) {
-        case 'fin-assets':
+        case 'assets':
             path = 'assets'
             break;
-        case 'fin-insurance-info':
+        case 'insurances':
             path = 'insurances'
             break;
-        case 'fin-investment-info':
+        case 'investments':
             path = 'investment'
             break;
-        case 'fin-liability-info':
+        case 'liabilities':
             path = 'liabilities'
             break;
-        case 'fin-bank-details':
+        case 'bank_details':
             path = 'bank_detail'
             break;
         default:

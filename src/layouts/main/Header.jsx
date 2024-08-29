@@ -22,10 +22,11 @@ import MenuDesktop from './MenuDesktop';
 // ----------------------------------------------------------------------
 
 const APP_BAR_MOBILE = 64;
-const APP_BAR_DESKTOP = 88;
+const APP_BAR_DESKTOP = 70;
 
 const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
   height: APP_BAR_MOBILE,
+  background: '#fff',
   transition: theme.transitions.create(['height', 'background-color'], {
     easing: theme.transitions.easing.easeInOut,
     duration: theme.transitions.duration.shorter

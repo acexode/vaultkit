@@ -81,12 +81,9 @@ function AuthProvider({ children }) {
       try {
         const accessToken = window.sessionStorage.getItem('authToken');
         const cachedUser = window.sessionStorage.getItem('user');
-        console.log(cachedUser, isValidToken(accessToken));
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
-
           const user = JSON.parse(cachedUser);
-          console.log('USER');
           dispatch({
             type: 'INITIALIZE',
             payload: {
@@ -124,9 +121,7 @@ function AuthProvider({ children }) {
     const path = profileEndpoint(url);
     try {
       const basicInfoResponse = await axiosInstance.get(path.basic);
-      console.log(basicInfoResponse);
       const user = { ...state.user, basic: basicInfoResponse.data };
-      console.log(user, 'USER');
       dispatch({
         type: 'INITIALIZE',
         payload: {
@@ -224,7 +219,6 @@ function AuthProvider({ children }) {
   // eslint-disable-next-line consistent-return
   const resetPassword = async (data) => {
     try {
-      console.log(data);
       const response = await axios.post(authEndpoints.resetPassword, data);
       if (response?.status === 200) {
         return response;

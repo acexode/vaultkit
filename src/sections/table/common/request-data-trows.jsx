@@ -11,6 +11,8 @@ import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
+import { fDateTime } from 'src/utils/format-time';
+
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 
@@ -65,7 +67,8 @@ export default function RequestDataTRows({
 
         {/* <TableCell>{role}</TableCell> */}
 
-        <TableCell align="center">{`${starttime.split(' ')[0]} - ${validity.split(' ')[0]}`  }</TableCell>
+        <TableCell align="center">{fDateTime(new Date(starttime))} </TableCell>
+        <TableCell align="center">{fDateTime(new Date(validity))}   </TableCell>
 
         <TableCell>
         <Label 

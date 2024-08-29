@@ -121,7 +121,7 @@ export default function AppView() {
               title="Recent Activities"
               list={activities?.map((activity, index) => ({
                 id: faker.string.uuid(),
-                title: `Item type: ${activity.item_type}`,
+                title: `Event: ${activity.event}`,
                 type: `order${index + 1}`,
                 time: new Date(activity.created_at).toLocaleString(),
               }))}

@@ -98,6 +98,7 @@ export default function SentRequestTableView({filterName, selected, setSelected,
     comparator: getComparator(order, orderBy),
     filterName,
   });
+  console.log(sentrequest);
 
   const handleViewDetails = (row) => {
     setSelectedRowData(row); 
@@ -121,7 +122,8 @@ export default function SentRequestTableView({filterName, selected, setSelected,
                 { id: 'title', label: 'Title' },
                 // { id: 'company', label: 'Access Code' },
                 { id: 'role', label: 'Guest Email' },
-                { id: 'access_duration', label: 'Access Duration', align: 'center' },
+                { id: 'access_duration', label: 'Start time', align: 'center' },
+                { id: 'access_duration', label: 'End Time', align: 'center' },
                 { id: 'status', label: 'Status' },
                 { id: '' },
               ]}
