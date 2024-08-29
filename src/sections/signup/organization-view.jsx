@@ -63,7 +63,9 @@ export default function OrganizationSignupView() {
      
       try {
         const response = await registerOrganization(values)
-        router.push('/login');
+        if(response?.status === 200){
+          router.push('/login');
+        }
         enqueueSnackbar(response?.data.status.message, { 
           autoHideDuration: 3000,
           anchorOrigin: {

@@ -92,7 +92,7 @@ export default function NotificationsPopover() {
         // Fetch unread notifications
         const unreadNotificationsResponse = await axiosInstance.get(url.unreadNotification);
         if (unreadNotificationsResponse?.status === 200) {
-          setUnreadNotification(unreadNotificationsResponse.data.data);
+          setUnreadNotification(unreadNotificationsResponse?.data.data);
         }
       } catch (error) {
         enqueueSnackbar('An error occurred while fetching data.', {
@@ -159,13 +159,13 @@ export default function NotificationsPopover() {
               </ListSubheader>
             }
           >
-            {notifications.length > 0 ? (
-              notifications.map((notification) => (
-                <NotificationItem key={notification.id} notification={notification} />
+            {notifications?.length > 0 ? (
+              notifications?.map((notification) => (
+                <NotificationItem key={notification?.id} notification={notification} />
               ))
             ):(
               <Typography variant="body2" sx={{ color: 'text.secondary', px: 2.5 }}>
-                You have {notifications.length} notification
+                You have {notifications?.length} notification
                </Typography>
             )}
           </List>
@@ -187,7 +187,7 @@ export default function NotificationsPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Box sx={{ p: 1 }}>
-          {notifications.length > 3 && (
+          {notifications?.length > 3 && (
             <Button fullWidth disableRipple onClick={handleNavigate}>
             View All
             </Button>
@@ -269,26 +269,26 @@ function renderContent(notification) {
       title,
     };
   }
-  if (notification.type === 'order_shipped') {
+  if (notification?.type === 'order_shipped') {
     return {
       avatar: <img alt={notification.title} src="/assets/icons/ic_notification_shipping.svg" />,
       title,
     };
   }
-  if (notification.type === 'mail') {
+  if (notification?.type === 'mail') {
     return {
       avatar: <img alt={notification.title} src="/assets/icons/ic_notification_mail.svg" />,
       title,
     };
   }
-  if (notification.type === 'chat_message') {
+  if (notification?.type === 'chat_message') {
     return {
-      avatar: <img alt={notification.title} src="/assets/icons/ic_notification_chat.svg" />,
+      avatar: <img alt={notification?.title} src="/assets/icons/ic_notification_chat.svg" />,
       title,
     };
   }
   return {
-    avatar: notification.avatar ? <img alt={notification.title} src={notification.avatar} /> : null,
+    avatar: notification?.avatar ? <img alt={notification?.title} src={notification?.avatar} /> : null,
     title,
   };
 }
