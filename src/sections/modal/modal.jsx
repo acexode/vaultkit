@@ -1,11 +1,10 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import styled from '@emotion/styled';
 import { Icon } from '@iconify/react';
 import closeFill from '@iconify/icons-eva/close-circle-fill';
 
 import Dialog from '@mui/material/Dialog';
-import { IconButton } from '@mui/material';
+import { styled, IconButton } from '@mui/material';
 import DialogContent from '@mui/material/DialogContent';
 
 AlertDialog.propTypes = {

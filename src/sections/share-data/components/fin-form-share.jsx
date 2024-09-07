@@ -13,18 +13,18 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
   }));
 
-const FinFormShare = ({field, formik, handleCheckboxChange}) => (
-    
+const FinFormShare = ({field, formik, handleCheckboxChange, name}) => (
     <Grid item xs={12} md={4} mb={2} key={field.id}>
+      {Object.keys(formik.values).length &&
     <Item>
       <FormGroup>
         <FormControlLabel
           control={
             <Checkbox
               name={field.id}
-              checked={formik.values[field.id]}
+              checked={formik.values[name][field.id] || false}
               onChange={(evt) =>
-                handleCheckboxChange(field.id, evt.target.checked)
+                handleCheckboxChange(field.id, evt.target.checked, name)
               }
             />
           }
@@ -35,10 +35,12 @@ const FinFormShare = ({field, formik, handleCheckboxChange}) => (
         </Typography>
       </FormGroup>
     </Item>
+      }
   </Grid>
   )
 
   FinFormShare.propTypes = {
+    name: PropTypes.string.isRequired,
     field: PropTypes.any.isRequired,
     formik: PropTypes.any.isRequired,
     handleCheckboxChange: PropTypes.func.isRequired,

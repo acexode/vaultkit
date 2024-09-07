@@ -32,11 +32,11 @@ import MultiDataShare from './components/multi-data-share';
 import SelectDataToShare from './components/select-data-share';
 import FinancialDataShare from './components/financial-data-share';
 
-const SelectAllCheck = ({ handleSelectAll, values, field, category, setFieldValue }) => (
+const SelectAllCheck = ({ handleSelectAll, values, field, category, setFieldValue, type }) => (
   <FormGroup>
     <FormControlLabel
       name={field}
-      onChange={(ev) => handleSelectAll(setFieldValue, category, ev.target.checked)}
+      onChange={(ev) => handleSelectAll(setFieldValue, category, ev.target.checked, type)}
       control={<Checkbox checked={values[category][field]} />}
       label="Select All"
     />
@@ -49,6 +49,7 @@ SelectAllCheck.propTypes = {
   field: PropTypes.string.isRequired,
   setFieldValue: PropTypes.func.isRequired,
   values: PropTypes.any.isRequired,
+  type: PropTypes.any.isRequired
 };
 
 function CustomTabPanel(props) {
@@ -91,6 +92,17 @@ export default function ShareView({ handleCloseModal }) {
   const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuth();
   const fieldData = getFormFields('field-labels', user.id);
+  const [multiSelectAll, setmultiSelectAll] = useState({
+    eduInfo: false,
+      empInfo: false,
+      reInfo: false,
+      resInfo: false,
+      liabilities: false,
+      assets: false,
+      insurances: false,
+      investments: false,
+      bank_details: false,
+  })
   const typeMapping = {
     basic: 'basic_info',
     contact: 'contact',
@@ -100,6 +112,11 @@ export default function ShareView({ handleCloseModal }) {
     idInfo: 'identification',
     resInfo: 'residential',
     reInfo: 'realestate',
+    liabilities: 'liabilities',
+    assets: 'assets',
+    insurances: 'insurances',
+    investments: 'investments',
+    bank_details: 'bank_details',
   };
 
   const handleChange = (event, newValue) => {
@@ -117,16 +134,32 @@ export default function ShareView({ handleCloseModal }) {
     handleCloseModal('share-data-view');
   };
 
-  const handleSelectAll = (setFieldValue, category, checked) => {
-    Object.keys(initialValues[category]).forEach((field) => {
-      setFieldValue(`${category}.${field}`, checked);
-    });
+  const handleSelectAll = (setFieldValue, category, checked, type) => {
+    if(type === 'single'){
+      Object.keys(initialValues[category]).forEach((field) => {
+        setFieldValue(`${category}.${field}`, checked);
+      });
+
+    }else {
+      setmultiSelectAll({...multiSelectAll, [category]: checked})
+    }
   };
-  console.log(initialValues);
 
   const formik = useFormik({
-    initialValues: { ...initialValues, eduInfo: [], empInfo: [], reInfo: [], resInfo: [] },
+    initialValues: {
+      ...initialValues,
+      eduInfo: [],
+      empInfo: [],
+      reInfo: [],
+      resInfo: [],
+      liabilities: [],
+      assets: [],
+      insurances: [],
+      investments: [],
+      bank_details: [],
+    },
     onSubmit: async (values) => {
+      console.log(values);
       const data = {
         access_request: {
           title: values.title,
@@ -139,9 +172,10 @@ export default function ShareView({ handleCloseModal }) {
           sharer_id: user?.id,
         },
       };
-      
+      console.log(data);
+
       try {
-        setLoading(true)
+        setLoading(true);
         const url = requestDataEndpoint(user.id);
         const response = await axiosInstance.post(url.share, data);
         if (response.status === 200) {
@@ -149,11 +183,11 @@ export default function ShareView({ handleCloseModal }) {
             variant: 'success',
           });
         }
-        setLoading(false)
+        setLoading(false);
         handleClose('share-data-view');
       } catch (error) {
         console.log(error);
-        setLoading(false)
+        setLoading(false);
         if (error?.response?.status === 422) {
           enqueueSnackbar(error.response.data.error, {
             variant: 'error',
@@ -197,7 +231,13 @@ export default function ShareView({ handleCloseModal }) {
             >
               {value === 8 ? 'Previous' : 'Save & Next'}
             </Button>
-            <LoadingButton variant="contained" sx={{ flex: 1 }} type="submit" autoFocus loading={loading}>
+            <LoadingButton
+              variant="contained"
+              sx={{ flex: 1 }}
+              type="submit"
+              autoFocus
+              loading={loading}
+            >
               Share Data
             </LoadingButton>
           </Box>
@@ -225,7 +265,7 @@ export default function ShareView({ handleCloseModal }) {
             <Tab disabled={getDisabled()} label="Contact" {...a11yProps(2)} />
             <Tab disabled={getDisabled()} label="Employment" {...a11yProps(3)} />
             <Tab label="Education" {...a11yProps(4)} />
-            <Tab  label="Financial" {...a11yProps(5)} />
+            <Tab label="Financial" {...a11yProps(5)} />
             <Tab disabled={getDisabled()} label="Identification" {...a11yProps(6)} />
             <Tab disabled={getDisabled()} label="Real Estate" {...a11yProps(7)} />
             <Tab disabled={getDisabled()} label="Residential Histories" {...a11yProps(8)} />
@@ -241,6 +281,7 @@ export default function ShareView({ handleCloseModal }) {
 
           <CustomTabPanel value={value} index={1}>
             <SelectAllCheck
+              type="single"
               field="all"
               values={formik.values}
               setFieldValue={formik.setFieldValue}
@@ -258,6 +299,7 @@ export default function ShareView({ handleCloseModal }) {
 
           <CustomTabPanel value={value} index={2}>
             <SelectAllCheck
+              type="single"
               field="all"
               values={formik.values}
               setFieldValue={formik.setFieldValue}
@@ -275,6 +317,7 @@ export default function ShareView({ handleCloseModal }) {
 
           <CustomTabPanel value={value} index={3}>
             <SelectAllCheck
+              type="multi"
               field="all"
               values={formik.values}
               setFieldValue={formik.setFieldValue}
@@ -282,6 +325,8 @@ export default function ShareView({ handleCloseModal }) {
               handleSelectAll={handleSelectAll}
             />
             <MultiDataShare
+              multiSelectAll={multiSelectAll}
+              setmultiSelectAll={setmultiSelectAll}
               fieldData={fieldData}
               values={formik.values}
               name="empInfo"
@@ -292,6 +337,7 @@ export default function ShareView({ handleCloseModal }) {
 
           <CustomTabPanel value={value} index={4}>
             <SelectAllCheck
+              type="multi"
               field="all"
               values={formik.values}
               setFieldValue={formik.setFieldValue}
@@ -299,6 +345,8 @@ export default function ShareView({ handleCloseModal }) {
               handleSelectAll={handleSelectAll}
             />
             <MultiDataShare
+              multiSelectAll={multiSelectAll}
+              setmultiSelectAll={setmultiSelectAll}
               fieldData={fieldData}
               values={formik.values}
               name="eduInfo"
@@ -309,6 +357,7 @@ export default function ShareView({ handleCloseModal }) {
 
           <CustomTabPanel value={value} index={5}>
             <SelectAllCheck
+              type="multi"
               field="all"
               values={formik.values}
               setFieldValue={formik.setFieldValue}
@@ -316,6 +365,8 @@ export default function ShareView({ handleCloseModal }) {
               handleSelectAll={handleSelectAll}
             />
             <FinancialDataShare
+              multiSelectAll={multiSelectAll}
+              setmultiSelectAll={setmultiSelectAll}
               fieldData={fieldData}
               values={formik.values}
               name="finInfo"
@@ -326,6 +377,7 @@ export default function ShareView({ handleCloseModal }) {
 
           <CustomTabPanel value={value} index={6}>
             <SelectAllCheck
+              type="multi"
               field="all"
               values={formik.values}
               setFieldValue={formik.setFieldValue}
@@ -343,6 +395,7 @@ export default function ShareView({ handleCloseModal }) {
 
           <CustomTabPanel value={value} index={7}>
             <SelectAllCheck
+              type="multi"
               field="all"
               values={formik.values}
               setFieldValue={formik.setFieldValue}
@@ -350,6 +403,8 @@ export default function ShareView({ handleCloseModal }) {
               handleSelectAll={handleSelectAll}
             />
             <MultiDataShare
+              multiSelectAll={multiSelectAll}
+              setmultiSelectAll={setmultiSelectAll}
               fieldData={fieldData}
               values={formik.values}
               name="reInfo"
@@ -360,6 +415,7 @@ export default function ShareView({ handleCloseModal }) {
 
           <CustomTabPanel value={value} index={8}>
             <SelectAllCheck
+              type="multi"
               field="all"
               values={formik.values}
               setFieldValue={formik.setFieldValue}
@@ -367,6 +423,8 @@ export default function ShareView({ handleCloseModal }) {
               handleSelectAll={handleSelectAll}
             />
             <MultiDataShare
+              multiSelectAll={multiSelectAll}
+              setmultiSelectAll={setmultiSelectAll}
               fieldData={fieldData}
               values={formik.values}
               name="resInfo"

@@ -2,17 +2,12 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
 import Card from '@mui/material/Card';
-import {
-  Grid,
-  Button,
-  ButtonGroup,
-} from '@mui/material';
+import { Grid, Button, ButtonGroup } from '@mui/material';
 
 import AlertDialog from '../../modal/modal';
 import AddFinanceCard from './AddFinanceCard';
 import FinanceCardContent from './FinanceCardContent';
 import FinInformationCard from './FinInformationCard';
-
 
 const FinanceCard = ({ finInfo, handleCurrentForm, path, title, redirect }) => {
   const Cards = [
@@ -23,6 +18,7 @@ const FinanceCard = ({ finInfo, handleCurrentForm, path, title, redirect }) => {
     { title: 'Insurance Info', path: 'insurances' },
     { title: 'Investment Info', path: 'investments' },
   ];
+  console.log(finInfo);
 
   const [open, setopen] = useState(false);
   const [selectedData, setselectedData] = useState(null);
@@ -55,15 +51,15 @@ const FinanceCard = ({ finInfo, handleCurrentForm, path, title, redirect }) => {
         ))}
       </ButtonGroup>
       {finType.path === 'financial-info' ? (
-          <FinInformationCard
-            data={finInfo}
-            handleCurrentForm={handleCurrentForm}
-            handleViewDataModal={handleViewDataModal}
-            title={title}
-            redirect={redirect}
-            fin_info_id={finInfo.id}
-            path={path}
-          />
+        <FinInformationCard
+          data={finInfo}
+          handleCurrentForm={handleCurrentForm}
+          handleViewDataModal={handleViewDataModal}
+          title={title}
+          redirect={redirect}
+          fin_info_id={finInfo.id}
+          path={path}
+        />
       ) : (
         <>
           {finInfo[finType.path] &&
@@ -81,7 +77,14 @@ const FinanceCard = ({ finInfo, handleCurrentForm, path, title, redirect }) => {
         </>
       )}
 
-      <AddFinanceCard handleCurrentForm={handleCurrentForm} redirect={redirect} fintype={finType}  fin_info_id={finInfo.id} />
+      {finType.path === 'financial-info' && finInfo.id ? null : (
+        <AddFinanceCard
+          handleCurrentForm={handleCurrentForm}
+          redirect={redirect}
+          fintype={finType}
+          fin_info_id={finInfo.id}
+        />
+      )}
       <AlertDialog
         fullWidth
         showClose

@@ -47,6 +47,13 @@ export function overrides(theme) {
         },
       },
     },
+    MuiStack :{
+      styleOverrides: {
+        root: {
+          marginTop: 0,
+        },
+      }
+    },
     MuiBackdrop: {
       styleOverrides: {
         root: {

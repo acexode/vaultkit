@@ -42,7 +42,7 @@ export default function MainProfileView() {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      displayName: user?.basic.first_name || '',
+      displayName: user?.basic?.first_name || '',
       email: user?.email,
       photoURL: user?.photoURL,
       phoneNumber: user?.phoneNumber,

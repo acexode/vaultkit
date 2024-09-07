@@ -15,7 +15,6 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const SelectDataToShare = ({ fields, name, setFieldValue, values, fieldData }) => {
-
   const handleCheckboxChange = (field, checked, category) => {
     setFieldValue(`${category}.all`, false);
     setFieldValue(field, checked);

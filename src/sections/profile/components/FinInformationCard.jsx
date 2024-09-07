@@ -64,7 +64,7 @@ console.log(data);
               edge="end"
               variant="contained"
               size="medium"
-              onClick={() => handleCurrentForm(path, data?.id || data.financial_information_id, redirect, fin_info_id)}
+              onClick={() => handleCurrentForm(path, data?.id, redirect, fin_info_id)}
             >
               <Icon width={40} icon={editFill} />
             </NewButton>

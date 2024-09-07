@@ -1,4 +1,5 @@
-import styled from "@emotion/styled";
+import { styled } from "@mui/material";
+
 
 
 export const ProfileView = styled('div')(({ theme }) => ({

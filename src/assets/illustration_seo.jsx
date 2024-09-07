@@ -1,7 +1,5 @@
 // material
 
-// import { useTheme } from "@emotion/react";
-
 import { Box } from "@mui/material";
 
  import hero from './hero.png'

@@ -79,11 +79,6 @@ export const initialValues = {
     sources_of_income: false,
     credit_score: false,
     credit_history: false,
-    liabilities: [],
-    assets: [],
-    insurances: [],
-    investments: [],
-    bank_details: [],
   },
   idInfo: {
     document_type: false,

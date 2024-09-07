@@ -83,7 +83,7 @@ export default function Hero() {
 
         <HeroImgStyle alt="hero" src={hero} variants={varFadeInUp} />
 
-        <Container maxWidth="lg">
+        <Container sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', background: 'green'}} maxWidth="lg">
           <ContentStyle>
             <motion.div variants={varFadeInRight}>
               <Typography variant="h1" sx={{ color: 'common.white' }}>

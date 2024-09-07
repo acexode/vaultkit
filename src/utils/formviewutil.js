@@ -57,7 +57,9 @@ export const handleProfileDataSubmit = async (
     },
     'personal-info': async () => {
       const data = { basic_info: { ...values } };
-      response = await api._create(data);
+      console.log(data);
+      const formData = createFormData('basic_info');
+      response = await api._create(formData);
       const msg = successMsg('Personal', id);
       return handleResponse(response, msg);
     },
@@ -78,7 +80,7 @@ export const handleProfileDataSubmit = async (
         },
       };
       console.log(payload, singleUrl);
-      response = id ? await axiosInstance.patch(singleUrl, updatePayload) : await api._create(payload);
+      response = id ? await axiosInstance.patch(singleUrl, updatePayload) : await api._create(updatePayload);
       const msg = successMsg('Financial Information', id);
       return handleResponse(response, msg);
     },

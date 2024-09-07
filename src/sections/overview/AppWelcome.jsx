@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import styled from '@emotion/styled';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { Card, Button, Typography, CardContent } from '@mui/material';
+import { Card, Button, styled, Typography, CardContent } from '@mui/material';
 
 import SeoIllustration from 'src/assets/illustration_seo';
 

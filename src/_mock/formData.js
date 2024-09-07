@@ -102,13 +102,13 @@ export const BasicInfo = [
     defaultValue: '',
     isForm: true,
   },
-  // {
-  //   label: 'Account status',
-  //   name: 'account_status',
-  //   type: 'text',
-  //   defaultValue: '',
-  //   isForm: true,
-  // },
+  {
+    label: 'Nationality',
+    name: 'nationality',
+    type: 'text',
+    defaultValue: '',
+    isForm: true,
+  },
   // {
   //   label: 'Account creation date',
   //   name: 'account_creation_date',
@@ -128,8 +128,8 @@ export const BasicInfo = [
     name: 'work_authorization',
     type: 'select',
     options: [
-      { label: 'Yes', value: true },
-      { label: 'No', value: false },
+      { label: 'Yes', value: "true" },
+      { label: 'No', value: "false" },
     ],
 
     defaultValue: '',
@@ -1117,7 +1117,7 @@ export const getFormFields = (slug, id) => {
         contact: getLabels(ContactInfo),
         eduInfo: getLabels(EducationInfo),
         empInfo: getLabels(EmployeeInfo),
-        finInfo: getLabels(FinancialInfo),
+        finInfo: getLabels(FinancialInformation),
         idInfo: getLabels(IdentificationInfo),
         reInfo: getLabels(RealEstateInfo),
         resInfo: getLabels(ResidentialHistory),

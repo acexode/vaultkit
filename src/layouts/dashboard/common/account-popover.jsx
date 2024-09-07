@@ -28,12 +28,12 @@ const MENU_OPTIONS = [
   {
     label: 'Profile',
     icon: 'eva:person-fill',
-    path: '/user'
+    path: '/dashboard/user'
   },
   {
     label: 'Settings',
     icon: 'eva:settings-2-fill',
-    path: '/settings'
+    path: '/dashboard/settings'
   },
 ];
 
@@ -98,7 +98,7 @@ export default function AccountPopover() {
             border: (theme) => `solid 2px ${theme.palette.background.default}`,
           }}
         >
-          {user?.basic?.first_name.charAt(0).toUpperCase()}
+          {user.basic && user?.basic?.first_name?.charAt(0).toUpperCase()}
         </Avatar>
       </IconButton>
 

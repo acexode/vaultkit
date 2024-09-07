@@ -1,2 +1,6 @@
 /* scrollbar */
 @import 'simplebar-react/dist/simplebar.min.css';
+
+.css-rrmaic-MuiStack-root>:not(style)~:not(style) {
+    margin-top: 0px !important;
+}

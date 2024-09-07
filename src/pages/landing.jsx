@@ -13,6 +13,7 @@ export default function LandingPage() {
       </Helmet>
 
       <LandingViewTwo/>
+      {/* <LandingView/> */}
     </>
   );
 }

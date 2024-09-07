@@ -1,6 +1,7 @@
-import React from 'react';
+/* eslint-disable no-unsafe-optional-chaining */
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
+import React, { useState, useEffect } from 'react';
 
 import { Grid, Stack } from '@mui/material';
 
@@ -9,47 +10,64 @@ import useUserData from 'src/hooks/useUserData';
 import { mapShareViewFields, getKeysWithTrueValues } from 'src/utils/utils';
 
 import FinFormShare from './fin-form-share';
+import SelectDataToShare from './select-data-share';
+
 
 const FinancialDataShare = ({ fields, name, setFieldValue, values, fieldData }) => {
   const { data } = useUserData();
-  const { assets, bank_details, insurances, investments, liabilities } = data.finInfo;
-  const mappedAssets = assets ? mapShareViewFields(assets, 'assets') : null;
-  const mappedBank_Details = bank_details ? mapShareViewFields(bank_details, 'bank_details') : null;
-  const mappedInsurances = insurances ? mapShareViewFields(insurances, 'insurances') : null;
-  const mappedInvestments = investments ? mapShareViewFields(investments, 'investments') : null;
-  const mappedLiabilities = liabilities ? mapShareViewFields(liabilities, 'liabilities') : null;
-  const mappedItems = [
-    mappedAssets,
-    mappedBank_Details,
-    mappedInsurances,
-    mappedInvestments,
-    mappedLiabilities,
-  ];
-  console.log([]);
-  console.log(data);
-  const initialValues = {};
-  const itemNames = ['assets', 'bank_details', 'insurances', 'investments', 'liabilities'];
-  console.log(assets, bank_details, itemNames);
-  mappedItems.forEach((e, i) => {
-    if (e) {
-      console.log(e, itemNames[i]);
-      initialValues[itemNames[i]] = e.reduce((accumulator, current) => {
-        const d = values[name].reduce((a, v) => ({ ...a, [v]: v }), {});
-        accumulator[current.id] = d[current.id] || false;
-        return accumulator;
-      }, {});
+  const [mappedInsurances, setmappedInsurances] = useState([])
+  const [mappedInvestments, setmappedInvestments] = useState([])
+  const [mappedLiabilities, setmappedLiabilities] = useState([])
+  const [mappedAssets, setmappedAssets] = useState([])
+  const [mappedBank_Details, setmappedBank_Details] = useState([])
+  const [initiaVals, setinitiaVals] = useState({})
+  useEffect(() => {
+    if (data) {
+      const { assets, bank_details, insurances, investments, liabilities } = data && data?.finInfo;
+      const mAssets = assets ? mapShareViewFields(assets, 'assets') : null;
+      const mBank_Details = bank_details
+        ? mapShareViewFields(bank_details, 'bank_details')
+        : null;
+      const mInsurances = insurances ? mapShareViewFields(insurances, 'insurances') : null;
+      const mInvestments = investments ? mapShareViewFields(investments, 'investments') : null;
+      const mLiabilities = liabilities ? mapShareViewFields(liabilities, 'liabilities') : null;
+      setmappedAssets(mAssets)
+      setmappedBank_Details(mBank_Details)
+      setmappedInsurances(mInsurances)
+      setmappedInvestments(mInvestments);
+      setmappedLiabilities(mLiabilities)
+      const mappedItems = [
+        mAssets,
+        mBank_Details,
+        mInsurances,
+        mInvestments,
+        mLiabilities,
+      ];
+
+      const initialV = {};
+      const itemNames = ['assets', 'bank_details', 'insurances', 'investments', 'liabilities'];
+      mappedItems.forEach((e, i) => {
+        if (e) {
+          initialV[itemNames[i]] = e?.reduce((accumulator, current) => {
+            const d = values[itemNames[i]]?.reduce((a, v) => ({ ...a, [v]: v }), {});
+            accumulator[current.id] = d[current.id] || false;
+            return accumulator;
+          }, {});
+        }
+      });
+      setinitiaVals(initialV)
     }
-  });
-  console.log(initialValues);
+  }, [data, values]);
 
   const formik = useFormik({
-    initialValues: {},
+    initialValues: initiaVals,
     enableReinitialize: true,
   });
-  const handleCheckboxChange = (field, val) => {
-    formik.setFieldValue(field, val);
-    const parentValue = getKeysWithTrueValues({ ...formik.values, [field]: val });
-    setFieldValue(name, parentValue);
+  const handleCheckboxChange = (field, val, category) => {
+    const v = {...formik.values[category], [field]: val}
+    formik.setFieldValue(category, v);
+    const parentValue = getKeysWithTrueValues(v)
+    setFieldValue(category, parentValue)
   };
 
   return (
@@ -59,6 +77,16 @@ const FinancialDataShare = ({ fields, name, setFieldValue, values, fieldData }) 
           container
           sx={{ marginLeft: 0, background: '#F5F6F7', padding: '10px', borderRadius: '5px' }}
         >
+           <Grid pl={2} pb={2} item xs={12}>
+                Financial Information
+              </Grid>
+              <SelectDataToShare
+              fieldData={fieldData}
+              values={values}
+              name={name}
+              fields={fields}
+              setFieldValue={setFieldValue}
+            />
           {mappedAssets.length > 0 && (
             <>
               <Grid pl={2} pb={2} item xs={12}>
@@ -69,6 +97,7 @@ const FinancialDataShare = ({ fields, name, setFieldValue, values, fieldData }) 
                   handleCheckboxChange={handleCheckboxChange}
                   formik={formik}
                   field={field}
+                  name='assets'
                 />
               ))}
             </>
@@ -88,6 +117,7 @@ const FinancialDataShare = ({ fields, name, setFieldValue, values, fieldData }) 
                   handleCheckboxChange={handleCheckboxChange}
                   formik={formik}
                   field={field}
+                  name='bank_details'
                 />
               ))}
             </>
@@ -109,6 +139,7 @@ const FinancialDataShare = ({ fields, name, setFieldValue, values, fieldData }) 
                     handleCheckboxChange={handleCheckboxChange}
                     formik={formik}
                     field={field}
+                    name='insurances'
                   />
                 ))}
             </>
@@ -129,6 +160,7 @@ const FinancialDataShare = ({ fields, name, setFieldValue, values, fieldData }) 
                     handleCheckboxChange={handleCheckboxChange}
                     formik={formik}
                     field={field}
+                    name='investments'
                   />
                 ))}
             </>
@@ -149,6 +181,7 @@ const FinancialDataShare = ({ fields, name, setFieldValue, values, fieldData }) 
                     handleCheckboxChange={handleCheckboxChange}
                     formik={formik}
                     field={field}
+                    name='liabilities'
                   />
                 ))}
             </>

@@ -1,6 +1,6 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
+import React, { useState, useEffect } from 'react';
 
 import { Grid, Paper, styled, Checkbox, FormGroup, Typography, FormControlLabel } from '@mui/material';
 
@@ -18,17 +18,38 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const MultiDataShare = ({ fields, name, setFieldValue, values, fieldData }) => {
-
+const MultiDataShare = ({ fields, name, setFieldValue, values, fieldData, multiSelectAll }) => {
+  // console.log(values);
+  const [initialValues, setinitialValues] = useState(null)
+  const [mapped, setmapped] = useState(null)
     const {data} = useUserData()
-    const mapped = data[name] ? mapShareViewFields(data[name], name) : null
-    console.log(values);
-    const initialValues = mapped.reduce((accumulator, current) => {
-        const d = values[name].reduce((a, v) => ({...a, [v]: v}), {})
-        accumulator[current.id] = d[current.id] || false;
-        return accumulator;
-    }, {});
-    console.log(mapped, initialValues);
+    useEffect(() => {
+      const m = data && data[name] ? mapShareViewFields(data[name], name) : null
+      setmapped(m)
+      if(!initialValues){
+        const vals = m?.reduce((accumulator, current) => {
+            const d = values[name]?.reduce((a, v) => ({...a, [v]: v}), {})
+            console.log(d);
+            accumulator[current.id] = d[current.id];
+            return accumulator;
+        }, {});
+        setinitialValues(vals)
+
+      }
+    }, [data, initialValues, name, values])
+
+    useEffect(() => {
+      console.log(values[name]);
+      if(initialValues){
+        const d = Object.keys(initialValues).reduce((a, v) => ({...a, [v]: multiSelectAll[name]}), {})
+        console.log(d, multiSelectAll[name]);
+        setinitialValues(d)
+        setFieldValue(name, Object.keys(d))
+
+      }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [multiSelectAll])
+
 
   const formik = useFormik({
     initialValues,
@@ -38,6 +59,7 @@ const MultiDataShare = ({ fields, name, setFieldValue, values, fieldData }) => {
   const handleCheckboxChange = (field, val) => {
     formik.setFieldValue(field, val);
     const parentValue = getKeysWithTrueValues({...formik.values, [field]: val})
+    console.log(name, parentValue);
     setFieldValue(name, parentValue)
 };
 
@@ -54,8 +76,8 @@ const MultiDataShare = ({ fields, name, setFieldValue, values, fieldData }) => {
               <FormControlLabel
                 control={
                   <Checkbox
-                    name={field.id}
-                    checked={formik.values[field.id]}
+                    name={field?.id}
+                    checked={formik.values ? formik?.values[field?.id] : false}
                     onChange={(evt) =>
                       handleCheckboxChange(field.id, evt.target.checked)
                     }
@@ -81,6 +103,7 @@ MultiDataShare.propTypes = {
   setFieldValue: PropTypes.func.isRequired,
   values: PropTypes.any.isRequired,
   fieldData: PropTypes.any.isRequired,
+  multiSelectAll: PropTypes.any.isRequired,
 };
 
 export default MultiDataShare;
