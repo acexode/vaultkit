@@ -150,6 +150,23 @@ function AuthProvider({ children }) {
     });
     return response;
   };
+  const OrganizationLogin = async (values) => {
+    const response = await axios.post(authEndpoints.signinCompany, values);
+  
+    const token = response.headers.authorization;
+    
+    const { data } = response.data.status;
+    
+    cacheUser(data.user);
+    setSession(token);
+    dispatch({
+      type: 'LOGIN',
+      payload: {
+        user: data,
+      },
+    });
+    return response;
+  };
 
   const registerIndiviual = async (values) => {
     const user = values;
@@ -171,20 +188,18 @@ function AuthProvider({ children }) {
   };
 
   const registerOrganization = async (values) => {
-    const organization = {
-      email: values.email,
-      password: values.password,
-      name: values.name,
-      password_confirmation: values.password,
-      business_type: values.business_type,
-      description: values.description,
-    };
-
     const response = await axios.post(authEndpoints.signupCompany, {
-      organization,
+      organization: {
+        email: values.email,
+        password: values.password,
+        name: values.name,
+        business_type: values.business_type,
+        description: values.description,
+      }
     });
     const token = response.headers.authorization;
     const { data } = response.data;
+    
     cacheUser(data);
     setSession(token);
     dispatch({
@@ -225,6 +240,7 @@ function AuthProvider({ children }) {
         logout,
         registerIndiviual,
         resetPassword,
+        OrganizationLogin,
         updateProfile,
         registerOrganization,
         getBasicInfo,

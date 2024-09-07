@@ -13,7 +13,7 @@ export const authEndpoints = {
   login: `${baseEndpoints.auth}login`,
   signupUser: `${baseEndpoints.auth}signup`,
   signupCompany: `${baseEndpoints.auth}organizations/signup`,
-  siginupCompany: `${baseEndpoints.auth}organizations/login`,
+  signinCompany: `${baseEndpoints.auth}organizations/login`,
   activate: `${baseEndpoints.auth}/register/activate`,
   resetPassword: `${baseEndpoints.auth}password`,
   updatedPassword: `${baseEndpoints.auth}password`,

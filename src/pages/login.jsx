@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 
-import { LoginView } from 'src/sections/login';
+import LoginOverView from 'src/sections/login/LoginOverview';
 
 // ----------------------------------------------------------------------
 
@@ -11,7 +11,7 @@ export default function LoginPage() {
         <title> Login | Vaultkit App </title>
       </Helmet>
 
-      <LoginView />
+      <LoginOverView />
     </>
   );
 }
