@@ -37,10 +37,10 @@ export default function AppView() {
       try {
         const url = notificationEndpoint(user.id);
         const response = await axiosInstance.get(url.allActivities);
-        if (response.data && response.status === 200) {
-          setActivities(response.data.activity_log.slice(0, 5));
-        } else if (response.error) {
-          enqueueSnackbar(response.error.message, {
+        if (response?.data && response?.status === 200) {
+          setActivities(response?.data?.activity_log.slice(0, 5));
+        } else if (response?.error) {
+          enqueueSnackbar(response?.error?.message, {
             autoHideDuration: 1000,
             anchorOrigin: {
               vertical: 'top',
@@ -70,8 +70,8 @@ export default function AppView() {
         const url = requestDataEndpoint(user.id);
         const response = await axiosInstance.get(url.sentDataRequest);
        
-        if (response.data && response.status === 200) {
-          setRequestData(response.data);
+        if (response?.data && response?.status === 200) {
+          setRequestData(response?.data);
         } else if (response.error) {
           enqueueSnackbar(response.error.message, {
             autoHideDuration: 1000,
@@ -116,10 +116,10 @@ export default function AppView() {
         </Grid>
 
         <Grid xs={12} md={6} lg={4} >
-          {activities && activities.length > 0 ? (
+          {activities && activities?.length > 0 ? (
             <AppOrderTimeline
               title="Recent Activities"
-              list={activities.map((activity, index) => ({
+              list={activities?.map((activity, index) => ({
                 id: faker.string.uuid(),
                 title: `Event: ${activity.event}`,
                 type: `order${index + 1}`,
