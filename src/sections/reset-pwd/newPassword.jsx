@@ -31,7 +31,9 @@ export default function NewPasswordView() {
   const theme = useTheme();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  const { search } = useLocation();
+  const { search, pathname } = useLocation();
+  const isNewUser = pathname === '/new-user' || false
+  console.log(useLocation(), isNewUser)
   const queryObject = queryParamsToObject(search);
   console.log(queryObject);
   const [showPassword, setShowPassword] = useState(false);
@@ -130,7 +132,7 @@ export default function NewPasswordView() {
         variant="contained"
         loading={formik.isSubmitting}
       >
-        Reset Password
+        {isNewUser ? "Submit" : "Reset Password"}
       </LoadingButton>
     </form>
   );
@@ -162,7 +164,7 @@ export default function NewPasswordView() {
             width: {  md: 560, xs: 1 },
           }}
         >
-          <Typography variant="h4" mb={2}>Reset Password</Typography>
+          <Typography variant="h4" mb={2}>{isNewUser ? "New Password" : "Reset Password"}</Typography>
           {renderForm}
         </Card>
       </Stack>
