@@ -54,7 +54,7 @@ export default function NewPasswordView() {
     onSubmit: async (values) => {
       console.log(values);
       try {
-        const data = { ...values, token: queryObject.token }
+        const data = { user: {...values, token: queryObject.token }}
         const response = await axios.patch(authEndpoints.resetPassword, data)
         if(response?.status === 200){
           enqueueSnackbar(response?.data.message, { 
@@ -65,6 +65,7 @@ export default function NewPasswordView() {
             },
             variant: "success"
           })
+          router.push('/login');
         }
       } catch (error) {
         if(error?.response?.status === 404){
@@ -78,7 +79,6 @@ export default function NewPasswordView() {
           })
         }
       }
-      router.push('/otp');
     },
   });
 

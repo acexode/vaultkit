@@ -30,7 +30,7 @@ export default function ResetPage() {
         <title> Reset Password | Vaultkit App </title>
       </Helmet>
       <RootStyle>
-        {route.search.includes('token') ? 
+        {route.search.includes('reset_password_token') ? 
         <NewPasswordView />
         :
         <Box sx={{ maxWidth: 480, mx: 'auto' }}>
