@@ -56,10 +56,12 @@ export const handleProfileDataSubmit = async (
       return handleResponse(response, msg);
     },
     'personal-info': async () => {
-      const data = { basic_info: { ...values } };
-      console.log(data);
-      const formData = createFormData('basic_info');
-      response = await api._create(formData);
+      // const {nationality, ...others} = values
+      // const data = { basic_information: { ...values } };
+      // console.log(data, nationality);
+      const formData = createFormData('basic_information');
+      console.log(singleUrl);
+      response = id ? await axiosInstance.patch(singleUrl, formData) : await api._create(formData);
       const msg = successMsg('Personal', id);
       return handleResponse(response, msg);
     },

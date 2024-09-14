@@ -6,6 +6,7 @@ export const baseEndpoints = {
   auth: `${serverBaseUrl}/`,
   profiles: `${serverBaseUrl}/users/${user?.id}`,
   profile: `${serverBaseUrl}/users`,
+  organization: `${serverBaseUrl}/organizations/organizations`,
   share: `${serverBaseUrl}/permission_base/access_requests`,
 };
 
@@ -25,8 +26,13 @@ export const authEndpoints = {
 export const sharedDataEndpoint = {
   share: `${baseEndpoints.extractApproval}/share`,
 };
+
+export const orgEndpoint = {
+  share: `${baseEndpoints.organization}/organizations`,
+  employees: `${serverBaseUrl}/organizations/employees`,
+};
 export const profileEndpoint = (path, id) => ({
-  basic: `${path}/basic_info`,
+  basic: `${path}/basic_information`,
   contact: `${path}/${id}/contact_information`,
   eduInfo: `${path}/${id}/education_data`,
   empInfo: `${path}/${id}/employment_informations`,
@@ -70,7 +76,7 @@ export const getSingleProfileUrl = (category, id, userId) => {
       api = `${baseEndpoints.profile}/employment_informations/${id}`;
       break;
     case 'personal-info':
-      api = `${baseEndpoints.profile}/basic_info`;
+      api = `${baseEndpoints.profile}/basic_information`;
       break;
     case 'financial-info':
       api = `${baseEndpoints.profile}/${userId}/financial_information`;
@@ -111,7 +117,7 @@ export const getSingleProfileDataPatchUrl = (category, id) => {
       api = `${baseEndpoints.profile}/employment_informations/${id}`;
       break;
     case 'personal-info':
-      api = `${baseEndpoints.profile}/${id}`;
+      api = `${baseEndpoints.profile}/basic_information`;
       break;
     case 'financial-info':
       api = `${baseEndpoints.profile}/financial_informations/${id}`;

@@ -8,6 +8,7 @@ import React, { useState, useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 import { useLocation } from 'react-router-dom';
 
+import { LoadingButton } from '@mui/lab';
 import {
   Grid,
   Card,
@@ -43,6 +44,7 @@ const finTags = [ 'bank_details', 'liabilities', 'assets', 'insurances', 'invest
 
 const MyFormComponent = ({ fields, title, url, tag }) => {
   const { user } = useAuth();
+  const [loading, setloading] = useState(false)
   const {handleRedirect} = useGlobalContext()
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
@@ -92,14 +94,19 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
     enableReinitialize: true,
     validationSchema: Yup.object(validationSchema),
     onSubmit: async (values) => {
-      
+      setloading(true)
       try {
         const response = await handleSubmit(values);
         if (response.status === 200) {
           router.push('/dashboard/user');
+          setloading(false)
         }
       } catch (error) {
         console.log(error);
+        enqueueSnackbar('Error saving data', {
+          variant: 'success',
+        });
+        setloading(false)
       }
     },
   });
@@ -311,9 +318,9 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
             <Button onClick={() => handleRedirect(queryObject.redirect)} variant="outlined" color="primary" sx={{ mr: 2 }}>
               Cancel
             </Button>
-            <Button type="submit" variant="contained" color="primary">
-              Submit
-            </Button>
+            <LoadingButton loading={loading} type="submit" variant="contained" color="primary">
+              Submit 
+            </LoadingButton>
           </Grid>
         </Card>
       </Stack>

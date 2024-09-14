@@ -175,8 +175,8 @@ export default function LoginView() {
         <Card
           sx={{
             p: 5,
-            width: 1,
-            maxWidth: 420,
+            width: { xs: 1, md: '480px' },
+            maxWidth: 480,
           }}
         >
           <Typography variant="h4">Sign in to Vaultkit</Typography>

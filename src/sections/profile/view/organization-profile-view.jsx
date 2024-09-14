@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import { useSnackbar } from 'notistack';
+import React, { useState, useEffect } from 'react';
 
 import {
   Box,
@@ -16,6 +17,12 @@ import {
 import { useRouter } from 'src/routes/hooks';
 import useDialogState from 'src/routes/hooks/useSharedData';
 
+import useAuth from 'src/hooks/useAuth';
+
+import axiosInstance from 'src/utils/axios';
+
+import { orgEndpoint } from 'src/configs/endpoints';
+
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
@@ -24,6 +31,7 @@ import TableNoData from '../../table/table-no-data';
 import CommonTableHead from '../../table/user-table-head';
 import TableEmptyRows from '../../table/table-empty-rows';
 import OrgTableToolbar from '../../table/OrganizationToolbar';
+import { BulkInvite, SingleInvite, OrgRequestData } from './constant';
 import { emptyRows, applyFilter, getComparator } from '../../user/utils';
 import OrganizationTRows from '../../table/common/Organizatio-table.row';
 import BulkInviteModal from '../../modal/organization-modals/bullk-invite';
@@ -34,12 +42,12 @@ OrganizationProfileView.propTypes = {
   handleVerificationModal: PropTypes.func,
 };
 export default function OrganizationProfileView({ handleVerificationModal }) {
-  const SingleInvite = 'open-single-invite'
-  const BulkInvite = 'open-bulk-invite'
-  const OrgRequestData = 'org-request-data'
+  const {user} = useAuth()
+  const { enqueueSnackbar } = useSnackbar();
+  console.log(user);
   const { openDialog, closeDialog, isDialogOpen } = useDialogState();
   const router = useRouter();
-  // const [employees, setemployees] = useState([])
+  const [employees, setemployees] = useState([])
   const [selected, setSelected] = useState([]);
   //   const [filterName, setFilterName] = useState('');
   // const [page, setPage] = useState(0);
@@ -48,16 +56,47 @@ export default function OrganizationProfileView({ handleVerificationModal }) {
     router.push(`/dashboard/user?userId=${value}`);
 
   };
-  //   console.log(setFilterName);
+  useEffect(() => {
+   
+    if(user){
+      
+      const fetchData = async () => {
+        try {
+         const response = await axiosInstance.get(orgEndpoint.employees)
+         console.log(response)
+         if(response.data) {
+           setemployees(response.data)
+         }
+         if(response.error){
+           enqueueSnackbar(response.error.message, { 
+             autoHideDuration: 1000,
+             anchorOrigin: {
+               vertical: "top",
+               horizontal: "right"
+             },
+             variant: "error"
+           })
+         }
+        
+        } catch (error) {
+         console.log(error)
+        }
+       }
+       fetchData()
+     
+    
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
-  const employees = [
-    {
-      id: 5,
-      name: 'Abubakar',
-      email: 'abudawud92@gmail.com',
-      status: 'pending',
-    }
-  ];
+  // const employees = [
+  //   {
+  //     id: 5,
+  //     name: 'Abubakar',
+  //     email: 'abudawud92@gmail.com',
+  //     status: 'pending',
+  //   }
+  // ];
   const filterName = '';
 
   const [page, setPage] = useState(0);
@@ -128,8 +167,8 @@ export default function OrganizationProfileView({ handleVerificationModal }) {
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Box>
-        <Typography variant="h4">Macrosoft Inc</Typography>
-        <Typography variant="caption"> 22, Ave Street, Newyork, USA</Typography>
+        <Typography variant="h4">{user?.name}</Typography>
+        <Typography variant="caption"> {user?.business_type}</Typography>
         <Typography variant="subtitle1"> Total Employees - 0 </Typography>
 
         </Box>
@@ -216,8 +255,8 @@ export default function OrganizationProfileView({ handleVerificationModal }) {
         rowsPerPageOptions={[5, 10, 25]}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      <AlertDialog handleClose={()=> closeDialog(SingleInvite)} fu maxWidth="lg" title="Generate Access Code" component={<SingleInviteModal handleCloseModal={closeDialog} />} open={isDialogOpen(SingleInvite)} />
-      <AlertDialog handleClose={()=> closeDialog(BulkInvite)} fu maxWidth="lg" title="Generate Access Code" component={<BulkInviteModal handleCloseModal={closeDialog} />} open={isDialogOpen(BulkInvite)} />
+      <AlertDialog handleClose={()=> closeDialog(SingleInvite)} fu maxWidth="lg" title="Generate Access Code" component={<SingleInviteModal user={user} handleCloseModal={closeDialog} />} open={isDialogOpen(SingleInvite)} />
+      <AlertDialog handleClose={()=> closeDialog(BulkInvite)} fu maxWidth="lg" title="Generate Access Code" component={<BulkInviteModal user={user} handleCloseModal={closeDialog} />} open={isDialogOpen(BulkInvite)} />
       <AlertDialog handleClose={()=> closeDialog(OrgRequestData)} fullWidth maxWidth="lg" title="Generate Access Code" component={<OrgShareView employees={employees} handleCloseModal={closeDialog} />} open={isDialogOpen(OrgRequestData)} />
     </Container>
   );

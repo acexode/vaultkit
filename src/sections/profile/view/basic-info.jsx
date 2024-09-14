@@ -1,5 +1,4 @@
 /* eslint-disable no-restricted-syntax */
-import { useSnackbar } from 'notistack';
 import React, { useState, useEffect } from 'react';
 
 import Card from '@mui/material/Card';
@@ -11,7 +10,6 @@ import useAuth from 'src/hooks/useAuth';
 
 import { convertToSentenceCase } from 'src/utils/common-utils';
 
-import { profileAPIs } from 'src/apis';
 import { useGlobalContext } from 'src/context/context';
 
 import EmptyContent from 'src/components/common/EmptyContent';
@@ -39,69 +37,43 @@ const Item = styled('div')(({ theme }) => ({
 }));
 
 const BasicInfo = () => {
-
   const { handleCurrentForm } = useGlobalContext();
   const [data, setData] = useState(null);
-  const {user} = useAuth()
-  const { enqueueSnackbar } = useSnackbar();
-  
-  
+  const { user, getBasicInfo } = useAuth();
+
   useEffect(() => {
-   
-    if(user){
-      
-      const fetchData = async () => {
-        try {
-         const api = profileAPIs(user?.id)
-         const response = await api.basicAPI._readMany()
-         
-         console.log(response)
-         if(response.data) {
-           setData(response.data)
-         }
-         if(response.error){
-           enqueueSnackbar(response.error.message, { 
-             autoHideDuration: 1000,
-             anchorOrigin: {
-               vertical: "top",
-               horizontal: "right"
-             },
-             variant: "error"
-           })
-         }
-        
-        } catch (error) {
-         console.log(error)
-        }
-       }
-       fetchData()
-     
-    
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (user) {
+      console.log(user);
+      setData(user?.basic);
+    }
+    if (!user.basic) {
+      getBasicInfo();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const renderItem = (item) => {
-    
     if (typeof item === 'string') {
-       if(item.startsWith('http')){
-
-         return <a href={item}>Link</a>;
-       }
-        return item
-       
-    } if (typeof item === 'object' && item != null) {
-    
+      if (item.startsWith('http')) {
+        return <a href={item}>Link</a>;
+      }
+      return item;
+    }
+    if (typeof item === 'object' && item != null) {
       const value = Object.keys(item)[0];
-     
+
       if (typeof item[value] === 'string' && item[value].startsWith('http')) {
-        return <a href={value}>Link</a>;
+        return (
+          <a target="_blank" href={item[value]} rel="noreferrer">
+            Link
+          </a>
+        );
       }
       return value;
     }
     return '';
   };
- 
+
   return (
     <Container>
       <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
@@ -118,24 +90,41 @@ const BasicInfo = () => {
                 <Item>
                   <ListItemText sx={{ minWidth: '84px' }}>Personal Info</ListItemText>
                   <ListItemText sx={{ textAlign: 'right' }}>
-                    <Button variant="outlined" onClick={() => handleCurrentForm('personal-info', data?.id, 0)}>
+                    <Button
+                      variant="outlined"
+                      onClick={() => handleCurrentForm('personal-info', data?.id, 0)}
+                    >
                       Edit Info
                     </Button>
                   </ListItemText>
                 </Item>
               </Box>
               {Object.keys(data)
-                .filter(e => !['id', 'account_creation_date', 'ip_address', 'last_login_at', 'user_id', 'created_at', 'updated_at', 'is_private'].includes(e))
+                .filter(
+                  (e) =>
+                    ![
+                      'id',
+                      'account_creation_date',
+                      'ip_address',
+                      'last_login_at',
+                      'user_id',
+                      'created_at',
+                      'updated_at',
+                      'is_private',
+                    ].includes(e)
+                )
                 .map((e) => (
                   <ListItemRoot key={e}>
                     <Item>
-                      <ListItemText sx={{ minWidth: '84px' }}>{convertToSentenceCase(e)}</ListItemText>
+                      <ListItemText sx={{ minWidth: '84px' }}>
+                        {convertToSentenceCase(e)}
+                      </ListItemText>
                       <ListItemText sx={{ textAlign: 'right' }}>
                         <Typography sx={{ fontWeight: '700' }}>{renderItem(data[e])}</Typography>
                       </ListItemText>
                     </Item>
                   </ListItemRoot>
-              ))}
+                ))}
             </Stack>
           </Card>
         ) : (
@@ -144,7 +133,12 @@ const BasicInfo = () => {
               title="You haven't added any data"
               description="Click the button below to start adding your data"
             />
-            <Button onClick={() => handleCurrentForm('personal-info', null, 0)} variant='outlined' size='lg' color='inherit'>
+            <Button
+              onClick={() => handleCurrentForm('personal-info', null, 0)}
+              variant="outlined"
+              size="lg"
+              color="inherit"
+            >
               Add Data
             </Button>
           </>

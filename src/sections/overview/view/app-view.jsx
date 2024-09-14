@@ -20,6 +20,7 @@ import AppOrderTimeline from '../app-order-timeline';
 
 export default function AppView() {
   const { getBasicInfo, user } = useAuth();
+  const [displayName, setdisplayName] = useState('')
   const [requestData, setRequestData] = useState(null);
   const [activities, setActivities] = useState(null);
   
@@ -27,10 +28,15 @@ export default function AppView() {
 
   useEffect(() => {
     if (user) {
+      if(user.business_type){
+        setdisplayName(user.name)
+      }else{
+        setdisplayName(user?.basic?.first_name)
+      }
       getBasicInfo();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     const fetchActivities = async () => {
@@ -101,7 +107,7 @@ export default function AppView() {
     <Container maxWidth="xl">
       <Grid container spacing={3} alignItems="stretch">
         <Grid item xs={12} md={12} >
-          <AppWelcome displayName={user?.basic?.first_name} />
+          <AppWelcome displayName={displayName} />
         </Grid>
       </Grid>
       <Grid container spacing={3} alignItems="stretch">

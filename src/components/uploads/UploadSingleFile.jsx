@@ -13,6 +13,8 @@ import { useState, useEffect, useCallback } from 'react';
 
 // import { fData } from 'src/utils/format-number';
 
+import { isImage } from 'src/utils/utils';
+
 import UploadIllustration from 'src/assets/illustration_upload';
 
 import Iconify from '../iconify';
@@ -98,8 +100,10 @@ ShowRejectionItems.propTypes = {
   fileRejections: PropTypes.array,
 };
 export default function UploadSingleFile({ error, file, sx, label, setFieldValue, name,  ...other }) {
+  console.log(file);
   const [rFile, setrFile] = useState(null)
   const onDrop = useCallback(acceptedFiles => {
+    console.log(acceptedFiles);
     setFieldValue(name, acceptedFiles[0])
   }, [setFieldValue, name])
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
@@ -110,9 +114,17 @@ export default function UploadSingleFile({ error, file, sx, label, setFieldValue
    if(file){
     console.log('file', file);
 
-    setrFile({...file, preview: file.url ? file.url :  URL.createObjectURL(file)})
+    setrFile({...file, preview: file.url ? file.url : handleCreateObjectUrl(file) })
    }
   }, [file])
+
+  const handleCreateObjectUrl = (fileObj) =>{
+    if(fileObj && fileObj.path){
+
+      return URL.createObjectURL(fileObj)
+    }
+    return null
+  }
 
 
   return (
@@ -171,12 +183,21 @@ export default function UploadSingleFile({ error, file, sx, label, setFieldValue
                     display: 'inline-flex'
                   }}
                 >
+                  {isString(file) ? 
+                  
                   <Paper
                     variant="outlined"
                     component="img"
                     src={isString(file) ? file : rFile?.preview}
                     sx={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute' }}
+                  /> : 
+                    <Paper
+                    variant="outlined"
+                    component="img"
+                    src={ isImage(rFile?.path) ? rFile?.preview: '/assets/csv.png'}
+                    sx={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute' }}
                   />
+                }
                   <Box sx={{ top: 6, right: 6, position: 'absolute' }}>
                     <MIconButton
                       size="small"

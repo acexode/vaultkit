@@ -19,7 +19,7 @@ export const residentialHistoryAPI = new API('ResidentialHistory', profileEndpoi
 // eslint-disable-next-line arrow-body-style
 export const profileAPIs = (userId, fin_info_id, category) => {
     const url = `${serverBaseUrl  }/users`;
-    const basicUrl = `${serverBaseUrl  }/users/basic_info`;
+    const basicUrl = `${serverBaseUrl  }/users/basic_information`;
     const financeUrl = `${serverBaseUrl  }/users/financial_informations/${fin_info_id}/financial_base/${category}`;
     const finInfoUrl = `${serverBaseUrl  }/users/${userId}/financial_information`;
     const path = profileEndpoint(url, userId);

@@ -58,3 +58,17 @@ export const getKeysWithTrueValues =(obj) => {
 
   return keys;
 }
+
+export const  isImage = (file) => {
+  console.log(file);
+  const acceptedImageTypes = ['jpeg', 'png', 'gif', 'jpg'];
+  if (file) {
+    const ext = file.split('.')[1];
+
+    if (acceptedImageTypes.includes(ext)) {
+      return true;
+    }
+  }
+
+  return false;
+}

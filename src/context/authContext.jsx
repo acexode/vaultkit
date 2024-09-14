@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useSnackbar } from 'notistack';
 import { useEffect, useReducer, createContext } from 'react';
 
-import { useRouter } from 'src/routes/hooks';
+// import { useRouter } from 'src/routes/hooks';
 
 import axiosInstance from 'src/utils/axios';
 import { cacheUser, setSession, isValidToken } from 'src/utils/jwt';
@@ -74,7 +74,7 @@ AuthProvider.propTypes = {
 
 function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const router = useRouter();
+  // const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   useEffect(() => {
     const initialize = async () => {
@@ -99,7 +99,8 @@ function AuthProvider({ children }) {
               user: null,
             },
           });
-          router.push('/login');
+          // console.log(router);
+          // router.push('/login');
         }
       } catch (err) {
         console.error(err);
@@ -121,6 +122,7 @@ function AuthProvider({ children }) {
     const path = profileEndpoint(url);
     try {
       const basicInfoResponse = await axiosInstance.get(path.basic);
+      console.log(basicInfoResponse.data);
       const user = { ...state.user, basic: basicInfoResponse.data };
       dispatch({
         type: 'INITIALIZE',
@@ -157,7 +159,7 @@ function AuthProvider({ children }) {
     
     const { data } = response.data.status;
     
-    cacheUser(data.user);
+    cacheUser(data);
     setSession(token);
     dispatch({
       type: 'LOGIN',

@@ -89,12 +89,12 @@ export default function Router() {
       ],
     },
     {
-      path: 'login',
-      element: <LoginPage />,
-    },
-    {
       path: 'signup',
       element: <SignupPage />,
+    },
+    {
+      path: 'login',
+      element: <LoginPage />,
     },
     {
       path: 'reset-password',

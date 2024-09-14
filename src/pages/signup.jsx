@@ -6,11 +6,11 @@ import { SignupOverView } from 'src/sections/signup';
 
 // ----------------------------------------------------------------------
 
-export default function LoginPage() {
+export default function SignupPage() {
   return (
     <>
       <Helmet>
-        <title> Login | Vaultkit App </title>
+        <title> Signup | Vaultkit App </title>
       </Helmet>
 
       <SignupOverView />

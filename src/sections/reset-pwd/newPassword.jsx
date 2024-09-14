@@ -1,4 +1,9 @@
+import axios from 'axios';
+import * as Yup from 'yup';
 import { useState } from 'react';
+import { useFormik } from 'formik';
+import { useSnackbar } from 'notistack';
+import { useLocation } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -12,32 +17,82 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 import { useRouter } from 'src/routes/hooks';
 
+import { queryParamsToObject } from 'src/utils/crud-utils';
+
 import { bgGradient } from 'src/theme/css';
+import { authEndpoints } from 'src/configs/endpoints';
 
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
-
 
 // ----------------------------------------------------------------------
 
 export default function NewPasswordView() {
   const theme = useTheme();
-
   const router = useRouter();
-
+  const { enqueueSnackbar } = useSnackbar();
+  const { search } = useLocation();
+  const queryObject = queryParamsToObject(search);
+  console.log(queryObject);
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleClick = () => {
-    router.push('/otp');
-  };
+  const validationSchema = Yup.object({
+    password: Yup.string()
+      .min(8, 'Password should be of minimum 8 characters length')
+      .required('Password is required'),
+    password_confirmation: Yup.string()
+      .oneOf([Yup.ref('password'), null], 'Passwords must match')
+      .required('Confirm Password is required'),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      password: '',
+      password_confirmation: '',
+    },
+    validationSchema,
+    onSubmit: async (values) => {
+      console.log(values);
+      try {
+        const data = { ...values, token: queryObject.token }
+        const response = await axios.patch(authEndpoints.resetPassword, data)
+        if(response?.status === 200){
+          enqueueSnackbar(response?.data.message, { 
+            autoHideDuration: 3000,
+            anchorOrigin: {
+              vertical: "top",
+              horizontal: "right"
+            },
+            variant: "success"
+          })
+        }
+      } catch (error) {
+        if(error?.response?.status === 404){
+          enqueueSnackbar("Email Not Found", { 
+            autoHideDuration: 3000,
+            anchorOrigin: {
+              vertical: "top",
+              horizontal: "right"
+            },
+            variant: "error"
+          })
+        }
+      }
+      router.push('/otp');
+    },
+  });
 
   const renderForm = (
-    <>
+    <form onSubmit={formik.handleSubmit}>
       <Stack spacing={3} mb={3}>
         <TextField
           name="password"
           label="Password"
           type={showPassword ? 'text' : 'password'}
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          error={formik.touched.password && Boolean(formik.errors.password)}
+          helperText={formik.touched.password && formik.errors.password}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -49,9 +104,13 @@ export default function NewPasswordView() {
           }}
         />
         <TextField
-          name="password"
+          name="password_confirmation"
           label="Confirm Password"
           type={showPassword ? 'text' : 'password'}
+          value={formik.values.password_confirmation}
+          onChange={formik.handleChange}
+          error={formik.touched.password_confirmation && Boolean(formik.errors.password_confirmation)}
+          helperText={formik.touched.password_confirmation && formik.errors.password_confirmation}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -69,11 +128,11 @@ export default function NewPasswordView() {
         size="large"
         type="submit"
         variant="contained"
-        onClick={handleClick}
+        loading={formik.isSubmitting}
       >
         Reset Password
       </LoadingButton>
-    </>
+    </form>
   );
 
   return (
@@ -100,14 +159,10 @@ export default function NewPasswordView() {
           sx={{
             px: 5,
             py: 4,
-            // py: 2,
             width: {  md: 560, xs: 1 },
-            // width: 420,
           }}
         >
           <Typography variant="h4" mb={2}>Reset Password</Typography>
-
-
           {renderForm}
         </Card>
       </Stack>
