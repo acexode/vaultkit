@@ -36,12 +36,24 @@ const formatDate = (dateString) => {
 
 function mapShareableTypes(arrayOfObjects) {
   return arrayOfObjects?.map((obj) => {
-    if (obj.shareable_type === 'ContactInformation') {
-      return 'Contact';
-    } if (obj.shareable_type === 'EmploymentHistory') {
-      return 'Employment';
+    switch (obj.type) {
+      case 'basic_information':
+        return 'Basic Information';
+      case 'contact':
+        return 'Contact Information';
+      case 'education':
+        return 'Education';
+      case 'financial':
+        return 'Financial Information';
+      case 'identification':
+        return 'Identification';
+      case 'realestate':
+        return 'Real Estate';
+      case 'residential':
+        return 'Residential Information';
+      default:
+        return obj.type;
     }
-    return obj.shareable_type; 
   });
 }
 
@@ -49,7 +61,7 @@ function mapShareableTypes(arrayOfObjects) {
 const ViewRequest = ({ data, handleCloseModal }) => {
  
   const [loading, setLoading] = useState()
-  const types = mapShareableTypes(data?.shareable_informations)
+  const types = mapShareableTypes(data?.requested_info.data)
   
   const { enqueueSnackbar } = useSnackbar();
   const approveRequest = async () => {
@@ -147,6 +159,7 @@ ViewRequest.propTypes = {
     updated_at: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     shareable_informations: PropTypes.array.isRequired,
+    requested_info: PropTypes.object.isRequired,
     sender_type: PropTypes.string.isRequired,
     receiver_type: PropTypes.string.isRequired,
     selectedRequest: PropTypes.string.isRequired,

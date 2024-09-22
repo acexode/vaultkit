@@ -16,7 +16,7 @@ export const authEndpoints = {
   signupCompany: `${baseEndpoints.auth}organizations/signup`,
   signinCompany: `${baseEndpoints.auth}organizations/login`,
   activate: `${baseEndpoints.auth}/register/activate`,
-  resetPassword: `${baseEndpoints.auth}password`,
+  resetPassword: `${baseEndpoints.auth}invitation`,
   updatedPassword: `${baseEndpoints.auth}password`,
   changePassword: `${baseEndpoints.auth}/change-password`,
   updateProfile: `${baseEndpoints.auth}/update/profile`,

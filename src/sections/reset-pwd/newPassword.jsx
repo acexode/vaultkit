@@ -33,9 +33,9 @@ export default function NewPasswordView() {
   const { enqueueSnackbar } = useSnackbar();
   const { search, pathname } = useLocation();
   const isNewUser = pathname === '/new-user' || false
-  console.log(useLocation(), isNewUser)
+  // console.log(useLocation(), isNewUser)
   const queryObject = queryParamsToObject(search);
-  console.log(queryObject);
+  // console.log(queryObject);
   const [showPassword, setShowPassword] = useState(false);
 
   const validationSchema = Yup.object({
@@ -56,7 +56,7 @@ export default function NewPasswordView() {
     onSubmit: async (values) => {
       console.log(values);
       try {
-        const data = { user: {...values, token: queryObject.token }}
+        const data = { user: {...values, invitation_token: queryObject.reset_password_token}}
         const response = await axios.patch(authEndpoints.resetPassword, data)
         if(response?.status === 200){
           enqueueSnackbar(response?.data.message, { 
