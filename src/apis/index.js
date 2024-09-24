@@ -22,7 +22,6 @@ export const profileAPIs = (userId, fin_info_id, category) => {
     const basicUrl = `${serverBaseUrl  }/users/basic_information`;
     const financeUrl = `${serverBaseUrl  }/users/financial_informations/${fin_info_id}/financial_base/${category}`;
     const finInfoUrl = `${serverBaseUrl  }/users/${userId}/financial_information`;
-    const idenInfoUrl = `${serverBaseUrl  }/users/identification_data`;
     const path = profileEndpoint(url, userId);
     
     return {
@@ -33,7 +32,7 @@ export const profileAPIs = (userId, fin_info_id, category) => {
         basicInfoAPI : new API('Basic', path.basic, 'MCRUDP'),
         financialAPI : new API('Financial', financeUrl, 'MCRUDP'),
         finInfoAPI : new API('Financial', finInfoUrl, 'MCRUDP'),
-        identityAPI : new API('Identity', idenInfoUrl, 'MCRUDP'),
+        identityAPI : new API('Identity', path.idInfo, 'MCRUDP'),
         realEstateAPI : new API('RealEstate', path.realInfo, 'MCRUDP'),
         residentialHistoryAPI : new API('ResidentialHistory', path.resInfo, 'MCRUDP')
     }
