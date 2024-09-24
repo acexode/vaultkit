@@ -89,7 +89,7 @@ export const getSingleProfileUrl = (category, id, userId) => {
       api = `${baseEndpoints.profile}/financial_base/${category}/${id}`;
       break;
     case 'identification-info':
-      api = `${baseEndpoints.profile}/identification_informations/${id}`;
+      api = `${baseEndpoints.profile}/identification_data/${id}`;
       break;
     case 'realestate-info':
       api = `${baseEndpoints.profile}/real_estate_informations/${id}`;
@@ -130,7 +130,7 @@ export const getSingleProfileDataPatchUrl = (category, id) => {
       api = `${baseEndpoints.profile}/financial_base/${category}/${id}`;
       break;
     case 'identification-info':
-      api = `${baseEndpoints.profile}/identification_informations/${id}`;
+      api = `${baseEndpoints.profile}/identification_data/${id}`;
       break;
     case 'realestate-info':
       api = `${baseEndpoints.profile}/real_estate_informations/${id}`;

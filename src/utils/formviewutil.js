@@ -23,6 +23,7 @@ export const handleProfileDataSubmit = async (
     Object.keys(values).forEach((key) => {
       formData.append(prefix ? `${prefix}[${key}]` : key, values[key]);
     });
+    
     return formData;
   };
 
@@ -112,8 +113,10 @@ export const handleProfileDataSubmit = async (
     },
     'identification-info': async () =>{
       // Implement identification-info logic here
-      
-      handleResponse(response)
+      const formData = createFormData('identification_data');
+      response = id ? await axiosInstance.patch(singleUrl, formData) : await api._create(formData);
+      const msg = successMsg('Identification', id);
+      return handleResponse(response, msg);
     },
     
     'realestate-info': async () => {
