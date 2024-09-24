@@ -56,8 +56,14 @@ export default function NewPasswordView() {
     onSubmit: async (values) => {
       console.log(values);
       try {
-        const data = { user: {...values, invitation_token: queryObject.reset_password_token}}
-        const response = await axios.patch(authEndpoints.resetPassword, data)
+        const data = { user: {...values}}
+        if(isNewUser){
+          data.invitation_token = queryObject.reset_password_token
+        }else {
+          data.token = queryObject.token
+        }
+        const url = isNewUser ? authEndpoints.newPassword : authEndpoints.resetPassword;
+        const response = await axios.patch(url, data)
         if(response?.status === 200){
           enqueueSnackbar(response?.data.message, { 
             autoHideDuration: 3000,
