@@ -764,7 +764,7 @@ export const IdentificationInfo = [
   },
   {
     label: 'Document',
-    name: 'document_url',
+    name: 'Document_url',
     type: 'upload',
     defaultValue: '',
     isForm: true,
