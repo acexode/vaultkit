@@ -89,14 +89,6 @@ export default function OrganizationProfileView({ handleVerificationModal }) {
       // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  // const employees = [
-  //   {
-  //     id: 5,
-  //     name: 'Abubakar',
-  //     email: 'abudawud92@gmail.com',
-  //     status: 'pending',
-  //   }
-  // ];
   const filterName = '';
 
   const [page, setPage] = useState(0);

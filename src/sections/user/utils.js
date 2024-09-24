@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 export const visuallyHidden = {
   border: 0,
   margin: -1,
@@ -36,23 +37,37 @@ export function getComparator(order, orderBy) {
 }
 
 export function applyFilter({ inputData, comparator, filterName }) {
-  const stabilizedThis = Array.isArray(inputData) ?  inputData?.map((el, index) => [el, index]) : [];
-  
-  stabilizedThis?.sort((a, b) => {
+  const stabilizedThis = inputData.map((el, index) => [el, index]);
+
+  stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) return order;
     return a[1] - b[1];
   });
 
-  inputData = stabilizedThis?.map((el) => el[0]);
-
+  inputData = stabilizedThis.map((el) => el[0]);
   if (filterName) {
-    inputData = inputData?.filter(
-      (user) => user.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
-    );
+    console.log(filterName, inputData);
+    inputData = searchByPin(inputData, filterName);
   }
 
   return inputData;
+}
+function searchByPin(dataArray, pin) {
+  const results = [];
+  const searchPin = String(pin).toLowerCase();
+
+  dataArray.forEach((item) => {
+    for (const key in item) {
+      if (String(item[key]).toLowerCase().includes(searchPin)) {
+        console.log(item[key]);
+        results.push(item);
+        break;
+      }
+    }
+  });
+
+  return results;
 }
 export function toSentenceCase(text) {
   const words = text.split('_');

@@ -23,17 +23,17 @@ const MENU_OPTIONS = [
   {
     label: 'Home',
     icon: 'eva:home-fill',
-    path: '/'
+    path: '/',
   },
   {
     label: 'Profile',
     icon: 'eva:person-fill',
-    path: '/dashboard/user'
+    path: '/dashboard/user',
   },
   {
     label: 'Settings',
     icon: 'eva:settings-2-fill',
-    path: '/dashboard/settings'
+    path: '/dashboard/settings',
   },
 ];
 
@@ -41,28 +41,33 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
-  const router = useRouter()
-  const {user} = useAuth();
+  const router = useRouter();
+  const { user } = useAuth();
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
 
   const handleClose = (path) => {
     setOpen(null);
-    router.push(path)
+    console.log(user);
+    if (path === '/dashboard/user' && user.business_type) {
+      router.push('/dashboard/organization');
+    } else {
+      router.push(path);
+    }
   };
   const handleLogout = async () => {
     try {
-      const token = sessionStorage.getItem('authToken').split(" ")[1];
+      const token = sessionStorage.getItem('authToken').split(' ')[1];
       const response = await axios.delete(`${serverBaseUrl}/logout`, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
-      if(response?.data.status === 200){
-        sessionStorage.removeItem("authToken")
-        router.push('/login')
-      }else {
+      if (response?.data.status === 200) {
+        sessionStorage.removeItem('authToken');
+        router.push('/login');
+      } else {
         throw new Error(`Unexpected response status: ${response?.status}`);
       }
     } catch (error) {
@@ -98,7 +103,7 @@ export default function AccountPopover() {
             border: (theme) => `solid 2px ${theme.palette.background.default}`,
           }}
         >
-          {user.basic && user?.basic?.first_name?.charAt(0).toUpperCase()}
+          {user?.basic && user?.basic?.first_name?.charAt(0).toUpperCase()}
         </Avatar>
       </IconButton>
 
@@ -129,7 +134,7 @@ export default function AccountPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         {MENU_OPTIONS.map((option) => (
-          <MenuItem key={option.label} onClick={() =>handleClose(option.path)}>
+          <MenuItem key={option.label} onClick={() => handleClose(option.path)}>
             {option.label}
           </MenuItem>
         ))}

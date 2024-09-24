@@ -120,7 +120,7 @@ export default function NotificationsView() {
                         description={row.description}
                         time={row.createdAt}
                         selected={selected.indexOf(row.name) !== -1}
-                        handleClick={(event) => handleClick(event, row.name)}
+                        handleClick={(event) => handleClick(event, row.id)}
                       />
                     ))}
 

@@ -107,7 +107,7 @@ export default function NotificationsPopover() {
     };
 
     fetchNotifications();
-  }, [user.id]);
+  }, [user?.id]);
   
   return (
     <>

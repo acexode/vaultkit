@@ -141,7 +141,7 @@ export default function SharedDataTableView({
                     validity={row.end_time}
                     starttime={row.start_time}
                     selected={selected.indexOf(row.name) !== -1}
-                    handleClick={(event) => handleClick(event, row.name)}
+                    handleClick={(event) => handleClick(event, row.id)}
                     handleAddNoteModal={handleAddNoteModal}
                     notificationCount={row.notificationCount}
                     handleViewDetails={() => handleViewDetails(row)}

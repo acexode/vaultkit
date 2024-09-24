@@ -34,7 +34,7 @@ export default function Nav({ openNav, onCloseNav }) {
   const upLg = useResponsive('up', 'lg');
 
   useEffect(() => {
-    if (user?.type !== 'organization') {
+    if (user?.business_type) {
       setnavArray(OrganizationNavConfig);
     } else {
       setnavArray(navConfig);
