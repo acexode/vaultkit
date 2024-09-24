@@ -57,6 +57,7 @@ export const requestDataEndpoint = (id) => ({
   request: `${baseEndpoints.share}`,
   share: `${baseEndpoints.share}/share_data`,
   approve: `${baseEndpoints.share}/${id}/approve_request`,
+  revoke: `${baseEndpoints.auth}permission_base/revoke_access_requests/${id}`,
   recievedDataRequest: `${baseEndpoints.share}/received_data_requests`,
   sentDataRequest: `${baseEndpoints.share}/sent_data_requests`,
   sharedData: `${baseEndpoints.share}/shared_data`,
