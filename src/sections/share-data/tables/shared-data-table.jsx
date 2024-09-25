@@ -28,6 +28,7 @@ export default function SharedDataTableView({
   setSelected,
   sharedData,
   approveRequest,
+  revokeRequest
 }) {
   const [page, setPage] = useState(0);
   const [showAddNote, setshowAddNote] = useState(false);
@@ -99,6 +100,7 @@ export default function SharedDataTableView({
     comparator: getComparator(order, orderBy),
     filterName,
   });
+  
 
   const handleViewDetails = (row) => {
     setSelectedRowData(row);
@@ -133,6 +135,7 @@ export default function SharedDataTableView({
                 ?.map((row) => (
                   <RequestDataTRows
                     key={row.id}
+                    id={row.id}
                     title={row.title}
                     role={row.role}
                     status={row.status}
@@ -146,6 +149,7 @@ export default function SharedDataTableView({
                     notificationCount={row.notificationCount}
                     handleViewDetails={() => handleViewDetails(row)}
                     approveRequest={approveRequest}
+                    revokeRequest={revokeRequest}
                   />
                 ))}
 
@@ -189,6 +193,7 @@ SharedDataTableView.propTypes = {
   selected: PropTypes.array,
   setSelected: PropTypes.func,
   approveRequest: PropTypes.func,
+  revokeRequest: PropTypes.func,
   // handleViewDetails: PropTypes.func,
   sharedData: PropTypes.array,
 };

@@ -30,7 +30,7 @@ import CategorySelectCheckmarks from './category-select';
 const categories = [
   {
     label: 'Personal Infomation',
-    value: "basic"
+    value: "basic_information"
   },
   {
     label: 'Contact Information',
