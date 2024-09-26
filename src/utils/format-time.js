@@ -11,7 +11,7 @@ export function fDate(date, newFormat) {
 export function fDateTime(date, newFormat) {
   const fm = newFormat || 'dd MMM yyyy';
   const d = new Date(date)
-  return isValidDate(d) ? format(d, fm) : '';
+  return isValidDate(d) ? format(d, fm) : date;
 }
 export function isValidDate(datestring){
   const date = new Date(datestring)
