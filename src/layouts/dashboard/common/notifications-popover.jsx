@@ -70,7 +70,7 @@ export default function NotificationsPopover() {
   // };
 
   useEffect(() => {
-    const url = notificationEndpoint(user.id);
+    const url = notificationEndpoint(user?.id);
 
     const fetchNotifications = async () => {
       try {

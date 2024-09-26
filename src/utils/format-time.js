@@ -10,8 +10,13 @@ export function fDate(date, newFormat) {
 
 export function fDateTime(date, newFormat) {
   const fm = newFormat || 'dd MMM yyyy';
-
-  return date ? format(new Date(date), fm) : '';
+  const d = new Date(date)
+  return isValidDate(d) ? format(d, fm) : '';
+}
+export function isValidDate(datestring){
+  const date = new Date(datestring)
+  // eslint-disable-next-line no-restricted-globals
+  return date instanceof Date && !isNaN(date)
 }
 
 export function fTimestamp(date) {
