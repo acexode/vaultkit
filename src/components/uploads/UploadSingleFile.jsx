@@ -13,7 +13,7 @@ import { useState, useEffect, useCallback } from 'react';
 
 // import { fData } from 'src/utils/format-number';
 
-import { isImage } from 'src/utils/utils';
+import { isImage, fileIcon } from 'src/utils/utils';
 
 import UploadIllustration from 'src/assets/illustration_upload';
 
@@ -108,6 +108,12 @@ export default function UploadSingleFile({ error, file, sx, label, setFieldValue
   }, [setFieldValue, name])
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
     multiple: false,
+    accept: {
+      "image/*": [".png", ".jpeg", ".jpg"],
+      "application/pdf": [".pdf"],
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
+      "application/msword": [".doc"],
+    },
     onDrop,
   });
   useEffect(() => {
@@ -194,7 +200,7 @@ export default function UploadSingleFile({ error, file, sx, label, setFieldValue
                     <Paper
                     variant="outlined"
                     component="img"
-                    src={ isImage(rFile?.path) ? rFile?.preview: '/assets/csv.png'}
+                    src={ isImage(rFile?.path) ? rFile?.preview: fileIcon(rFile?.path)}
                     sx={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute' }}
                   />
                 }

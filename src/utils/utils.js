@@ -72,3 +72,16 @@ export const  isImage = (file) => {
 
   return false;
 }
+export const  fileIcon = (file) => {
+  if (file) {
+    const ext = file.split('.');
+
+    if (ext[ext.length - 1] === 'pdf') {
+      return '/assets/pdf.png';
+    }
+      return '/assets/doc.png'
+
+  }
+
+  return false;
+}

@@ -4,8 +4,6 @@ import axios from 'axios';
 
 import { serverBaseUrl } from 'src/configs/endpoints';
 
-import { history } from './history';
-
 // Create `axios-cache-adapter` instance
 // const cache = setupCache({
 //   maxAge: 15 * 60 * 1000,
@@ -36,10 +34,14 @@ axiosInstance.interceptors.response.use(
   response => response,
   error => {
     if (error.response) {
-      console.error('Response error:', error.response.data);
+      console.error(error.response.status);
       if (error.response.status === 401) {
         // Handle unauthorized access
-        history.push('/login');
+        window.location.href = '/login';
+      }
+      if (error.response.status === 404) {
+        // Handle unauthorized access
+        // window.location.href = '/404';
       }
     } else if (error.request) {
       console.error('Request error:', error.request);

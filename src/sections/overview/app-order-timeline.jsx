@@ -66,7 +66,7 @@ function OrderItem({ item, lastTimeline }) {
         <Typography variant="subtitle2">{title}</Typography>
 
         <Typography variant="caption" sx={{ color: 'text.disabled' }}>
-          {fDateTime(time)}
+          {time ? fDateTime(time) : ''}
         </Typography>
       </TimelineContent>
     </TimelineItem>

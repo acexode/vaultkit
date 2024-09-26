@@ -10,7 +10,8 @@ export const handleProfileDataSubmit = async (
   router,
   userId,
   enqueueSnackbar,
-  fin_info_id
+  fin_info_id,
+  setloading
 ) => {
   const api = profileRequestMapper(tag, userId, fin_info_id);
   console.log(tag, id, fin_info_id);
@@ -33,6 +34,8 @@ export const handleProfileDataSubmit = async (
         variant: 'success',
       });
     }
+    setloading(false)
+    console.log(apiResponse);
     return apiResponse;
   };
 
@@ -41,19 +44,32 @@ export const handleProfileDataSubmit = async (
       const formData = createFormData('contact_information');
       response = id ? await axiosInstance.patch(singleUrl, formData) : await api._create(formData);
       const msg = successMsg('Contact', id);
-      return handleResponse(response, msg);
+      const res = await handleResponse(response, msg)
+      enqueueSnackbar(res.error.data.error.join(","), {
+        variant: 'error',
+      });
+      return res
     },
     'education-info': async () => {
       const formData = createFormData('education_data');
       response = id ? await axiosInstance.patch(singleUrl, formData) : await api._create(formData);
       const msg = successMsg('Education', id);
-      return handleResponse(response, msg);
+      const res = await handleResponse(response, msg)
+      enqueueSnackbar(res.error.data.error, {
+        variant: 'error',
+      });
+      return res
     },
     'employment-info': async () => {
       const formData = createFormData();
       response = id ? await axiosInstance.patch(singleUrl, formData) : await api._create(formData);
       const msg = successMsg('Employment', id);
-      return handleResponse(response, msg);
+      const res = await handleResponse(response, msg)
+      enqueueSnackbar(res.error.data.errors, {
+        variant: 'error',
+      });
+      console.log(res);
+      return res
     },
     'personal-info': async () => {
       // const {nationality, ...others} = values

@@ -37,6 +37,7 @@ export const formatResponse = async (response) => {
   } else {
     try {
       data = response.data;
+      console.log(data);
     } catch (error) {
       return {
         status: 0,
