@@ -84,6 +84,27 @@ export default function SharedTabSection() {
       });
     }
   };
+  const revokeRequest = async (id) => {
+  
+    try {
+      const url = requestDataEndpoint(id).revoke
+      const response = await axiosInstance.patch(url);
+      if (response.status === 200) {
+        enqueueSnackbar('Access Request Revoked Successfully', {
+          autoHideDuration: 1000,
+          anchorOrigin: { vertical: 'top', horizontal: 'right' },
+          variant: 'success',
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar('An error occurred while approving the request.', {
+        autoHideDuration: 1000,
+        anchorOrigin: { vertical: 'top', horizontal: 'right' },
+        variant: 'error',
+      });
+    }
+  };
 
   const fetchData = async (endpoint, setter) => {
     try {
@@ -148,7 +169,7 @@ export default function SharedTabSection() {
             filterName={filterName}
             selected={selected}
             setSelected={setSelected}
-            
+            revokeRequest={revokeRequest}
           />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>

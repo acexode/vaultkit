@@ -23,6 +23,7 @@ export default function RequestDataTRows({
   title,
   company,
   role,
+  id,
   validity,
   starttime,
   status,
@@ -30,7 +31,8 @@ export default function RequestDataTRows({
   handleAddNoteModal,
   notificationCount,
   handleViewDetails,
-  approveRequest
+  approveRequest,
+  revokeRequest
 }) {
   const [open, setOpen] = useState(null);
   
@@ -111,9 +113,9 @@ export default function RequestDataTRows({
           <Iconify icon="eva:file-outline" sx={{ mr: 2 }} />
           Add Note
         </MenuItem>
-        <MenuItem onClick={handleCloseMenu} sx={{ color: 'error.main' }}>
+        <MenuItem onClick={() => revokeRequest(id)} sx={{ color: 'error.main' }}>
           <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
-          Revoke
+          Revoke 
         </MenuItem>
       </Popover>
 
@@ -127,8 +129,10 @@ RequestDataTRows.propTypes = {
   handleViewDetails: PropTypes.func,
   handleAddNoteModal: PropTypes.func,
   approveRequest: PropTypes.func,
+  revokeRequest: PropTypes.func,
   title: PropTypes.any,
   notificationCount: PropTypes.number,
+  id: PropTypes.number,
   validity: PropTypes.any,
   starttime: PropTypes.any,
   role: PropTypes.any,

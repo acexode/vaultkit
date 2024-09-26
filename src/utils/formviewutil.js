@@ -126,9 +126,12 @@ export const handleProfileDataSubmit = async (
       const msg = successMsg('Financial Investment', id);
       return handleResponse(response, msg);
     },
-    'identification-info': async () =>
+    'identification-info': async () =>{
       // Implement identification-info logic here
-      handleResponse(response),
+      
+      handleResponse(response)
+    },
+    
     'realestate-info': async () => {
       const formData = createFormData('real_estate_informations');
       response = id ? await axiosInstance.patch(singleUrl, formData) : await api._create(formData);
