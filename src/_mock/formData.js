@@ -31,7 +31,7 @@ export const BasicInfo = [
   // },
   {
     label: 'Identity Number',
-    name: 'social_insurance_number',
+    name: 'identity_number',
     type: 'text',
     defaultValue: '',
     isForm: true,
@@ -744,21 +744,21 @@ export const IdentificationInfo = [
   {
     label: 'Date of issue',
     name: 'date_of_issue',
-    type: 'text',
+    type: 'date',
     defaultValue: '',
     isForm: true,
   },
   {
     label: 'Date of expiry',
     name: 'date_of_expiry',
-    type: 'text',
+    type: 'date',
     defaultValue: '',
     isForm: true,
   },
   {
     label: 'Additional notes',
     name: 'additional_notes',
-    type: 'text',
+    type: 'textarea',
     defaultValue: '',
     isForm: true,
   },
