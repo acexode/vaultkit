@@ -67,7 +67,7 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
       const getData = async () => {
         const response = await axiosInstance.get(singleUrl);
         const res = response.data.data || response.data
-      
+        console.log(response);
         setinitialValues(res);
       };
       getData();
@@ -86,7 +86,7 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
  
   const handleSubmit = (values) => {
     console.log(id, user.id)
-    return handleProfileDataSubmit(values, tag, id, router, user.id, enqueueSnackbar, fin_info_id)
+    return handleProfileDataSubmit(values, tag, id, router, user.id, enqueueSnackbar, fin_info_id, setloading)
   }
 
   const formik = useFormik({
@@ -166,7 +166,7 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
             getOptionLabel={(option) => option.title}
             filterSelectedOptions
             renderInput={(params) => (
-              <TextField {...params} variant="standard" label="Benefit packages" fullWidth />
+              <TextField {...params}  label="Benefit packages" fullWidth />
             )}
           />
         );

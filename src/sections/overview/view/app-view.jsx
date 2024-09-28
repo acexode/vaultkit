@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { useSnackbar } from 'notistack';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 import { Card } from '@mui/material';
 import Container from '@mui/material/Container';
@@ -25,18 +25,26 @@ export default function AppView() {
   const [activities, setActivities] = useState(null);
   
   const { enqueueSnackbar } = useSnackbar();
-
+  const memoizedGetBasicInfo = useCallback(() => {
+    getBasicInfo();
+  }, [getBasicInfo]);
   useEffect(() => {
+    console.log(user);
     if (user) {
       if(user.business_type){
         setdisplayName(user.name)
       }else{
         setdisplayName(user?.basic?.first_name)
       }
-      getBasicInfo();
+      if(!user?.basic){
+        memoizedGetBasicInfo();
+
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
+  
 
   useEffect(() => {
     const fetchActivities = async () => {

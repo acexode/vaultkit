@@ -1,24 +1,20 @@
-import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-import AlertDialog from 'src/sections/modal/modal';
-import VerificationView from 'src/sections/profile/view/verification-view';
-import OrganizationProfileView from 'src/sections/profile/view/organization-profile-view';
+import OrganizationSharedDataView from 'src/sections/share-data/organization-shared-data-history';
 
 export default function UserPage() {
-  const [open, setopen] = useState(false)
+  // const [open, setopen] = useState(false)
 
-  const handleVerificationModal = () => {
-    setopen(!open)
-  }
+  // const handleVerificationModal = () => {
+  //   setopen(!open)
+  // }
   return (
     <>
       <Helmet>
         <title> Organization | Vaultkit  </title>
       </Helmet>
 
-      <OrganizationProfileView handleVerificationModal={handleVerificationModal} />
-      <AlertDialog handleClose={handleVerificationModal} fullWidth maxWidth="md" title="Data Verification" component={<VerificationView handleCloseModal={handleVerificationModal} />} open={open} />
+      <OrganizationSharedDataView />
     </>
   );
 }

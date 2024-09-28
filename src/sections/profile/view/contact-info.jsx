@@ -44,11 +44,11 @@ const ContactInfo = () => {
   const { enqueueSnackbar } = useSnackbar();
 
 useEffect(() => {
-  console.log(user);
   const fetchData = async () => {
-   try {
-    const api = profileAPIs(user?.id)
-    const response = await api.contactAPI._readMany()
+    try {
+      const api = profileAPIs(user?.id)
+      const response = await api.contactAPI._readMany()
+      console.log(response);
     
     if(response.data) {
       setData(response.data)

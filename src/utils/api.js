@@ -3,11 +3,13 @@ import axiosInstance from './axios';
 import { Method, getApiOptions, formatResponse, convertToStringParamsObject } from './crud-utils';
 
 const handleError = (error) => {
+  console.log(error);
   if (error.response) {
     return {
       status: error.response.status,
       error: {
         name: 'Response Error',
+        data: error.response.data,
         message: error.response.data.message || 'An error occurred',
         detail: error.response.data.detail || 'No additional details available',
       },

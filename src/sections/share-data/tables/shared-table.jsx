@@ -120,7 +120,7 @@ export default function SharedTableView({filterName, selected, setSelected, hand
                     avatarUrl={row.avatarUrl}
                     duration={row.duration}
                     selected={selected.indexOf(row.name) !== -1}
-                    handleClick={(event) => handleClick(event, row.name)}
+                    handleClick={(event) => handleClick(event, row.id)}
                     handleViewDetails={handleViewDetails}
                   />
                 ))}

@@ -154,7 +154,7 @@ export default function UserPage() {
                       avatarUrl={row.avatarUrl}
                       validity={row.validity}
                       selected={selected.indexOf(row.name) !== -1}
-                      handleClick={(event) => handleClick(event, row.name)}
+                      handleClick={(event) => handleClick(event, row.id)}
                     />
                   ))}
 

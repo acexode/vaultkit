@@ -31,7 +31,7 @@ export const BasicInfo = [
   // },
   {
     label: 'Identity Number',
-    name: 'social_insurance_number',
+    name: 'identity_number',
     type: 'text',
     defaultValue: '',
     isForm: true,
@@ -198,7 +198,7 @@ export const ContactInfo = [
     label: 'Phone number',
     name: 'phone_number',
     type: 'number',
-    defaultValue: '14378371086',
+    defaultValue: '',
     isForm: true,
   },
   {
@@ -240,7 +240,7 @@ export const ContactInfo = [
     label: 'Emergency contact phone',
     name: 'emergency_contact_phone',
     type: 'number',
-    defaultValue: '14378371086',
+    defaultValue: '',
     isForm: true,
   },
   {
@@ -290,7 +290,7 @@ export const ContactInfo = [
     label: 'Emergency contact postal code',
     name: 'emergency_contact_postal_code',
     type: 'text',
-    defaultValue: 'K0M 9Z9',
+    defaultValue: '',
     isForm: true,
   },
 ];
@@ -341,7 +341,7 @@ export const EmployeeInfo = [
     name: 'employment_type',
     type: 'select',
     options: [
-      { label: 'Full-time', value: 'Full time' },
+      // { label: 'Full-time', value: 'Full time' },
       { label: 'Part-Time', value: 'Part-Time' },
       { label: 'Contract', value: 'contract' },
       { label: 'Temporary', value: 'temporary' },
@@ -383,13 +383,6 @@ export const EmployeeInfo = [
   {
     label: 'Supervisor email',
     name: 'email_of_reference',
-    type: 'text',
-    defaultValue: '',
-    isForm: true,
-  },
-  {
-    label: 'Job responsibilities',
-    name: 'job_responsibilities',
     type: 'text',
     defaultValue: '',
     isForm: true,
@@ -461,6 +454,13 @@ export const EmployeeInfo = [
     label: 'Income verification document',
     name: 'income_verification_document',
     type: 'upload',
+    defaultValue: '',
+    isForm: true,
+  },
+  {
+    label: 'Job responsibilities',
+    name: 'job_responsibilities',
+    type: 'textarea',
     defaultValue: '',
     isForm: true,
   },
@@ -744,21 +744,21 @@ export const IdentificationInfo = [
   {
     label: 'Date of issue',
     name: 'date_of_issue',
-    type: 'text',
+    type: 'date',
     defaultValue: '',
     isForm: true,
   },
   {
     label: 'Date of expiry',
     name: 'date_of_expiry',
-    type: 'text',
+    type: 'date',
     defaultValue: '',
     isForm: true,
   },
   {
     label: 'Additional notes',
     name: 'additional_notes',
-    type: 'text',
+    type: 'textarea',
     defaultValue: '',
     isForm: true,
   },

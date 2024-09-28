@@ -84,12 +84,12 @@ export default function RequestDataView({ handleClose }) {
     validationSchema,
     onSubmit: async (values) => {
       const resource = selectedCategory.map(category => ({type: category}))
-
+      const userType = user.business_type ? "organization" : "user"
       const data = {
         access_request: {
           title: values.title,
           sharer_email: values.email,
-          receiver_type: "user",
+          receiver_type: userType,
           sharer_type: "user",
           start_time: values.start_time,
           end_time: values.end_time,

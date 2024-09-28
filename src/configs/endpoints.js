@@ -27,6 +27,9 @@ export const authEndpoints = {
 export const sharedDataEndpoint = {
   share: `${baseEndpoints.extractApproval}/share`,
 };
+export const emailEndpoint = {
+  emails: `${baseEndpoints.profile}/emails`,
+};
 
 export const orgEndpoint = {
   share: `${baseEndpoints.organization}/organizations`,
