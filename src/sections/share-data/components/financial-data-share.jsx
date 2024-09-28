@@ -24,13 +24,13 @@ const FinancialDataShare = ({ fields, name, setFieldValue, values, fieldData }) 
   useEffect(() => {
     if (data) {
       const { assets, bank_details, insurances, investments, liabilities } = data && data?.finInfo;
-      const mAssets = assets ? mapShareViewFields(assets, 'assets') : null;
+      const mAssets = assets ? mapShareViewFields(assets, 'assets') : [];
       const mBank_Details = bank_details
         ? mapShareViewFields(bank_details, 'bank_details')
-        : null;
-      const mInsurances = insurances ? mapShareViewFields(insurances, 'insurances') : null;
-      const mInvestments = investments ? mapShareViewFields(investments, 'investments') : null;
-      const mLiabilities = liabilities ? mapShareViewFields(liabilities, 'liabilities') : null;
+        : [];
+      const mInsurances = insurances ? mapShareViewFields(insurances, 'insurances') : [];
+      const mInvestments = investments ? mapShareViewFields(investments, 'investments') : [];
+      const mLiabilities = liabilities ? mapShareViewFields(liabilities, 'liabilities') : [];
       setmappedAssets(mAssets)
       setmappedBank_Details(mBank_Details)
       setmappedInsurances(mInsurances)

@@ -188,8 +188,13 @@ export default function ShareView({ handleCloseModal }) {
       } catch (error) {
         console.log(error);
         setLoading(false);
-        if (error?.response?.status === 422) {
+        const errorCodes = [404, 422]
+        if (errorCodes.includes(error?.response?.status)) {
           enqueueSnackbar(error.response.data.error, {
+            variant: 'error',
+          });
+        }else{
+          enqueueSnackbar('Something went wrong', {
             variant: 'error',
           });
         }
@@ -211,7 +216,7 @@ export default function ShareView({ handleCloseModal }) {
           alignItems="center"
           justifyContent="space-between"
           mb={5}
-          marginTop={2}
+          marginTop={5}
         >
           <Typography sx={{ textAlign: 'center', mb: 2 }} variant="h4">
             Select data for sharing

@@ -331,8 +331,9 @@ export const EmployeeInfo = [
   },
   {
     label: 'Current end date',
+    labelTwo: 'Current Job',
     name: 'end_date',
-    type: 'date',
+    type: 'employment_end_date',
     defaultValue: '',
     isForm: true,
   },

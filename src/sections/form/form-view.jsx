@@ -38,6 +38,7 @@ import { getSingleProfileUrl } from 'src/configs/endpoints';
 
 import { UploadSingleFile } from 'src/components/uploads';
 
+import CurrentEndDate from './current-end-date';
 import SocialMediaInput from './socialMediaInput';
 
 const finTags = [ 'bank_details', 'liabilities', 'assets', 'insurances', 'investments']
@@ -254,6 +255,10 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
             helperText={formik.touched[field.name] && formik.errors[field.name]}
           />
         );
+      case 'employment_end_date':
+
+        return <CurrentEndDate field={field} formik={formik} />
+        
       case 'email':
       case 'text':
       default:
