@@ -17,31 +17,31 @@ export const mapShareViewFields = (data, key) => {
   let res = []
   switch (key) {
     case 'eduInfo':
-      res = data.map(e => ({title: `${e?.degree} ${e.field_of_study}`, subtitle:  `${e?.institution_name} | ${e?.institution_country}`, id: e.id     }))
+      res = Array .isArray(data) && data?.map(e => ({title: `${e?.degree} ${e.field_of_study}`, subtitle:  `${e?.institution_name} | ${e?.institution_country}`, id: e.id     }))
       break;
     case 'empInfo':
-      res = data.map(e => ({title: `${e?.job_title}`, subtitle:  `${e?.employer} | ${e?.start_date} - ${e?.end_date}`, id: e.id      }))
+      res = Array .isArray(data) && data?.map(e => ({title: `${e?.job_title}`, subtitle:  `${e?.employer} | ${e?.start_date} - ${e?.end_date}`, id: e.id      }))
       break;
     case 'reInfo':
-      res = data.map(e => ({title: `${e?.mortgage_details} `, subtitle:  `${e?.property_address} | ${e?.state}`, id: e.id     }))
+      res = Array .isArray(data) && data?.map(e => ({title: `${e?.mortgage_details} `, subtitle:  `${e?.property_address} | ${e?.state}`, id: e.id     }))
       break;
     case 'resInfo':
-      res = data.map(e => ({title: `${e?.last_address}`, subtitle:  `${e?.state} | ${e?.city}`, id: e.id     }))
+      res = Array .isArray(data) && data?.map(e => ({title: `${e?.last_address}`, subtitle:  `${e?.state} | ${e?.city}`, id: e.id     }))
       break;
     case 'assets':
-      res = data.map(e => ({title: `${e?.asset_type}`, subtitle:  `${e?.currency} ${e.value} | ${e?.location}`, id: e.id     }))
+      res = Array .isArray(data) && data?.map(e => ({title: `${e?.asset_type}`, subtitle:  `${e?.currency} ${e.value} | ${e?.location}`, id: e.id     }))
       break;
     case 'bank_details':
-      res = data.map(e => ({title: `${e?.name} - ${e?.account_number}`, subtitle:  `Bank Name: ${e?.bank_name} | Address: ${e.address}  ${e?.state}`, id: e.financial_information_id     }))
+      res = Array .isArray(data) && data?.map(e => ({title: `${e?.name} - ${e?.account_number}`, subtitle:  `Bank Name: ${e?.bank_name} | Address: ${e.address}  ${e?.state}`, id: e.financial_information_id     }))
       break;
     case 'insurances':
-      res = data.map(e => ({title: `${e?.insurance_type}`, subtitle:  `${e?.provider_name} | ${e?.policy_number}`, id: e.id     }))
+      res = Array .isArray(data) && data?.map(e => ({title: `${e?.insurance_type}`, subtitle:  `${e?.provider_name} | ${e?.policy_number}`, id: e.id     }))
       break;
     case 'investments':
-      res = data.map(e => ({title: `${e?.name}`, subtitle:  `Type: ${e?.investment_type} | Value: ${e?.value}`, id: e.id     }))
+      res = Array .isArray(data) && data?.map(e => ({title: `${e?.name}`, subtitle:  `Type: ${e?.investment_type} | Value: ${e?.value}`, id: e.id     }))
       break;
     case 'liabilities':
-      res = data.map(e => ({title: `Type: ${e?.liability_type}`, subtitle:  `Amount: ${e?.amount} | Due Date: ${e?.due_date}`, id: e.id     }))
+      res = Array .isArray(data) && data?.map(e => ({title: `Type: ${e?.liability_type}`, subtitle:  `Amount: ${e?.amount} | Due Date: ${e?.due_date}`, id: e.id     }))
       break;
   
     default:

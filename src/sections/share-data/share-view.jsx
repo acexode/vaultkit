@@ -19,6 +19,7 @@ import {
 } from '@mui/material';
 
 import useAuth from 'src/hooks/useAuth';
+import useUserData from 'src/hooks/useUserData';
 
 import axiosInstance from 'src/utils/axios';
 import { resourceMap } from 'src/utils/share-form-utils';
@@ -86,6 +87,7 @@ function a11yProps(index, orientation) {
 
 export default function ShareView({ handleCloseModal }) {
   const themes = useTheme();
+  const {handleRefetch} = useUserData();
   const isMobile = useMediaQuery(themes.breakpoints.down('sm'));
   const [value, setValue] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -178,6 +180,7 @@ export default function ShareView({ handleCloseModal }) {
         setLoading(true);
         const url = requestDataEndpoint(user.id);
         const response = await axiosInstance.post(url.share, data);
+        handleRefetch()
         if (response.status === 200) {
           enqueueSnackbar(response.data.success, {
             variant: 'success',

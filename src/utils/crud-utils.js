@@ -37,7 +37,6 @@ export const formatResponse = async (response) => {
   } else {
     try {
       data = response.data;
-      console.log(data);
     } catch (error) {
       return {
         status: 0,
@@ -49,7 +48,7 @@ export const formatResponse = async (response) => {
       };
     }
   }
-  return { status: response.status, data: data.data };
+  return { status: response.status, data: data.data || data };
 };
 
 export const Method = {

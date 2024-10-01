@@ -57,7 +57,7 @@ const ListCard = ({ data, handleCurrentForm, path, title, redirect }) => {
 
   return (
     <Grid container alignItems="stretch" justifyContent="space-around">
-      {data && data.map((d) => (
+      {Array.isArray(data) && data.map((d) => (
         <Card key={d.id}
           sx={{
             p: 2,

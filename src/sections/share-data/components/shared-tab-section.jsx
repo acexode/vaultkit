@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Tab, Tabs } from '@mui/material';
 
 import useAuth from 'src/hooks/useAuth';
+import useUserData from 'src/hooks/useUserData';
 
 import axiosInstance from 'src/utils/axios';
 
@@ -55,6 +56,7 @@ export default function SharedTabSection() {
   const [sentRequest, setSentRequest] = useState([]);
   
   const { user } = useAuth();
+  const {refetchData} = useUserData()
   const { enqueueSnackbar } = useSnackbar();
   
   const handleChange = (event, newValue) => {
@@ -130,7 +132,7 @@ export default function SharedTabSection() {
     fetchData(url.sharedData, setSharedData);
     fetchData(url.sentDataRequest, setReceivedRequest);
     fetchData(url.recievedDataRequest, setSentRequest);
-  }, [user.id]);
+  }, [user.id, refetchData]);
 
   return (
     <Box sx={{ width: '100%' }}>

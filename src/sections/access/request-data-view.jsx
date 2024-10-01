@@ -21,6 +21,8 @@ import { requestDataEndpoint } from 'src/configs/endpoints';
 
 // import NestedSelect from 'src/components/common/NestedSelect';
 
+import useUserData from 'src/hooks/useUserData';
+
 import { formatDateToYYYYMMDD } from 'src/utils/format-time';
 
 import CategorySelectCheckmarks from './category-select';
@@ -63,6 +65,7 @@ RequestDataView.propTypes = {
 
 export default function RequestDataView({ handleClose }) {
   const {user} = useAuth()
+  const {handleRefetch} = useUserData()
   const [selectedCategory, setselectedCategory] = useState([]);
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
@@ -103,6 +106,7 @@ export default function RequestDataView({ handleClose }) {
         setLoading(true)
         const url = requestDataEndpoint(user.id)
         const response = await axiosInstance.post(url.request, data);
+        handleRefetch()
         if(response.status === 200){
           enqueueSnackbar(response.data.success, {
             variant: 'success',
