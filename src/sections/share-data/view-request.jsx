@@ -61,6 +61,7 @@ function mapShareableTypes(arrayOfObjects) {
 const ViewRequest = ({ data, handleCloseModal }) => {
  
   const [loading, setLoading] = useState()
+  const [declineRequestLoading, setDeclineRequestLoading] = useState()
   const types = mapShareableTypes(data?.requested_info.data)
   
   const { enqueueSnackbar } = useSnackbar();
@@ -72,6 +73,38 @@ const ViewRequest = ({ data, handleCloseModal }) => {
       if(response.status === 200){
         setLoading(false)
         enqueueSnackbar("Access Request Approved Successfully", {
+          autoHideDuration: 1000,
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'right',
+          },
+          variant: 'success',
+        });
+      }
+      handleCloseModal()
+    } catch (error) {
+      setLoading(false)
+      if(error.response.status === 500){
+        enqueueSnackbar("Server error", {
+          autoHideDuration: 1000,
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'right',
+          },
+          variant: 'error',
+        });
+      }
+    }
+  }
+
+  const declineRequest = async () => {
+    try {
+      const url = requestDataEndpoint(data?.id)
+      setDeclineRequestLoading(true)
+      const response = await axiosInstance.patch(url.decline)
+      if(response.status === 200){
+        setDeclineRequestLoading(false)
+        enqueueSnackbar("Access Request Declined Successfully", {
           autoHideDuration: 1000,
           anchorOrigin: {
             vertical: 'top',
@@ -134,7 +167,7 @@ const ViewRequest = ({ data, handleCloseModal }) => {
         </ItemsStyle>
       </Grid>
       <DialogActions sx={{ mt: 2 }}>
-        <Button variant="outlined" startIcon={<Iconify src="" />}>
+        <Button variant="outlined" loading={declineRequestLoading} onClick={declineRequest} startIcon={<Iconify src="" />}>
           Reject Request
         </Button>
         <LoadingButton startIcon={<Iconify src="" />} variant="contained" loading={loading} onClick={approveRequest}>
