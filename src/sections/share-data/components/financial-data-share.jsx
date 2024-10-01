@@ -13,7 +13,7 @@ import FinFormShare from './fin-form-share';
 import SelectDataToShare from './select-data-share';
 
 
-const FinancialDataShare = ({ fields, name, setFieldValue, values, fieldData }) => {
+const FinancialDataShare = ({ fields, name, setFieldValue, values, fieldData, multiSelectAll }) => {
   const { data } = useUserData();
   const [mappedInsurances, setmappedInsurances] = useState([])
   const [mappedInvestments, setmappedInvestments] = useState([])
@@ -21,6 +21,7 @@ const FinancialDataShare = ({ fields, name, setFieldValue, values, fieldData }) 
   const [mappedAssets, setmappedAssets] = useState([])
   const [mappedBank_Details, setmappedBank_Details] = useState([])
   const [initiaVals, setinitiaVals] = useState({})
+  console.log(multiSelectAll);
   useEffect(() => {
     if (data) {
       const { assets, bank_details, insurances, investments, liabilities } = data && data?.finInfo;
@@ -50,14 +51,16 @@ const FinancialDataShare = ({ fields, name, setFieldValue, values, fieldData }) 
         if (e) {
           initialV[itemNames[i]] = e?.reduce((accumulator, current) => {
             const d = values[itemNames[i]]?.reduce((a, v) => ({ ...a, [v]: v }), {});
+            // console.log(accumulator[current.id], d[current.id]);
             accumulator[current.id] = d[current.id] || false;
             return accumulator;
           }, {});
+          console.log(initialV);
         }
       });
       setinitiaVals(initialV)
     }
-  }, [data, values]);
+  }, [data, multiSelectAll, values]);
 
   const formik = useFormik({
     initialValues: initiaVals,
@@ -198,6 +201,7 @@ FinancialDataShare.propTypes = {
   setFieldValue: PropTypes.func.isRequired,
   values: PropTypes.any.isRequired,
   fieldData: PropTypes.any.isRequired,
+  multiSelectAll: PropTypes.any.isRequired,
 };
 
 export default FinancialDataShare;

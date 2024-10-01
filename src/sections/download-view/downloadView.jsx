@@ -27,6 +27,7 @@ const DownloadView = () => {
         
         if (response.data && response.status === 200) {
           setDownloadData(response.data);
+          console.log(response);
         } else if (response.error) {
           enqueueSnackbar(response.error.message, {
             autoHideDuration: 1000,

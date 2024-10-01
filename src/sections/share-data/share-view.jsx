@@ -137,6 +137,7 @@ export default function ShareView({ handleCloseModal }) {
   };
 
   const handleSelectAll = (setFieldValue, category, checked, type) => {
+    console.log(type, category);
     if(type === 'single'){
       Object.keys(initialValues[category]).forEach((field) => {
         setFieldValue(`${category}.${field}`, checked);

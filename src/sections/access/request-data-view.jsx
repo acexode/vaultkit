@@ -43,6 +43,10 @@ const categories = [
     value: "education"
   },
   {
+    label:  'Employment Information',
+    value: "employment"
+  },
+  {
     label:  'Financial Information',
     value: "financial"
   },
