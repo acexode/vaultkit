@@ -75,7 +75,7 @@ export default function RequestDataTRows({
         <TableCell>
         <Label 
             color={
-              (status === 'expired' && 'error') || 
+              (status === 'revoked' && 'error') || 
               (status === 'approved' && 'success') || 
               (status === 'pending' && 'warning') || 
               'default'

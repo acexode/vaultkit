@@ -17,6 +17,7 @@ import TableToolbar from 'src/sections/table/user-table-toolbar';
 import SentRequestTableView from '../tables/request-table';
 import SharedDataTableView from '../tables/shared-data-table';
 import RecievedDataTableView from '../tables/recieved-data-table';
+import RevokedRequestTableView from '../tables/revoked-request-table';
 import RecievedRequestTableView from '../tables/recieved-request-table';
 
 function CustomTabPanel({ children, value, index, ...other }) {
@@ -53,6 +54,7 @@ export default function SharedTabSection() {
   const [sharedData, setSharedData] = useState([]);
   const [receivedData, setReceivedData] = useState([]);
   const [receivedRequest, setReceivedRequest] = useState([]);
+  const [revokedDataRequest, setRevokedDataRequest] = useState([]);
   const [sentRequest, setSentRequest] = useState([]);
   
   const { user } = useAuth();
@@ -132,6 +134,7 @@ export default function SharedTabSection() {
     fetchData(url.sharedData, setSharedData);
     fetchData(url.sentDataRequest, setReceivedRequest);
     fetchData(url.recievedDataRequest, setSentRequest);
+    fetchData(url.revokedDataRequest, setRevokedDataRequest);
   }, [user.id, refetchData]);
 
   return (
@@ -161,6 +164,7 @@ export default function SharedTabSection() {
           <Tab label="Received Data" {...a11yProps(1)} />
           <Tab label="Sent Data Requests" {...a11yProps(2)} />
           <Tab label="Received Data Request" {...a11yProps(3)} />
+          <Tab label="Revoked Data Request" {...a11yProps(4)} />
           <Tab label="Saved Categories" {...a11yProps(4)} />
         </Tabs>
 
@@ -196,6 +200,16 @@ export default function SharedTabSection() {
         <CustomTabPanel value={value} index={3}>
           <RecievedRequestTableView
             recievedRequest={receivedRequest}
+            approveRequest={approveRequest}
+            filterName={filterName}
+            selected={selected}
+            setSelected={setSelected}
+            
+          />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={4}>
+          <RevokedRequestTableView
+            revokedDataRequest={revokedDataRequest}
             approveRequest={approveRequest}
             filterName={filterName}
             selected={selected}
