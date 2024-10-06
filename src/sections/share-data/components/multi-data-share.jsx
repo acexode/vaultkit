@@ -24,10 +24,12 @@ const MultiDataShare = ({ fields, name, setFieldValue, values, fieldData, multiS
   const [mapped, setmapped] = useState(null)
     const {data} = useUserData()
     useEffect(() => {
+      console.log(data[name]);
       const m = data && data[name] ? mapShareViewFields(data[name], name) : null
       setmapped(m)
       if(!initialValues){
         const vals = m?.reduce((accumulator, current) => {
+          console.log(values, name);
             const d = values[name]?.reduce((a, v) => ({...a, [v]: v}), {})
             console.log(d);
             accumulator[current.id] = d[current.id];
@@ -41,6 +43,7 @@ const MultiDataShare = ({ fields, name, setFieldValue, values, fieldData, multiS
     useEffect(() => {
       console.log(values[name]);
       if(initialValues){
+        console.log(initialValues);
         const d = Object.keys(initialValues).reduce((a, v) => ({...a, [v]: multiSelectAll[name]}), {})
         console.log(d, multiSelectAll[name]);
         setinitialValues(d)

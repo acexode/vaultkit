@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Card, Grid, Typography, CardContent } from '@mui/material';
 
-import { PersonalInfo, PersonalInfoItems } from './styled';
+import { CustomListItems, CustomUnorderedList } from './styled';
 
 
 const ContactInfoCard = ({obj}) => {
@@ -19,14 +19,14 @@ const ContactInfoCard = ({obj}) => {
             Contact Information
           </Typography>
           
-          <PersonalInfo>
+          <CustomUnorderedList>
             {Object.entries(obj).map(([key, value]) => (
-              <PersonalInfoItems key={key}>
+              <CustomListItems key={key}>
                 <div className="title">{key.replace(/_/g, ' ')}</div>
                 <div className="text">{value}</div>
-              </PersonalInfoItems>
+              </CustomListItems>
             ))}
-          </PersonalInfo>
+          </CustomUnorderedList>
         </CardContent>
       </Card>
     </Grid>

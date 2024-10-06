@@ -25,6 +25,7 @@ const FinancialDataShare = ({ fields, name, setFieldValue, values, fieldData, mu
   useEffect(() => {
     if (data) {
       const { assets, bank_details, insurances, investments, liabilities } = data && data?.finInfo;
+      console.log(data.finInfo);
       const mAssets = assets ? mapShareViewFields(assets, 'assets') : [];
       const mBank_Details = bank_details
         ? mapShareViewFields(bank_details, 'bank_details')
@@ -51,16 +52,28 @@ const FinancialDataShare = ({ fields, name, setFieldValue, values, fieldData, mu
         if (e) {
           initialV[itemNames[i]] = e?.reduce((accumulator, current) => {
             const d = values[itemNames[i]]?.reduce((a, v) => ({ ...a, [v]: v }), {});
-            // console.log(accumulator[current.id], d[current.id]);
             accumulator[current.id] = d[current.id] || false;
             return accumulator;
           }, {});
-          console.log(initialV);
         }
       });
+      console.log(initialV);
       setinitiaVals(initialV)
     }
-  }, [data, multiSelectAll, values]);
+  }, [data, values]);
+
+  useEffect(() => {
+    if(initiaVals){
+      console.log(initiaVals);
+      // const d = Object.keys(initiaVals).reduce((a, v) => ({...a, [v]: multiSelectAll[name]}), {})
+      // console.log(d, multiSelectAll[name]);
+      // setinitialValues(d)
+      // setFieldValue(name, Object.keys(d))
+
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [multiSelectAll])
+
 
   const formik = useFormik({
     initialValues: initiaVals,

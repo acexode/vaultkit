@@ -45,7 +45,7 @@ export default function RecievedDataTableView({
   ],}
   const [orderBy, setOrderBy] = useState('title');
 
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -100,6 +100,7 @@ export default function RecievedDataTableView({
     filterName,
   });
   const handleViewDetails = (row) => {
+    console.log(row);
     setSelectedRowData(row); 
     openDialog('data-details'); 
   }

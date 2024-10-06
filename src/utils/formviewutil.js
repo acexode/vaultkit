@@ -14,7 +14,6 @@ export const handleProfileDataSubmit = async (
   setloading
 ) => {
   const api = profileRequestMapper(tag, userId, fin_info_id);
-  console.log(tag, id, fin_info_id);
   const singleUrl = getSingleProfileDataPatchUrl(tag, id);
   let response;
 
@@ -35,7 +34,6 @@ export const handleProfileDataSubmit = async (
       });
     }
     setloading(false)
-    console.log(apiResponse);
     return apiResponse;
   };
 
@@ -128,8 +126,16 @@ export const handleProfileDataSubmit = async (
     },
     'identification-info': async () =>{
       // Implement identification-info logic here
-      
-      handleResponse(response)
+      const formData = createFormData('identification_data');
+      console.log(singleUrl);
+      response = id ? await axiosInstance.patch(singleUrl, formData) : await api._create(formData);
+      const msg = successMsg('Contact', id);
+      const res = await handleResponse(response, msg)
+      enqueueSnackbar(res.error.data.error.join(","), {
+        variant: 'error',
+      });
+
+  
     },
     
     'realestate-info': async () => {

@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { Card, Grid, Button, Typography, CardContent } from '@mui/material';
 
@@ -9,13 +10,13 @@ import {
   ProfileImg,
   ProfileView,
   ProfileBasic,
-  PersonalInfo,
-  ProfileImgWrap,
+  ProfileImgWrap, CustomListItems,
   ProfileInfoLeft,
-  PersonalInfoItems,
+  CustomUnorderedList,
+
 } from './styled';
 
-const Overview = () => {
+const Overview = ({data, email}) => {
  console.log()
   return (
     <Grid item mb={3} xs={12} md={12} lg={12}>
@@ -34,13 +35,13 @@ const Overview = () => {
               <Grid item sx={12} sm={12} md={5} pr={2}>
                 <ProfileInfoLeft>
                   <Typography variant="h3" mb={0}>
-                    Sir Abubakar
+                    {data?.first_name} {data?.last_name}
                   </Typography>
                   <Typography variant="h6" sx={{ color: '#7A7C7F' }}>
-                    Software Engineer
+                  {data?.nationality}
                   </Typography>
-                  <small className="text-muted">Web Designer</small>
-                  <div className="staff-id">Gender : Male</div>
+                  <small className="text-muted">{data?.preferred_language.toUpperCase()}</small>
+                  <div className="staff-id">Gender : {data?.gender.toUpperCase()}</div>
                   <div className="small doj text-muted">Phone number : 07070069690</div>
                   <div className="staff-msg">
                     <Button variant="contained"  sx={{my: 1}}>
@@ -50,32 +51,32 @@ const Overview = () => {
                 </ProfileInfoLeft>
               </Grid>
               <Grid item sx={12} sm={12} md={7}>
-                <PersonalInfo>
-                  <PersonalInfoItems>
-                    <div className="title">Insurance Number:</div>
+                <CustomUnorderedList>
+                  <CustomListItems>
+                    <div className="title">ID Number:</div>
                     <div className="text">
-                      <a href="#">9876543210</a>
+                      <a href="#">{data?.identity_number}</a>
                     </div>
-                  </PersonalInfoItems>
-                  <PersonalInfoItems>
+                  </CustomListItems>
+                  <CustomListItems>
                     <div className="title">Email:</div>
                     <div className="text">
-                      <a href="#">sirbakr@example.com</a>
+                      <a href="#">{data?.email}</a>
                     </div>
-                  </PersonalInfoItems>
-                  <PersonalInfoItems>
+                  </CustomListItems>
+                  <CustomListItems>
                     <div className="title">Birthday:</div>
-                    <div className="text">24th July</div>
-                  </PersonalInfoItems>
-                  <PersonalInfoItems>
+                    <div className="text">{data?.date_of_birth}</div>
+                  </CustomListItems>
+                  <CustomListItems>
                     <div className="title">Address:</div>
-                    <div className="text">1861 Bayonne Ave, Bwari LGA, Abuja, 08759</div>
-                  </PersonalInfoItems>
-                  <PersonalInfoItems>
-                    <div className="title">Nationality:</div>
-                    <div className="text">Nigerian</div>
-                  </PersonalInfoItems>
-                </PersonalInfo>
+                    <div className="text">{data?.mailing_address}</div>
+                  </CustomListItems>
+                  <CustomListItems>
+                    <div className="title">Residency Status:</div>
+                    <div className="text">{data?.residency_status}</div>
+                  </CustomListItems>
+                </CustomUnorderedList>
               </Grid>
             </Grid>
           </ProfileBasic>
@@ -95,5 +96,10 @@ const Overview = () => {
   </Grid>
   );
 };
+
+Overview.propTypes = {
+  data: PropTypes.object,
+  email: PropTypes.string
+}
 
 export default Overview

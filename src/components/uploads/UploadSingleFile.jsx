@@ -100,10 +100,8 @@ ShowRejectionItems.propTypes = {
   fileRejections: PropTypes.array,
 };
 export default function UploadSingleFile({ error, file, sx, label, setFieldValue, name,  ...other }) {
-  console.log(file);
   const [rFile, setrFile] = useState(null)
   const onDrop = useCallback(acceptedFiles => {
-    console.log(acceptedFiles);
     setFieldValue(name, acceptedFiles[0])
   }, [setFieldValue, name])
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
@@ -118,8 +116,6 @@ export default function UploadSingleFile({ error, file, sx, label, setFieldValue
   });
   useEffect(() => {
    if(file){
-    console.log('file', file);
-
     setrFile({...file, preview: file.url ? file.url : handleCreateObjectUrl(file) })
    }
   }, [file])

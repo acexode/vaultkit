@@ -19,6 +19,9 @@ export const mapShareViewFields = (data, key) => {
     case 'eduInfo':
       res = Array .isArray(data) && data?.map(e => ({title: `${e?.degree} ${e.field_of_study}`, subtitle:  `${e?.institution_name} | ${e?.institution_country}`, id: e.id     }))
       break;
+    case 'idInfo':
+      res = Array .isArray(data) && data?.map(e => ({title: `ID No: ${e?.document_number} `, subtitle:  `Issue Date: ${e?.date_of_issue} - ${e?.date_of_expiry} | Country: ${e.issuing_country}`, id: e.id     }))
+      break;
     case 'empInfo':
       res = Array .isArray(data) && data?.map(e => ({title: `${e?.job_title}`, subtitle:  `${e?.employer} | ${e?.start_date} - ${e?.end_date}`, id: e.id      }))
       break;

@@ -80,16 +80,7 @@ export const initialValues = {
     credit_score: false,
     credit_history: false,
   },
-  idInfo: {
-    document_type: false,
-    document_number: false,
-    issuing_country: false,
-    date_of_issue: false,
-    date_of_expiry: false,
-    additional_notes: false,
-    Document_url: false,
-    all: false,
-  },
+  idInfo: [],
   reInfo: {
     current_property_ownership_details: false,
     property_address: false,

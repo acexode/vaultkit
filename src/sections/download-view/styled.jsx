@@ -28,12 +28,12 @@ export const ProfileInfoLeft = styled('div')(({ theme }) => ({
     [theme.breakpoints.down('md')]: { textAlign: 'center', margin: '0 0 20px', padding: '0, 0, 20px', borderRight: 'none', borderBottom: '2px dashed #D3D3D4' },
     [theme.breakpoints.down('sm')]: { textAlign: 'center', padding: '15px 0' }
 }));
-export const PersonalInfo = styled('ul')(({ theme }) => ({
+export const CustomUnorderedList = styled('ul')(({ theme }) => ({
     listStyle: 'none',
     margin: '0',
     padding: '0'
 }));
-export const PersonalInfoItems = styled('li')(({ theme }) => ({
+export const CustomListItems = styled('li')(({ theme }) => ({
     display: 'flex',
     marginBottom: '10px',
     [theme.breakpoints.down('lg')]: { width: '100%' },

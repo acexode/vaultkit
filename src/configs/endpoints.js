@@ -41,7 +41,7 @@ export const profileEndpoint = (path, id) => ({
   eduInfo: `${path}/${id}/education_data`,
   empInfo: `${path}/${id}/employment_informations`,
   finInfo: `${path}/${id}/fin-info`,
-  idInfo: `${path}/${id}/id-info`,
+  idInfo: `${path}/identification_data`,
   realInfo: `${path}/${id}/real_estate_informations`,
   resInfo: `${path}/${id}/residential_histories`,
 });

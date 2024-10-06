@@ -106,7 +106,7 @@ export default function ShareView({ handleCloseModal }) {
       bank_details: false,
   })
   const typeMapping = {
-    basic: 'basic_info',
+    basic: 'basic_information',
     contact: 'contact',
     eduInfo: 'education',
     empInfo: 'employment',
@@ -393,7 +393,9 @@ export default function ShareView({ handleCloseModal }) {
               category="idInfo"
               handleSelectAll={handleSelectAll}
             />
-            <SelectDataToShare
+            <MultiDataShare
+              multiSelectAll={multiSelectAll}
+              setmultiSelectAll={setmultiSelectAll}
               fieldData={fieldData}
               values={formik.values}
               name="idInfo"

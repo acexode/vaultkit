@@ -1,58 +1,65 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import { Card, Grid, Typography, CardContent } from '@mui/material';
+import { Card, Grid, Divider, Typography, CardContent, ListItemText } from '@mui/material';
 
-import { PersonalInfo, PersonalInfoItems } from './styled';
+import { CustomListItems, CustomUnorderedList } from './styled';
 
-const PersonalInfoCard = () => (
+const PersonalInfoCard = ({data}) => {
+  const left = {width: '70%'}
+    const right = {width: '30%'}
+  return (
   <Grid item mb={3} xs={12} md={6} lg={6}>
     <Card sx={{ height: "100%" }}>
       <CardContent>
         <Typography
-          variant="h4"
-          sx={{ color: '#212529', fontSize: '20px', fontWeight: '500', marginBottom: '20px' }}
+          variant="h6"
+          mb={3}
         >
-          Personal Information
+          Identification Information
         </Typography>
-        <PersonalInfo>
-          <PersonalInfoItems>
-            <div className="title">Passport No.</div>
-            <div className="text">9876543210</div>
-          </PersonalInfoItems>
-          <PersonalInfoItems>
-            <div className="title">Passport Exp Date.</div>
-            <div className="text">9876543210</div>
-          </PersonalInfoItems>
-          <PersonalInfoItems>
-            <div className="title">Tel</div>
-            <div className="text">
-              <a href="#">9876543210</a>
-            </div>
-          </PersonalInfoItems>
-          <PersonalInfoItems>
-            <div className="title">Nationality</div>
-            <div className="text">Indian</div>
-          </PersonalInfoItems>
-          <PersonalInfoItems>
-            <div className="title">Religion</div>
-            <div className="text">Christian</div>
-          </PersonalInfoItems>
-          <PersonalInfoItems>
-            <div className="title">Marital status</div>
-            <div className="text">Married</div>
-          </PersonalInfoItems>
-          <PersonalInfoItems>
-            <div className="title">Employment of spouse</div>
-            <div className="text">No</div>
-          </PersonalInfoItems>
-          <PersonalInfoItems>
-            <div className="title">No. of children</div>
-            <div className="text">2</div>
-          </PersonalInfoItems>
-        </PersonalInfo>
+        {data && data.map((d, index) => (
+          <>
+        <CustomUnorderedList>
+          <CustomListItems>
+            <ListItemText sx={left} primary="Document No." />
+            <ListItemText sx={right} secondary={d.shareable.document_number} />
+          </CustomListItems>
+          <CustomListItems>
+            <ListItemText sx={left} primary="Document Type"/>
+            <ListItemText sx={right} secondary={d.shareable.document_type} />
+          </CustomListItems>
+          <CustomListItems>
+            <ListItemText sx={left} primary=" Date of issue"/>
+            <ListItemText sx={right} secondary={d.shareable.date_of_issue} />
+          </CustomListItems>
+          <CustomListItems>
+            <ListItemText sx={left} primary=" Exp Date"/>
+            <ListItemText sx={right} secondary={d.shareable.date_of_expiry} />
+          </CustomListItems>
+          <CustomListItems>
+            <ListItemText sx={left} primary="Issuing Country"/>
+            <ListItemText sx={right} secondary={d.shareable.issuing_country} />
+             
+            
+          </CustomListItems>
+          <CustomListItems>
+            <ListItemText sx={left} primary="Document Link"/>
+            <ListItemText sx={right} secondary={d.shareable.document_url.url} />
+          </CustomListItems>
+        
+        </CustomUnorderedList>
+        {index !== data.length -1 && <Divider sx={{ marginY: 2 }} />}
+          
+          </>
+        ))
+      }
       </CardContent>
     </Card>
   </Grid>
-);
-
+)
+}
+PersonalInfoCard.propTypes = {
+  data: PropTypes.object,
+}
 export default PersonalInfoCard;

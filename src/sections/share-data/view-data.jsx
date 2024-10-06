@@ -65,7 +65,7 @@ export default function DataDetails({ card, isOpen, onClose, data, description }
   const handleToggleCompleted = () => {
     setTaskCompleted((prev) => !prev);
   };
-  
+
   const handleViewData = () => {
     const url = `/dashboard/download-view?id=${data.id}`;
     navigate(url);

@@ -33,7 +33,7 @@ export const DataProvider = ({ children }) => {
           const financial = await api.finInfoAPI._readMany();
           const realestate = await api.realEstateAPI._readMany();
           const residential = await api.residentialHistoryAPI._readMany();
-          console.log(basic, contact, employment, education, financial, realestate);
+          const identity = await api.identityAPI._readMany()
           setdata({
             basic: basic.data || [],
             contact: contact.data || [],
@@ -42,6 +42,7 @@ export const DataProvider = ({ children }) => {
             finInfo: financial.data || {},
             reInfo: realestate.data || [],
             resInfo: residential.data || [],
+            idInfo: identity.data || [],
           });
         } catch (error) {
           console.log(error);
