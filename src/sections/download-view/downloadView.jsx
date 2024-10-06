@@ -14,8 +14,10 @@ import { downloadEndpoint } from 'src/configs/endpoints';
 import ContactInfoCard from './ContactInfoCard'; // Ensure this import is correct
 
 import Overview from './overview';
+import FinInfoCard from './FinInfoCards';
 import PersonalInfoCard from './personalInfoCard';
 import TimeLineInfoCard from './EducationInfoCard';
+import FinInformationCard from './financialInfoCard';
 import RealEstateInfoCard from './RealEstateInfoCard';
 import ResidentialInfoCard from './ResidentialInfoCard';
 
@@ -90,9 +92,7 @@ const DownloadView = () => {
       {dataObject && dataObject.ResidentialHistory && <ResidentialInfoCard data={dataObject.ResidentialHistory} /> }
       {dataObject && dataObject.RealEstateInformation && <RealEstateInfoCard data={dataObject.RealEstateInformation} /> }
       {dataObject && dataObject.RealEstateInformation && <PersonalInfoCard  data={dataObject.IdentificationDatum} /> }
-      
-      
-     
+
       {dataObject && dataObject.EducationDatum &&
       <TimeLineInfoCard
         title="Education Information"
@@ -113,9 +113,9 @@ const DownloadView = () => {
           type: `order${index + 1}`,
           time: obj.shareable.end_date,
         }))}
-      />
-}
-     
+      />}
+     {dataObject && dataObject.FinancialInformation && <FinInformationCard data={dataObject.FinancialInformation[0].shareable} />}
+     {dataObject && dataObject.Asset && <FinInfoCard data={dataObject.Liability} title="Lia" name='liabilities' />}
     </Grid>
   );
 };

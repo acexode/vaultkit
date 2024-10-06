@@ -8,7 +8,6 @@ import { CustomListItems, CustomUnorderedList } from './styled';
 const RealEstateInfoCard = ({data}) =>{
     const left = {width: '70%'}
     const right = {width: '30%'}
-    console.log(data);
     return (
     <Grid item mb={3} xs={12} md={6} lg={6}>
     <Card className="profile-box" sx={{ flexGrow: 1 }}>
