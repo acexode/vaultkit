@@ -65,25 +65,32 @@ const categories = [
 ];
 RequestDataView.propTypes = {
   handleClose: PropTypes.func,
+  users: PropTypes.func,
 };
 
-export default function RequestDataView({ handleClose }) {
+export default function RequestDataView({ handleClose, users }) {
   const {user} = useAuth()
   const {handleRefetch} = useUserData()
   const [selectedCategory, setselectedCategory] = useState([]);
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const validationSchema = Yup.object({
-    email: Yup.string().email('Invalid email address').required('Email is required'),
+    email: Yup.string()
+    .test('multiple-emails', 'Invalid email address', (value) => {
+      if (!value) return false;
+      const emails = value.split(',');
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emails.every(email => emailRegex.test(email.trim()));
+    })
+    .required('Email is required'),
     start_time: Yup.date().required("Start time is required"),
     end_time: Yup.date().required("End time is required"),
     title: Yup.string().required('Title is required')
   });
-
-
+  console.log(users);
   const formik = useFormik({
     initialValues: {
-      email: '',
+      email: Array.isArray(users) ? users.join(',') : '',
       end_time: '',
       start_time: '',
       title: ''

@@ -21,7 +21,9 @@ import { orgEndpoint } from 'src/configs/endpoints';
 
 import Scrollbar from 'src/components/scrollbar';
 
+import AlertDialog from 'src/sections/modal/modal';
 import { OrgRequestData } from 'src/sections/profile/view/constant';
+import RequestDataView from 'src/sections/access/request-data-view';
 
 import { emptyRows } from '../../user/utils';
 import TableNoData from '../../table/table-no-data';
@@ -36,9 +38,10 @@ OrgInviteTable.propTypes = {
 export default function OrgInviteTable({ handleVerificationModal }) {
   const {user} = useAuth()
   const { enqueueSnackbar } = useSnackbar();
-  const { openDialog } = useDialogState();
+  const { openDialog, closeDialog, isDialogOpen } = useDialogState();
   const router = useRouter();
   const [employees, setemployees] = useState([])
+  const [selectedUsers, setselectedUsers] = useState([])
 
   const {
     page,
@@ -58,6 +61,15 @@ export default function OrgInviteTable({ handleVerificationModal }) {
 
   } = useTableController(employees);
 
+  useEffect(() => {
+    const users = employees.filter(e => selected.includes(e.id))
+    if(users.length){
+      const emails =  new Set(users.map(u => u.email))
+      setselectedUsers([...emails])
+    }
+  }, [employees, selected])
+  
+
   const handleViewDetails = (value) => {
     router.push(`/dashboard/user?userId=${value}`);
 
@@ -69,7 +81,6 @@ export default function OrgInviteTable({ handleVerificationModal }) {
       const fetchData = async () => {
         try {
          const response = await axiosInstance.get(orgEndpoint.employees)
-         console.log(response)
          if(response.data) {
            setemployees(response.data)
          }
@@ -98,6 +109,9 @@ export default function OrgInviteTable({ handleVerificationModal }) {
   const handleRequestData = () => {
      openDialog(OrgRequestData)
   };
+  const handleRequestBtn = () => {
+    openDialog(OrgRequestData)
+  };
 
 
   return (
@@ -109,6 +123,7 @@ export default function OrgInviteTable({ handleVerificationModal }) {
              numSelected={selected.length}
              filterName={filterName}
              onFilterName={handleFilterByName}
+             handleRequestBtn={handleRequestBtn}
            />
           <Table sx={{ minWidth: 800 }}>
             <CommonTableHead
@@ -135,6 +150,7 @@ export default function OrgInviteTable({ handleVerificationModal }) {
                       userId={row.id}
                       name={row.name}
                       email={row.email}
+                      row={row}
                       status={row.status}
                       company={row.company}
                       avatarUrl={row.avatarUrl}
@@ -169,6 +185,13 @@ export default function OrgInviteTable({ handleVerificationModal }) {
         onPageChange={handleChangePage}
         rowsPerPageOptions={[5, 10, 25]}
         onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+       <AlertDialog
+        fullWidth
+        showClose={false}
+        // maxWidth="lg"
+        component={<RequestDataView users={selectedUsers} handleClose={() =>closeDialog(OrgRequestData)} />}
+        open={isDialogOpen(OrgRequestData)}
       />
       </>
   );

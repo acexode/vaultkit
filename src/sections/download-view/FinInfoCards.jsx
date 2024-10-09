@@ -12,7 +12,7 @@ import { Card, Grid, Typography, CardContent } from '@mui/material';
 
 import { finColumns, filterFinanceFields } from 'src/utils/download-utils';
 
-import { toSentenceCase } from '../user/utils';
+import { toSentenceCase, toSentenceCaseKey } from '../user/utils';
 
 
 
@@ -20,15 +20,13 @@ import { toSentenceCase } from '../user/utils';
 const FinInfoCard = ({data, title, name}) => {
     const columns = finColumns[name].map(e => toSentenceCase(e))
     const filtered = filterFinanceFields(data, finColumns[name])
-    console.log(filtered, data);
+    console.log(filtered);
+    const values = filtered.map(f => Object.values(f))
   return (
     <Grid item mb={3} xs={12} md={12} lg={12}>
     <Card className="profile-box" sx={{ flexGrow: 1 }}>
     <CardContent>
-    <Typography
-            variant="h4"
-            sx={{ color: '#212529', fontSize: '20px', fontWeight: '500', marginBottom: '20px' }}
-          >
+    <Typography variant="h6" component="div" mb={3}>
             {title}  Information
           </Typography>
     </CardContent>
@@ -37,7 +35,7 @@ const FinInfoCard = ({data, title, name}) => {
         <TableHead>
           <TableRow>
             {columns.map(e =>(
-                <TableCell>{e}</TableCell>
+                <TableCell>{toSentenceCaseKey(e)}</TableCell>
 
             ))}
            
@@ -45,14 +43,17 @@ const FinInfoCard = ({data, title, name}) => {
           </TableRow>
         </TableHead>
         <TableBody>
+            {values.map(e => (
             <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-            {filtered.map(e => (
-              <TableCell component="th" scope="row">
-               {e.currency}
-              </TableCell>
+               {e.map(i => (
 
-            ))}
+              <TableCell component="th" scope="row">
+                {toSentenceCase(i)}
+              </TableCell>
+               ))}
+
             </TableRow>
+))}
          
         </TableBody>
       </Table>

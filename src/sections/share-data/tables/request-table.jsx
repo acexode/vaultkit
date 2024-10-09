@@ -27,6 +27,7 @@ export default function SentRequestTableView({filterName, selected, setSelected,
   const [showAddNote, setshowAddNote] = useState(false)
   const [selectedRowData, setSelectedRowData] = useState(null);
   const { openDialog, closeDialog, isDialogOpen } = useDialogState();
+  console.log(sentrequest);
   const card = {
     name: 'lorem ipsum dolor',
      description: 'Basic Info, Contact Info, Employment Info, Education Info',
@@ -121,7 +122,7 @@ export default function SentRequestTableView({filterName, selected, setSelected,
               headLabel={[
                 { id: 'title', label: 'Title' },
                 // { id: 'company', label: 'Access Code' },
-                { id: 'role', label: 'Guest Email' },
+                { id: 'role', label: 'Sharer Email' },
                 { id: 'access_duration', label: 'Start time', align: 'center' },
                 { id: 'access_duration', label: 'End Time', align: 'center' },
                 { id: 'status', label: 'Status' },
@@ -137,7 +138,7 @@ export default function SentRequestTableView({filterName, selected, setSelected,
                     title={row.title}
                     role={row.role}
                     status={row.status}
-                    company={row.company}
+                    email={row.sender.email}
                     avatarUrl={row.avatarUrl}
                     validity={row.end_time}
                     starttime={row.start_time}

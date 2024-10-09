@@ -16,7 +16,7 @@ import {
 
 } from './styled';
 
-const Overview = ({data, email}) => {
+const Overview = ({data, email, handleDownload}) => {
  console.log()
   return (
     <Grid item mb={3} xs={12} md={12} lg={12}>
@@ -44,7 +44,7 @@ const Overview = ({data, email}) => {
                   <div className="staff-id">Gender : {data?.gender.toUpperCase()}</div>
                   <div className="small doj text-muted">Phone number : 07070069690</div>
                   <div className="staff-msg">
-                    <Button variant="contained"  sx={{my: 1}}>
+                    <Button onClick={handleDownload} variant="contained"  sx={{my: 1}}>
                       Download Information
                     </Button>
                   </div>
@@ -99,7 +99,8 @@ const Overview = ({data, email}) => {
 
 Overview.propTypes = {
   data: PropTypes.object,
-  email: PropTypes.string
+  email: PropTypes.string,
+  handleDownload: PropTypes.func
 }
 
 export default Overview

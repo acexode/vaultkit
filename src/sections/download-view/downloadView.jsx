@@ -1,7 +1,10 @@
+/* eslint-disable new-cap */
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 import { faker } from '@faker-js/faker';
 import { enqueueSnackbar } from 'notistack';
 import { useLocation } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 
 import { Grid } from '@mui/material';
 
@@ -20,12 +23,39 @@ import TimeLineInfoCard from './EducationInfoCard';
 import FinInformationCard from './financialInfoCard';
 import RealEstateInfoCard from './RealEstateInfoCard';
 import ResidentialInfoCard from './ResidentialInfoCard';
+import InvestmentLiabilityCard from './Investment-LiabilityCard';
 
 const DownloadView = () => {
+
+  const parentRef = useRef(null);
 
 
   const [dataObject, setdataObject] = useState(null)
   const location = useLocation();
+
+  const handleDownload = async () => {
+    const inputParent = parentRef.current;
+
+
+    if (inputParent) {
+      const pdf = new jsPDF();
+
+      // Capture the child (Overview) content
+      await html2canvas(inputParent).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        pdf.addImage(imgData, 'PNG', 0, 0, 210, (canvas.height * 210) / canvas.width);
+      });
+
+      // Capture the parent content
+      await html2canvas(inputParent).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        pdf.addPage(); // Add a new page for the parent content
+        pdf.addImage(imgData, 'PNG', 0, 0, 210, (canvas.height * 210) / canvas.width);
+      });
+
+      pdf.save('combined-content.pdf'); // Save the PDF
+    }
+  };
   function groupByShareableType(data) {
     return data.reduce((result, currentItem) => {
       const { shareable_type } = currentItem;
@@ -86,8 +116,8 @@ const DownloadView = () => {
 
 
   return (
-    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-      {dataObject && dataObject.BasicInformation && <Overview data={dataObject.BasicInformation[0].shareable} /> }
+    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} ref={parentRef}>
+      {dataObject && dataObject.BasicInformation && <Overview data={dataObject.BasicInformation[0].shareable} handleDownload={handleDownload}  /> }
       {dataObject && dataObject.ContactInformation && <ContactInfoCard obj={dataObject.ContactInformation[0].shareable} /> }
       {dataObject && dataObject.ResidentialHistory && <ResidentialInfoCard data={dataObject.ResidentialHistory} /> }
       {dataObject && dataObject.RealEstateInformation && <RealEstateInfoCard data={dataObject.RealEstateInformation} /> }
@@ -115,7 +145,11 @@ const DownloadView = () => {
         }))}
       />}
      {dataObject && dataObject.FinancialInformation && <FinInformationCard data={dataObject.FinancialInformation[0].shareable} />}
-     {dataObject && dataObject.Asset && <FinInfoCard data={dataObject.Liability} title="Lia" name='liabilities' />}
+     {dataObject && dataObject.Asset && <FinInfoCard data={dataObject.Asset} title="Asset" name='assets' />}
+     {dataObject && dataObject.Asset && <FinInfoCard data={dataObject.BankDetail} title="Bank Details" name='bankDetails' />}
+     {dataObject && dataObject.Asset && <FinInfoCard data={dataObject.Insurance} title="Insurance" name='insurance' />}
+     {dataObject && dataObject.Liability && <InvestmentLiabilityCard data={dataObject.Liability} title="Liability" name='liabilities' />}
+     {dataObject && dataObject.Investment && <InvestmentLiabilityCard data={dataObject.Investment} title="Investment" name='investment' />}
     </Grid>
   );
 };

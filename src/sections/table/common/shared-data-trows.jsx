@@ -41,6 +41,10 @@ export default function SharedDataTRows({
     setOpen(null);
     handleAddNoteModal(true)
   };
+  const viewData = () => {
+    setOpen(null);
+    handleViewDetails('data-details')
+  };
 
   return (
     <>
@@ -88,7 +92,7 @@ export default function SharedDataTRows({
           sx: { width: 140 },
         }}
       >
-        <MenuItem onClick={()=> handleViewDetails('data-details')}>
+        <MenuItem onClick={viewData}>
           <Iconify icon="eva:eye-outline" sx={{ mr: 2 }} />
           View
         </MenuItem>

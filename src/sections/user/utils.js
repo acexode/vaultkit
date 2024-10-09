@@ -70,8 +70,22 @@ function searchByPin(dataArray, pin) {
   return results;
 }
 export function toSentenceCase(text) {
+  if(typeof text === 'string' && text.includes('_') ){
+    const words = text.split('_');
+    const sentenceCasedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
+    const sentenceCasedText = sentenceCasedWords.join(' ');
+    return sentenceCasedText;
+
+  }
+  if(typeof text === 'boolean'){
+    return text ? 'Yes' : 'No'
+  }
+  return text
+}
+export function toSentenceCaseKey(text) {
   const words = text.split('_');
   const sentenceCasedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
   const sentenceCasedText = sentenceCasedWords.join(' ');
   return sentenceCasedText;
+ 
 }

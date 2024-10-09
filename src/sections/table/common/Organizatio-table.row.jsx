@@ -19,7 +19,7 @@ import Iconify from 'src/components/iconify';
 export default function OrganizationTRows({
   selected,
   name,
-  company,
+  row,
   email,
   validity,
   status,
@@ -39,6 +39,7 @@ export default function OrganizationTRows({
     setOpen(null);
   };
   const requestData = () => {
+    handleClick(row.id)
     setOpen(null);
     handleRequestData(true)
   };
@@ -97,10 +98,10 @@ export default function OrganizationTRows({
           sx: { width: 150 },
         }}
       >
-        <MenuItem onClick={()=> handleViewDetails(userId)}>
+        {/* <MenuItem onClick={()=> handleViewDetails(userId)}>
           <Iconify icon="eva:eye-outline" sx={{ mr: 2 }} />
           View
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem onClick={requestData}>
           <Iconify icon="eva:file-outline" sx={{ mr: 1 }} />
           Request Data
@@ -112,7 +113,7 @@ export default function OrganizationTRows({
 }
 
 OrganizationTRows.propTypes = {
-  company: PropTypes.any,
+  row: PropTypes.any,
   handleClick: PropTypes.func,
   handleViewDetails: PropTypes.func,
   handleRequestData: PropTypes.func,

@@ -26,7 +26,6 @@ export default function RecievedDataTableView({
   filterName,
   selected,
   setSelected,
-  
   recievedData,
   approveRequest,
 }) {
@@ -121,7 +120,7 @@ export default function RecievedDataTableView({
               headLabel={[
                 { id: 'title', label: 'Title' },
                 // { id: 'company', label: 'Access Code' },
-                { id: 'role', label: 'Guest Email' },
+                { id: 'role', label: 'Sharer Email' },
                 { id: 'access_duration', label: 'Start time', align: 'center' },
                 { id: 'access_duration', label: 'End Time', align: 'center' },
                 { id: 'status', label: 'Status' },
@@ -137,7 +136,7 @@ export default function RecievedDataTableView({
                     title={row.title}
                     role={row.role}
                     status={row.status}
-                    company={row.company}
+                    email={row.sender.email}
                     avatarUrl={row.avatarUrl}
                     validity={row.end_time}
                     starttime={row.start_time}

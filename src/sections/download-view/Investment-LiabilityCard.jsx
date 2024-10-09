@@ -1,35 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Card, Grid, Typography, CardContent, ListItemText } from '@mui/material';
+import { Card, Grid, Divider, Typography, CardContent, ListItemText } from '@mui/material';
+
+import { finColumns, filterFinanceFields } from 'src/utils/download-utils';
 
 import { toSentenceCaseKey } from '../user/utils';
 import { CustomListItems, CustomUnorderedList } from './styled';
 
 
-const ContactInfoCard = ({obj}) =>  {
+const InvestmentLiabilityCard = ({data, title, name}) =>  {
   const left = {width: '70%'}
   const right = {width: '30%'}
-  const {id, home_address, phone_number,postal_code, province, city, ...extract} = obj;
-  const data = {
-    home_address, phone_number,postal_code, province, city, ...extract
-  }
-
+  const filtered = filterFinanceFields(data, finColumns[name])
   return (
     <Grid item mb={3} xs={12} md={6} lg={6}>
       <Card sx={{ height: '100%' }}>
         <CardContent>
         <Typography variant="h6" component="div" mb={3}>
-            Contact Information
+            {title} Information
           </Typography>
+          {filtered.map((f, index) => (
+            <>
           <CustomUnorderedList>
-            {extract && Object.entries(data).map(([key, value]) => (
-              <CustomListItems key={`${key  }${  id}`}>
+            {f && Object.entries(f).map(([key, value]) => (
+              <CustomListItems key={key}>
                 <ListItemText sx={left} primary={toSentenceCaseKey(key)} />
                 <ListItemText sx={right} secondary={value} />
               </CustomListItems>
             ))}
           </CustomUnorderedList>
+          {index !== data.length -1 && <Divider sx={{ marginY: 2 }} />}
+            
+            </>
+
+          ))}
         </CardContent>
       </Card>
     </Grid>
@@ -37,8 +42,12 @@ const ContactInfoCard = ({obj}) =>  {
 }
 
 
-ContactInfoCard.propTypes = {
-  obj: PropTypes.object
+InvestmentLiabilityCard.propTypes = {
+  data: PropTypes.array,
+  title: PropTypes.string,
+  name: PropTypes.string
 };
 
-export default ContactInfoCard;
+
+
+export default InvestmentLiabilityCard

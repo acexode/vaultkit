@@ -92,14 +92,15 @@ export default function OrgDataMenu({ openDialog }) {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => handleClose(ShareDataModal)} disableRipple>
-          <Iconify icon="eva:share-fill" sx={{marginRight: '.5rem'}} />
-          Share Data
-        </MenuItem>
         <MenuItem onClick={() => handleClose(RequestDataModal)} disableRipple>
           <Iconify icon="eva:plus-fill" sx={{marginRight: '.5rem'}} />
           Request Data
         </MenuItem>
+        <MenuItem disabled onClick={() => handleClose(ShareDataModal)} disableRipple>
+          <Iconify icon="eva:share-fill" sx={{marginRight: '.5rem'}} />
+          Share Data
+        </MenuItem>
+        
       </StyledMenu>
     </div>
   );

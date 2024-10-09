@@ -49,6 +49,7 @@ export default function OrgRecievedDataTableView({
     dataFiltered,
     notFound,
   } = useTableController(recievedData);
+  console.log(recievedData);
 
   const card = {
      assignee: [
@@ -108,7 +109,7 @@ export default function OrgRecievedDataTableView({
                     title={row.title}
                     role={row.role}
                     status={row.status}
-                    company={row.sender.email}
+                    email={row.sender.email}
                     avatarUrl={row.avatarUrl}
                     validity={row.end_time}
                     starttime={row.start_time}

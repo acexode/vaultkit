@@ -21,7 +21,7 @@ import Iconify from 'src/components/iconify';
 export default function RequestDataTRows({
   selected,
   title,
-  company,
+  email,
   role,
   id,
   validity,
@@ -48,6 +48,10 @@ export default function RequestDataTRows({
     setOpen(null);
     handleAddNoteModal(true)
   };
+  const viewData = () => {
+    setOpen(null);
+    handleViewDetails('data-details')
+  };
 
   return (
     <>
@@ -65,7 +69,7 @@ export default function RequestDataTRows({
           </Stack>
         </TableCell>
 
-        <TableCell>{company}</TableCell>
+        <TableCell>{email}</TableCell>
 
         {/* <TableCell>{role}</TableCell> */}
 
@@ -105,7 +109,7 @@ export default function RequestDataTRows({
           sx: { width: 140 },
         }}
       >
-        <MenuItem onClick={()=> handleViewDetails()}>
+        <MenuItem onClick={viewData}>
           <Iconify icon="eva:eye-outline" sx={{ mr: 2 }} />
           View
         </MenuItem>
@@ -124,7 +128,7 @@ export default function RequestDataTRows({
 }
 
 RequestDataTRows.propTypes = {
-  company: PropTypes.any,
+  email: PropTypes.any,
   handleClick: PropTypes.func,
   handleViewDetails: PropTypes.func,
   handleAddNoteModal: PropTypes.func,

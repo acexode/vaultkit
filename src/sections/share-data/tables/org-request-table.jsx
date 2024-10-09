@@ -102,7 +102,7 @@ export default function OrgSentRequestTableView({ setSelected, sentrequest, appr
                     title={row.title}
                     role={row.role}
                     status={row.status}
-                    company={row?.sender?.email}
+                    email={row?.sender?.email}
                     avatarUrl={row.avatarUrl}
                     validity={row.end_time}
                     starttime={row.start_time}
