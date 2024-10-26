@@ -72,6 +72,8 @@ const Emails = () => {
             await axiosInstance.patch(`${emailEndpoint.emails}/${emailId}/set_primary`);
         } catch (error) {
             if(error.response.data.error === 'Email is not verified.'){
+                setCurrentEmailId(emailId)
+                await axiosInstance.post(`${emailEndpoint.emails}/${emailId}/resend_verification`);
                 openDialog(EmailTokenModal)
             }
             console.error('Error setting primary email:', error);
@@ -92,7 +94,7 @@ const Emails = () => {
         console.log(token);
         // ylWmI7
         try {
-            if(token.length === 6){
+            if(token.length === 5){
                 await axiosInstance.post(`${emailEndpoint.emails}/${currentEmailId}/verify`, { token });
                 closeDialog(EmailTokenModal);
 
