@@ -79,7 +79,7 @@ export default function OrganizationView() {
       try {
         const resp = await OrganizationLogin(user)
         console.log(resp)
-        router.push('/dashboard');
+        router.push('/organization');
           enqueueSnackbar("Logged in successfully", { 
             autoHideDuration: 1000,
             anchorOrigin: {

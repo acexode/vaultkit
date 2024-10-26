@@ -19,9 +19,10 @@ import ContactInfoCard from './ContactInfoCard'; // Ensure this import is correc
 import Overview from './overview';
 import FinInfoCard from './FinInfoCards';
 import PersonalInfoCard from './personalInfoCard';
-import TimeLineInfoCard from './EducationInfoCard';
+import EducationInfoCard from './EducationInfoCard';
 import FinInformationCard from './financialInfoCard';
 import RealEstateInfoCard from './RealEstateInfoCard';
+import EmploymentInfoCard from './EmploymentInfoCard';
 import ResidentialInfoCard from './ResidentialInfoCard';
 import InvestmentLiabilityCard from './Investment-LiabilityCard';
 
@@ -124,18 +125,18 @@ const DownloadView = () => {
       {dataObject && dataObject.RealEstateInformation && <PersonalInfoCard  data={dataObject.IdentificationDatum} /> }
 
       {dataObject && dataObject.EducationDatum &&
-      <TimeLineInfoCard
+      <EducationInfoCard
         title="Education Information"
         list={dataObject.EducationDatum.map((obj, index) => ({
           id: faker.string.uuid(),
           title: obj.shareable.degree,
           type: `order${index + 1}`,
-          time: obj.shareable.end_date,
+          caption: `${obj.shareable.institution_name} | ${obj.shareable.graduation_year}`,
         }))}
       />
 }
       {dataObject && dataObject.EmploymentInformation&&
-      <TimeLineInfoCard
+      <EmploymentInfoCard
         title="Employment Information"
         list={dataObject.EmploymentInformation.map((obj, index) => ({
           id: faker.string.uuid(),

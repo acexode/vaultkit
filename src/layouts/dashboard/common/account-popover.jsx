@@ -28,12 +28,12 @@ const MENU_OPTIONS = [
   {
     label: 'Profile',
     icon: 'eva:person-fill',
-    path: '/dashboard/user',
+    path: 'user',
   },
   {
     label: 'Settings',
     icon: 'eva:settings-2-fill',
-    path: '/dashboard/settings',
+    path: 'settings',
   },
 ];
 
@@ -50,10 +50,12 @@ export default function AccountPopover() {
   const handleClose = (path) => {
     setOpen(null);
     console.log(user);
-    if (path === '/dashboard/user' && user.business_type) {
-      router.push('/dashboard/organization');
+    const base = user.business_type ? 'organization' : 'dashboard'
+    const url = `/${base}/${path}`;
+    if (path === 'user' && user.business_type) {
+      router.push('/organization');
     } else {
-      router.push(path);
+      router.push(url);
     }
   };
   const handleLogout = async () => {

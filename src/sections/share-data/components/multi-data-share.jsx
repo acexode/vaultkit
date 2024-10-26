@@ -2,12 +2,28 @@ import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
 import React, { useState, useEffect } from 'react';
 
-import { Grid, Paper, styled, Checkbox, FormGroup, Typography, FormControlLabel } from '@mui/material';
+import { Grid, Paper, styled, Button, Checkbox, FormGroup, Typography, FormControlLabel } from '@mui/material';
 
 import useUserData from 'src/hooks/useUserData';
 
 import { mapShareViewFields, getKeysWithTrueValues } from 'src/utils/utils';
 
+import { useGlobalContext } from 'src/context/context';
+
+import EmptyContent from 'src/components/common/EmptyContent';
+
+import { formPath } from 'src/sections/profile/view/constant';
+
+const CategoryNames = {
+  "basic": "Basic Information",
+  "contact": "Contact Information",
+  "empInfo": "Employment Information",
+  "eduInfo": "Education Information",
+  "finInfo": "Financial Information",
+  "reInfo": "Real Estate Information",
+  "resInfo": "Residential Information",
+  "idInfo": "Identification Information"
+}
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
@@ -21,10 +37,11 @@ const Item = styled(Paper)(({ theme }) => ({
 const MultiDataShare = ({ fields, name, setFieldValue, values, fieldData, multiSelectAll }) => {
   // console.log(values);
   const [initialValues, setinitialValues] = useState(null)
+  const { handleCurrentForm } = useGlobalContext();
   const [mapped, setmapped] = useState(null)
     const {data} = useUserData()
     useEffect(() => {
-      console.log(data[name]);
+      console.log(data[name], data);
       const m = data && data[name] ? mapShareViewFields(data[name], name) : null
       setmapped(m)
       if(!initialValues){
@@ -59,6 +76,10 @@ const MultiDataShare = ({ fields, name, setFieldValue, values, fieldData, multiS
     enableReinitialize: true
 
   })
+  const handleNavigate = () =>{
+
+    handleCurrentForm(formPath[name], null, 0)
+  }
   const handleCheckboxChange = (field, val) => {
     formik.setFieldValue(field, val);
     const parentValue = getKeysWithTrueValues({...formik.values, [field]: val})
@@ -72,6 +93,7 @@ const MultiDataShare = ({ fields, name, setFieldValue, values, fieldData, multiS
       container
       sx={{ marginLeft: 0, background: '#F5F6F7', padding: '10px', borderRadius: '5px' }}
     >
+      {name}
       {mapped && mapped.map((field) => (
         <Grid item xs={12} md={4} mb={2} key={field.id}>
           <Item>
@@ -95,6 +117,11 @@ const MultiDataShare = ({ fields, name, setFieldValue, values, fieldData, multiS
           </Item>
         </Grid>
       ))}
+      {(!mapped || !mapped.length) && 
+      <Grid item xs={12} md={12} mb={2} >
+      <EmptyContent title="No Data to share" description={<Button variant='outlined' onClick={handleNavigate} >Update Your {CategoryNames[name]}</Button>} />
+      </Grid>
+      }
     </Grid>
     </form>
   );

@@ -1,7 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Grid, Paper, styled, Checkbox, FormGroup, FormControlLabel } from '@mui/material';
+import { Grid, Paper, styled, Button, Checkbox, FormGroup, FormControlLabel } from '@mui/material';
+
+import useUserData from 'src/hooks/useUserData';
+
+import { useGlobalContext } from 'src/context/context';
+
+import EmptyContent from 'src/components/common/EmptyContent';
+
+import { formPath, CategoryNames } from 'src/sections/profile/view/constant';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -15,17 +23,26 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const SelectDataToShare = ({ fields, name, setFieldValue, values, fieldData }) => {
+  const { handleCurrentForm } = useGlobalContext();
   const handleCheckboxChange = (field, checked, category) => {
     setFieldValue(`${category}.all`, false);
     setFieldValue(field, checked);
   };
+  const handleNavigate = () =>{
+
+    handleCurrentForm(formPath[name], null, 0)
+  }
   const getLabel = (field, category) => fieldData[category].filter(e => e.name === field )[0]?.label || ''
+  const {data} = useUserData()
+  console.log(data, fields, name);
+  const list = Object.keys(data[name])
+  console.log(list);
   return (
     <Grid
       container
       sx={{ marginLeft: 0, background: '#F5F6F7', padding: '10px', borderRadius: '5px' }}
     >
-      {Object.keys(fields).filter(e => e !== 'all').map((field) => (
+      {list.length > 0 && Object.keys(fields).filter(e => e !== 'all').map((field) => (
         <Grid item xs={12} md={4} mb={2} key={field}>
           <Item>
             <FormGroup>
@@ -45,6 +62,11 @@ const SelectDataToShare = ({ fields, name, setFieldValue, values, fieldData }) =
           </Item>
         </Grid>
       ))}
+      {list.length === 0 && 
+      <Grid item xs={12} md={12} mb={2} >
+      <EmptyContent title="No Data to share" description={<Button variant='outlined' onClick={handleNavigate} >Update Your {CategoryNames[name]}</Button>} />
+      </Grid>
+      }
     </Grid>
   );
 };

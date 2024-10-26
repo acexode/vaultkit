@@ -7,22 +7,19 @@ import { LoadingButton } from '@mui/lab';
 import { Stack, TextField } from '@mui/material';
 import Typography from '@mui/material/Typography';
 
-import { useRouter } from 'src/routes/hooks';
 
-
+// qlCzGr
 
 // ----------------------------------------------------------------------
 
-const EmailToken = ({ length = 4, onComplete }) => {
+const EmailToken = ({ length = 6  , onComplete }) => {
 
-
-  const router = useRouter();
-
-  const handleClick = () => {
-    router.push('/dashboard');
-  };
   const inputRef = useRef(Array(length).fill(null));
   const [OTP, setOTP] = useState(Array(length).fill(''));
+  const handleClick = () => {
+    onComplete(OTP.join(''))
+    setOTP('')
+  };
 
   const handleTextChange = (input, index) => {
     const newPin = [...OTP];
@@ -82,6 +79,7 @@ const EmailToken = ({ length = 4, onComplete }) => {
             size="large"
             type="submit"
             variant="contained"
+            // loading={OTP.length === 6}
             onClick={handleClick}
           >
            Verify token

@@ -2,18 +2,19 @@ import { lazy, Suspense } from 'react';
 import { Outlet, Navigate, useRoutes, useLocation } from 'react-router-dom';
 
 import DashboardLayout from 'src/layouts/dashboard';
+import OrgDashboardLayout from 'src/layouts/dashboard/organization';
 
 import LoadingScreen from 'src/components/common/LoadingScreen';
 
 
 
-export const ProtectedRoute = lazy(() => import('src/pages/protected-route'))
+export const ProtectedRoute = lazy(() => import('src/guards/protected-route'))
+export const OrgProtectedRoute = lazy(() => import('src/guards/org-protected-route'))
 
 // ----------------------------------------------------------------------
 const Loadable = (Component) => (props) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { pathname } = useLocation();
-  console.log(pathname);
   const isDashboard = pathname.includes('/dashboard');
 
   return (
@@ -60,6 +61,28 @@ export default function Router() {
       element: <LandingPagePage />,
     },
     {
+      path: '/organization',
+      element:  (
+        <OrgDashboardLayout>
+          <Suspense>
+            <Outlet />
+          </Suspense>
+        </OrgDashboardLayout>
+      ),
+      children: [
+        {
+          element: <OrgProtectedRoute />,
+          children: [
+            { element: <IndexPage />, index: true },
+            { path: 'workspace', element: <OrganizationPage /> },
+            { path: 'download-view', element: <DownloadViewPage /> },
+            { path: 'settings', element: <SettingsPagePage /> },
+            { path: 'notifications', element: <NotificationsPage /> },
+          ]
+        }
+      ]
+    },
+    {
       path: '/dashboard',
       element: (
         <DashboardLayout>
@@ -74,13 +97,13 @@ export default function Router() {
           children: [
             { element: <IndexPage />, index: true },
             { path: 'user', element: <UserPage /> },
-            { path: 'organization', element: <OrganizationPage /> },
             { path: 'form', element: <FormPage /> },
             { path: 'analytics', element: <AnalyticsPage /> },
             { path: 'download-view', element: <DownloadViewPage /> },
             { path: 'notifications', element: <NotificationsPage /> },
             { path: 'settings', element: <SettingsPagePage /> },
             {
+
               path: 'shared-data-history',
               element: <SharedDataPage />,
             },

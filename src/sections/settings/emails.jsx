@@ -23,14 +23,12 @@ const Emails = () => {
     const [emails, setEmails] = useState([]);
     const [currentEmailId, setCurrentEmailId] = useState(null);
     const { openDialog, closeDialog, isDialogOpen } = useDialogState();
-    console.log(isDialogOpen());
+    // console.log(isDialogOpen());qlCzGr
     // Fetch emails on component mount
     useEffect(() => {
-            openDialog(EmailTokenModal)
-            setCurrentEmailId(63)
+            // openDialog(EmailTokenModal)
         const fetchEmails = async () => {
             try {
-                
                 const response = await axiosInstance.get(emailEndpoint.emails);
                 console.log(response.data);
                 const index = response.data.findIndex(e => e.primary)
@@ -59,8 +57,9 @@ const Emails = () => {
     const addEmail = async (email) => {
         try {
             const response = await axiosInstance.post(emailEndpoint.emails, { email: { address: email } });
-            setEmails([...emails, response.data]); // Assuming response.data is the new email object
-            setCurrentEmailId(response.data.id);
+            setEmails([...emails, response.data.email]); // Assuming response.data is the new email object
+            console.log(response.data.email);
+            setCurrentEmailId(response.data.email.id);
             openDialog(EmailTokenModal)
         } catch (error) {
             console.error('Error adding email:', error);
@@ -72,6 +71,9 @@ const Emails = () => {
         try {
             await axiosInstance.patch(`${emailEndpoint.emails}/${emailId}/set_primary`);
         } catch (error) {
+            if(error.response.data.error === 'Email is not verified.'){
+                openDialog(EmailTokenModal)
+            }
             console.error('Error setting primary email:', error);
         }
     };
@@ -86,11 +88,15 @@ const Emails = () => {
             console.error('Error deleting email:', error);
         }
     };
-    const verifyOtp = async (otp) => {
-        console.log(otp);
+    const verifyOtp = async (token) => {
+        console.log(token);
+        // ylWmI7
         try {
-            await axiosInstance.patch(`${emailEndpoint.emails}/${currentEmailId}/verify`, { otp });
-            closeDialog(EmailTokenModal);
+            if(token.length === 6){
+                await axiosInstance.post(`${emailEndpoint.emails}/${currentEmailId}/verify`, { token });
+                closeDialog(EmailTokenModal);
+
+            }
         } catch (error) {
             console.error('Error verifying OTP:', error);
         }

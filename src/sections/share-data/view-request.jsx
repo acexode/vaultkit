@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useSnackbar } from 'notistack';
 
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Box, Grid, Stack, Button, styled, Container, Typography, DialogActions } from '@mui/material';
+import { Box, Grid, Chip, Stack, Button, styled, Container, Typography, DialogActions } from '@mui/material';
 
 import axiosInstance from 'src/utils/axios';
 
@@ -63,6 +63,7 @@ const ViewRequest = ({ data, handleCloseModal }) => {
   const [loading, setLoading] = useState()
   const [declineRequestLoading, setDeclineRequestLoading] = useState()
   const types = mapShareableTypes(data?.requested_info.data)
+  console.log(data);
   
   const { enqueueSnackbar } = useSnackbar();
   const approveRequest = async () => {
@@ -138,31 +139,32 @@ const ViewRequest = ({ data, handleCloseModal }) => {
       <Grid container spacing={2} sx={{ width: '100%' }}>
         <ItemsStyle item xs={12} md={12}>
           <Stack sx={{ width: '100%' }} direction="row" justifyContent="space-between">
-            <Box sx={{ width: '50%' }}>Request Title:</Box> <Box>{data?.title}</Box>
+            <Box sx={{ width: '50%' }}><Typography variant='subtitle1'>Request Title</Typography></Box> <Box>{data?.title}</Box>
           </Stack>
         </ItemsStyle>
         <ItemsStyle item xs={12} md={12} bgcolor>
           <Stack sx={{ width: '100%' }} direction="row" justifyContent="space-between">
-            <Box sx={{ width: '50%' }}>Requester:</Box> <Box textAlign="right">{data?.requester ?? ""}</Box>
+            <Box sx={{ width: '50%' }}><Typography variant='subtitle1'>Requester </Typography></Box> <Box textAlign="right">{data?.receiver.email ?? ""}</Box>
           </Stack>
         </ItemsStyle>
         <ItemsStyle item xs={12} md={12}>
-          <Stack sx={{ width: '100%' }} direction="row" justifyContent="space-between">
-            <Box sx={{ width: '50%' }}>Data Requested:</Box> <Box textAlign="right">
+          <Stack sx={{ width: '100%' }} direction="column" justifyContent="space-between">
+            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', marginBottom: '5px'}}><Typography variant='subtitle1'>Data Requested</Typography></Box> 
+            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }} textAlign="right">
               {types?.map((type) => (
-                <Typography>{type}</Typography>
+                <Chip label={type} />
               ))}
             </Box>
           </Stack>
         </ItemsStyle>
         <ItemsStyle item xs={12} md={12} bgcolor>
           <Stack sx={{ width: '100%' }} direction="row" justifyContent="space-between">
-            <Typography>Status:</Typography> <Typography>{data?.status}</Typography>
+          <Typography variant='subtitle1'>Status:</Typography> <Typography>{data?.status}</Typography>
           </Stack>
         </ItemsStyle>
         <ItemsStyle item xs={12} md={12}>
           <Stack sx={{ width: '100%' }} direction="row" justifyContent="space-between">
-            <Typography>Date:</Typography> <Typography>{formatDate(data?.start_time)}</Typography>
+          <Typography variant='subtitle1'>Date:</Typography> <Typography>{formatDate(data?.start_time)}</Typography>
           </Stack>
         </ItemsStyle>
       </Grid>
@@ -196,7 +198,7 @@ ViewRequest.propTypes = {
     sender_type: PropTypes.string.isRequired,
     receiver_type: PropTypes.string.isRequired,
     selectedRequest: PropTypes.string.isRequired,
-    requester: PropTypes.string.isRequired,
+    receiver: PropTypes.object.isRequired,
   }).isRequired,
   handleCloseModal: PropTypes.func.isRequired
 };

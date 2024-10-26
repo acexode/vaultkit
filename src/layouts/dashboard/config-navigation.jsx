@@ -31,7 +31,7 @@ const navConfig = [
 export const OrganizationNavConfig = [
   {
     title: 'home',
-    path: '/dashboard',
+    path: '/organization',
     icon: icon('ic_home'),
   },
   // {
@@ -40,8 +40,8 @@ export const OrganizationNavConfig = [
   //   icon: icon('ic_user'),
   // },
   {
-    title: 'organization',
-    path: '/dashboard/organization',
+    title: 'Workspace',
+    path: '/organization/workspace',
     icon: icon('ic_org'),
   },
   // {

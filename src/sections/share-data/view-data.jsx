@@ -19,6 +19,8 @@ import {
   OutlinedInput,
 } from '@mui/material';
 
+import useAuth from 'src/hooks/useAuth';
+
 import Scrollbar from 'src/components/scrollbar';
 // import MHidden from 'src/components/common/MHidden';
 import MIconButton from 'src/components/common/MIconButton';
@@ -58,6 +60,7 @@ function mapShareableTypes(arrayOfObjects) {
 }
 export default function DataDetails({ card, isOpen, onClose, data, description }) {
   const [taskCompleted, setTaskCompleted] = useState(false);
+  const {user} = useAuth()
   const types = mapShareableTypes(data?.shareable_informations)
   const navigate = useNavigate();
   const { assignee } = card;
@@ -67,7 +70,8 @@ export default function DataDetails({ card, isOpen, onClose, data, description }
   };
 
   const handleViewData = () => {
-    const url = `/dashboard/download-view?id=${data.id}`;
+    const base = user.business_type ? 'organization' : 'dashboard'
+    const url = `/${base}/download-view?id=${data.id}`;
     navigate(url);
   }
 
@@ -114,11 +118,11 @@ export default function DataDetails({ card, isOpen, onClose, data, description }
           <Stack direction="row">
             <LabelStyle sx={{ mt: 1.5 }}>Assignee</LabelStyle>
             <Stack direction="row" flexWrap="wrap" alignItems="center">
-              {assignee.map((user) => (
+              {assignee.map((u) => (
                 <Avatar
-                  key={user.id}
-                  alt={user.name}
-                  src={user.avatar}
+                  key={u.id}
+                  alt={u.name}
+                  src={u.avatar}
                   sx={{ m: 0.5, width: 36, height: 36 }}
                 />
               ))}

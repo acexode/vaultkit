@@ -99,10 +99,11 @@ export default function RequestDataView({ handleClose, users }) {
     onSubmit: async (values) => {
       const resource = selectedCategory.map(category => ({type: category}))
       const userType = user.business_type ? "organization" : "user"
+      const {email} = values
       const data = {
         access_request: {
           title: values.title,
-          sharer_email: values.email,
+          sharer_email: email.includes(',') ? email.split(',') : email,
           receiver_type: userType,
           sharer_type: "user",
           start_time: values.start_time,

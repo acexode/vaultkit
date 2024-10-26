@@ -43,15 +43,15 @@ export default function OrganizationSharedDataView() {
 
   return (
     <Container maxWidth="xl">
-      <Stack direction={!isMobile ? "row" : "column"} alignItems="center" justifyContent="space-between" mb={5}>
-      <Box>
+      <Stack direction={!isMobile ? "row" : "column"} alignItems="center" justifyContent="space-end" mb={5}>
+      <Box sx={{width: '100%'}}>
         <Typography variant="h4">{user?.name}</Typography>
         <Typography variant="caption"> {user?.business_type}</Typography>
         <Typography variant="subtitle1"> Total Employees - 0 </Typography>
 
         </Box>
 
-        <Box sx={{display: 'flex', mt: isMobile ? 2 : 0}}>
+        <Box sx={{display: 'flex', width: '100%', mt: isMobile ? 2 : 0, justifyContent: 'end'}}>
             <OrgDataMenu openDialog={openDialog} />
             <OrgInvitesMenu openDialog={openDialog} />
         

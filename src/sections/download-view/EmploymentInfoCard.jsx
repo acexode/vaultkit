@@ -11,11 +11,11 @@ import TimelineSeparator from '@mui/lab/TimelineSeparator';
 import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineItem, { timelineItemClasses } from '@mui/lab/TimelineItem';
 
-// import { fDateTime } from 'src/utils/format-time';
+import { fDateTime } from 'src/utils/format-time';
 
 // ----------------------------------------------------------------------
 
-export default function EducationInfoCard({ title, subheader, list, ...other }) {
+export default function EmploymentInfoCard({ title, subheader, list, ...other }) {
   return (
     <Grid item mb={3} xs={12} md={6} lg={6}>
     <Card sx={{height: '100%'}} {...other}>
@@ -41,7 +41,7 @@ export default function EducationInfoCard({ title, subheader, list, ...other }) 
   );
 }
 
-EducationInfoCard.propTypes = {
+EmploymentInfoCard.propTypes = {
   list: PropTypes.array,
   subheader: PropTypes.string,
   title: PropTypes.string,
@@ -50,7 +50,7 @@ EducationInfoCard.propTypes = {
 // ----------------------------------------------------------------------
 
 function OrderItem({ item, lastTimeline }) {
-  const { type, title, caption } = item;
+  const { type, title, time } = item;
   return (
     <TimelineItem>
       <TimelineSeparator>
@@ -70,7 +70,7 @@ function OrderItem({ item, lastTimeline }) {
         <Typography variant="subtitle2">{title}</Typography>
 
         <Typography variant="caption" sx={{ color: 'text.disabled' }}>
-          {caption}
+          {fDateTime(time)}
         </Typography>
       </TimelineContent>
     </TimelineItem>
