@@ -22,11 +22,11 @@ const navConfig = [
     path: '/dashboard/shared-data-history',
     icon: icon('ic_lock'),
   },
-  {
-    title: 'Analytics',
-    path: '/dashboard/analytics',
-    icon: icon('ic_analytics'),
-  },
+  // {
+  //   title: 'Analytics',
+  //   path: '/dashboard/analytics',
+  //   icon: icon('ic_analytics'),
+  // },
 ];
 export const OrganizationNavConfig = [
   {

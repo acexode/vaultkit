@@ -94,7 +94,7 @@ const Emails = () => {
         console.log(token);
         // ylWmI7
         try {
-            if(token.length === 5){
+            if(token.length === 6){
                 await axiosInstance.post(`${emailEndpoint.emails}/${currentEmailId}/verify`, { token });
                 closeDialog(EmailTokenModal);
 
