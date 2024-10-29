@@ -52,7 +52,10 @@ export default function DataConfigView({ handleClose, values, setFieldValue, for
         helperText={formik.touched.end_time && formik.errors.end_time}
       />
       <FormControlLabel
-        control={<Checkbox />}
+        control={<Checkbox  
+        name="download"
+        checked={formik.values ? formik?.values.download : false}
+        onChange={formik.handleChange} />}
         label={
           <Typography sx={{ fontSize: '12px' }}>
             Can the recipient download your information ?

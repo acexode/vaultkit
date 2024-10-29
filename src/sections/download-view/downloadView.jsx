@@ -29,6 +29,7 @@ import InvestmentLiabilityCard from './Investment-LiabilityCard';
 const DownloadView = () => {
 
   const parentRef = useRef(null);
+  const [fullData, setfullData] = useState(null)
 
 
   const [dataObject, setdataObject] = useState(null)
@@ -84,6 +85,7 @@ const DownloadView = () => {
           const url = downloadEndpoint(id);
           const response = await axiosInstance.get(url.allDetails);
           if (response.data && response.status === 200) {
+            setfullData(response.data)
             const obj = groupByShareableType(response.data.shareable_informations)
             console.log(obj);
             setdataObject(obj);
@@ -118,7 +120,7 @@ const DownloadView = () => {
 
   return (
     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} ref={parentRef}>
-      {dataObject && dataObject.BasicInformation && <Overview data={dataObject.BasicInformation[0].shareable} handleDownload={handleDownload}  /> }
+      {dataObject && dataObject.BasicInformation && <Overview data={dataObject.BasicInformation[0].shareable} handleDownload={handleDownload} fullData={fullData}  /> }
       {dataObject && dataObject.ContactInformation && <ContactInfoCard obj={dataObject.ContactInformation[0].shareable} /> }
       {dataObject && dataObject.ResidentialHistory && <ResidentialInfoCard data={dataObject.ResidentialHistory} /> }
       {dataObject && dataObject.RealEstateInformation && <RealEstateInfoCard data={dataObject.RealEstateInformation} /> }

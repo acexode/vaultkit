@@ -3,6 +3,7 @@ export const initialValues = {
   receiver_email: '',
   start_time: '',
   end_time: '',
+  download: false,
   basic: {
     social_insurance_number: false,
     date_of_birth: false,

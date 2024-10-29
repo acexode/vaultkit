@@ -171,6 +171,7 @@ export default function ShareView({ handleCloseModal }) {
           sharer_type: 'user',
           start_time: values.start_time,
           end_time: values.end_time,
+          download: values.download,
           resource: resourceMap(values, typeMapping),
           sharer_id: user?.id,
         },
