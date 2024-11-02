@@ -59,6 +59,9 @@ export default function Header() {
   const handleNavigate = () => {
     router.push('/signup');
   };
+  const handleNavigateSignin = () => {
+    router.push('/login');
+  };
 
   return (
     <AppBar sx={{ boxShadow: 0, bgcolor: 'transparent' }}>
@@ -93,6 +96,9 @@ export default function Header() {
 
           <Button variant="contained" onClick={handleNavigate}>
             Signup
+          </Button>
+          <Button variant="contained" onClick={handleNavigateSignin}  sx={{ ml: 1 }}>
+            Sign in
           </Button>
 
           <MHidden width="mdUp">
