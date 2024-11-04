@@ -5,8 +5,8 @@ import React, { useState, useEffect } from 'react';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
+import { Stack, Container } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { Alert, Stack, Button, Container } from '@mui/material';
 
 import useAuth from 'src/hooks/useAuth';
 
@@ -114,7 +114,7 @@ export default function ProfileView({handleVerificationModal}) {
 
   return (
     <Container maxWidth="xl">
-      <Alert
+      {/* <Alert
                 sx={{mb: 1}}
                 severity="primary"
                 action={
@@ -124,7 +124,7 @@ export default function ProfileView({handleVerificationModal}) {
                 }
               >
                 Your data is not yet verified — start verification!
-              </Alert>
+      </Alert> */}
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         {data?.first_name && (
 

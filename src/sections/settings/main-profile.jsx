@@ -39,6 +39,7 @@ export default function MainProfileView() {
   const isMountedRef = useIsMountedRef();
   const { user, getBasicInfo } = useAuth();
   const [basicInfo, setBasicInfo] = useState();
+  console.log(basicInfo, 'basicInfo');
   const [contactInfo, setContactInfo] = useState();
   const [loading, setLoading] = useState(false);
   const basicUrl = getSingleProfileDataPatchUrl('personal-info', user.id);
@@ -60,6 +61,7 @@ export default function MainProfileView() {
     enableReinitialize: true,
     initialValues: {
       first_name: basicInfo?.first_name || '',
+      last_name: basicInfo?.last_name || '',
       email: user?.email,
       profile_picture_url: basicInfo?.profile_picture_url?.url,
       phone_number: basicInfo?.phone_number,
@@ -72,10 +74,10 @@ export default function MainProfileView() {
     },
 
     validationSchema: UpdateUserSchema,
-    onSubmit: async (values, { setErrors, setSubmitting,  }) => {
-     
+    onSubmit: async (values, { setErrors, setSubmitting }) => {
       const basicInfoData = {
         first_name: values.first_name,
+        last_name: values.last_name,
         profile_picture_url: values.profile_picture_url,
         phone_number: values.phone_number,
         nationality: values.nationality,
@@ -88,22 +90,22 @@ export default function MainProfileView() {
         postal_code: values.postal_code,
       };
       const contactData = createFormData(contactInfoData, 'contact_information');
-     
+
       try {
         setLoading(true);
-
 
         const updateBasicInfo = axiosInstance.patch(basicUrl, basicData);
         const updateContactInfo = axiosInstance.patch(contactUrl, contactData);
 
-        
-        const [basicInfoResponse, contactInfoResponse] = await Promise.all([updateBasicInfo, updateContactInfo]);
-        if(basicInfoResponse?.status === 200 && contactInfoResponse?.status === 200){
+        const [basicInfoResponse, contactInfoResponse] = await Promise.all([
+          updateBasicInfo,
+          updateContactInfo,
+        ]);
+        if (basicInfoResponse?.status === 200 && contactInfoResponse?.status === 200) {
           enqueueSnackbar('Update successful', { variant: 'success' });
-        }else {
+        } else {
           enqueueSnackbar('Unable to update profile', { variant: 'error' });
         }
-        
       } catch (error) {
         if (isMountedRef.current) {
           setErrors({ afterSubmit: error.code });
@@ -198,10 +200,19 @@ export default function MainProfileView() {
                 <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                   <TextField
                     fullWidth
-                    label="Name"
+                    label="First Name"
                     {...getFieldProps('first_name')}
                     InputLabelProps={{ shrink: true }}
                   />
+                  <TextField
+                    fullWidth
+                    label="Last Name"
+                    {...getFieldProps('last_name')}
+                    InputLabelProps={{ shrink: true }}
+                  />
+                </Stack>
+
+                <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                   <TextField
                     fullWidth
                     disabled
@@ -209,28 +220,25 @@ export default function MainProfileView() {
                     {...getFieldProps('email')}
                     InputLabelProps={{ shrink: true }}
                   />
-                </Stack>
-
-                <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                   <TextField
                     fullWidth
                     label="Phone Number"
                     {...getFieldProps('phone_number')}
                     InputLabelProps={{ shrink: true }}
                   />
+                </Stack>
+
+                <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                   <TextField
                     fullWidth
                     label="Address"
                     {...getFieldProps('home_address')}
                     InputLabelProps={{ shrink: true }}
                   />
-                </Stack>
-
-                <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                   <TextField
                     select
                     fullWidth
-                    label="nationality"
+                    label="Nationality"
                     placeholder="nationality"
                     {...getFieldProps('nationality')}
                     SelectProps={{ native: true }}
@@ -245,21 +253,23 @@ export default function MainProfileView() {
                       </option>
                     ))}
                   </TextField>
+                </Stack>
+
+                <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                   <TextField
                     fullWidth
                     label="State/Region"
                     {...getFieldProps('province')}
                     InputLabelProps={{ shrink: true }}
                   />
-                </Stack>
-
-                <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                   <TextField
                     fullWidth
                     label="City"
                     {...getFieldProps('city')}
                     InputLabelProps={{ shrink: true }}
                   />
+                </Stack>
+                <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                   <TextField
                     fullWidth
                     label="Zip/Code"
