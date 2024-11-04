@@ -49,9 +49,8 @@ export default function AccountPopover() {
 
   const handleClose = (path) => {
     setOpen(null);
-    console.log(user);
     const base = user.business_type ? 'organization' : 'dashboard'
-    const url = `/${base}/${path}`;
+    const url = typeof path === 'string' ?  `/${base}/${path}` : null;
     if (path === 'user' && user.business_type) {
       router.push('/organization');
     } else {

@@ -106,7 +106,7 @@ export default function Hero() {
                 size="large"
                 variant="contained"
                 component={RouterLink}
-                to="/dashboard"
+                href="/login"
                 startIcon={<Icon icon={flashFill} width={20} height={20} />}
               >
                 Explore

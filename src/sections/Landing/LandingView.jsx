@@ -5,9 +5,9 @@ import { styled } from '@mui/material';
 import Page from 'src/components/common/Page';
 
 import Hero from './Hero';
-import Features from './Feature';
+// import Features from './Feature';
 // import Benefits from './Benefits';
-import HowItWorks from './HowItWorks';
+// import HowItWorks from './HowItWorks';
 import Header from '../../layouts/main/Header';
 
 const RootStyle = styled(Page)({
@@ -25,8 +25,8 @@ const LandingView = () => (
       <Header />
       <Hero />
       <ContentStyle>
-      <HowItWorks />
-      <Features />
+      {/* <HowItWorks />
+      <Features /> */}
       {/* <Benefits /> */}
 
       </ContentStyle>

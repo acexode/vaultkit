@@ -7,7 +7,9 @@ import ellipse from '../../assets/ellipse.png';
 import demoIcon from '../../assets/demoIcon.png';
 import curlyArrow from '../../assets/curly-arrow.png';
 
+
 export default function HeroView() {
+
   return (
     <StyledC.Hero>
       <Box sx={{ position: 'absolute', top: '30px', left: '0px', borderRadius: '50%' }}>
@@ -38,7 +40,7 @@ export default function HeroView() {
             <StyledC.CurlyArrow loading="lazy" src={curlyArrow} />
             <StyledC.Actions>
               <StyledC.GetStarted>
-                <StyledC.GetStartedBase>Get Started</StyledC.GetStartedBase>
+                <StyledC.GetStartedBase href='/login'>Get Started</StyledC.GetStartedBase>
               </StyledC.GetStarted>
               <StyledC.RequestDemo>
                 <StyledC.RequestDemoBase>

@@ -144,9 +144,10 @@ export const GetStarted = styled(Button)({
   alignItems: 'start',
   color: 'var(--White, #fff)',
   justifyContent: 'start',
+
 });
 
-export const GetStartedBase = styled(Box)(({ theme }) => ({
+export const GetStartedBase = styled('a')(({ theme }) => ({
   alignSelf: 'stretch',
   borderRadius: '8px',
   border: '1px solid var(--Red-Red-300, #ff9494)',
@@ -156,6 +157,8 @@ export const GetStartedBase = styled(Box)(({ theme }) => ({
   gap: '8px',
   overflow: 'hidden',
   padding: '16px 28px',
+    textDecoration: 'none',
+    color: 'inherit'
 }));
 
 export const RequestDemo = styled(Button)({
