@@ -12,7 +12,6 @@ import {
   Stack,
   Drawer,
   Button,
-  Avatar,
   styled,
   Divider,
   Typography,
@@ -32,7 +31,6 @@ import MIconButton from 'src/components/common/MIconButton';
 DataDetails.propTypes = {
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
-  card: PropTypes.object,
   data: PropTypes.object,
   description: PropTypes.string
 };
@@ -58,12 +56,13 @@ function mapShareableTypes(arrayOfObjects) {
     return obj.shareable_type; 
   });
 }
-export default function DataDetails({ card, isOpen, onClose, data, description }) {
+export default function DataDetails({ isOpen, onClose, data, description }) {
   const [taskCompleted, setTaskCompleted] = useState(false);
   const {user} = useAuth()
   const types = mapShareableTypes(data?.shareable_informations)
   const navigate = useNavigate();
-  const { assignee } = card;
+
+  console.log(data);
 
   const handleToggleCompleted = () => {
     setTaskCompleted((prev) => !prev);
@@ -116,22 +115,23 @@ export default function DataDetails({ card, isOpen, onClose, data, description }
             }}
           />
           <Stack direction="row">
-            <LabelStyle sx={{ mt: 1.5 }}>Assignee</LabelStyle>
+            <LabelStyle sx={{ mt: 1.5 }}>Sender</LabelStyle>
             <Stack direction="row" flexWrap="wrap" alignItems="center">
-              {assignee.map((u) => (
-                <Avatar
-                  key={u.id}
-                  alt={u.name}
-                  src={u.avatar}
-                  sx={{ m: 0.5, width: 36, height: 36 }}
-                />
-              ))}
+              
+                {data && data.sender.email}
+            </Stack>
+          </Stack>
+          <Stack direction="row">
+            <LabelStyle sx={{ mt: 1.5 }}>Receiver</LabelStyle>
+            <Stack direction="row" flexWrap="wrap" alignItems="center">
+              
+                {data && data.receiver.email}
             </Stack>
           </Stack>
 
           <Stack direction="row" alignItems="center">
             <LabelStyle> Due date</LabelStyle>
-            <LabelStyle> {data?.end_time.split(" ")[0]}</LabelStyle>
+            <LabelStyle> {data && data?.end_time.split(" ")[0]}</LabelStyle>
           </Stack>
 
           <Stack direction="row">
@@ -148,9 +148,12 @@ export default function DataDetails({ card, isOpen, onClose, data, description }
           </Stack>
 
           <Stack direction="row">
-            <LabelStyle sx={{ mt: 2 }}>Attachments</LabelStyle>
-            <Stack direction="row" flexWrap="wrap">
-              <LabelStyle sx={{ mt: 2 }}>No Attachments</LabelStyle>
+            <LabelStyle sx={{ mt: 2 }}>Notes</LabelStyle>
+            <Stack direction="column" flexWrap="wrap">
+              {data && data.notes.map((note) => (
+              <LabelStyle sx={{ mt: 2 }}>{note.comment}</LabelStyle>
+              ))}
+
             </Stack>
           </Stack>
           {description &&  <LoadingButton

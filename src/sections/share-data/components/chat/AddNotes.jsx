@@ -1,158 +1,146 @@
+import * as Yup from 'yup';
+import * as React from 'react';
 import PropTypes from 'prop-types';
-import { Icon } from '@iconify/react';
-import { useRef, useState, useEffect } from 'react';
-import closeFill from '@iconify/icons-eva/close-fill';
-// import options2Fill from '@iconify/icons-eva/options-2-fill';
+import { useFormik } from 'formik';
 
-// material
-import {
-  Box,
-  Paper,
-  Stack,
-  Divider,
-  Backdrop,
-  useTheme,
-  Container,
-  Typography,
-  IconButton,
-  useMediaQuery,
-} from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { Box, styled, Button, Dialog, TextField, DialogTitle, DialogContent, DialogActions, TextareaAutosize } from '@mui/material';
 
-import { chatConversation } from 'src/_mock/chatdata';
+import axiosInstance from 'src/utils/axios';
 
-import Scrollbar from 'src/components/scrollbar';
+import { baseEndpoints } from 'src/configs/endpoints';
 
-import ChatMessageInput from './ChatInput';
-import ChatMessageItem from './ChatMessageItem';
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+  '& .MuiDialogContent-root': {
+    paddingTop: '5px',
+  },
+  '& .MuiDialogActions-root': {
+    padding: '5px',
+  },
+}));
 
-//
+// Define Yup validation schema
+const validationSchema = Yup.object({
+  title: Yup.string().required('Title is required'),
+  comment: Yup.string().min(10, 'Comment should be at least 10 characters').required('Comment is required'),
+});
 
 AddNotes.propTypes = {
   open: PropTypes.bool,
   setOpen: PropTypes.func,
+  data: PropTypes.object,
 };
-export default function AddNotes({ open, setOpen }) {
-  const [conversation, setconversation] = useState(chatConversation);
-  const themes = useTheme();
-  const isMobile = useMediaQuery(themes.breakpoints.down('sm'));
-  const scrollRef = useRef();
 
-  useEffect(() => {
-    const scrollMessagesToBottom = () => {
-      if (scrollRef.current) {
-        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-      }
-    };
-    scrollMessagesToBottom();
-  }, [conversation.messages]);
+export default function AddNotes({ open, setOpen, data }) {
+  const [loading, setloading] = React.useState(false)
 
-  // const images = conversation.messages
-  //   .filter((msg) => messages.contentType === 'image')
-  //   .map((msg) => messages.body);
-
-  useEffect(() => {
-    if (open) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-  }, [open]);
-
+  console.log(data);
   const handleClose = () => {
     setOpen(false);
   };
-  const handleConversartion = (value) => {
-    const { conversationId, message } = value;
 
-    const newMessage = {
-      conversationId,
-      messageId: Math.floor(Math.random() * 1000000),
-      body: message,
-      contentType: 'text',
-      attachments: [],
-      createdAt: new Date(),
-      senderId: '8864c717-587d-472a-929a-8e5f298024da-0',
-    };
-    console.log(newMessage);
-    setconversation({
-      ...conversation,
-      messages: [...conversation.messages, newMessage],
-    });
+  // Initialize Formik with initial values, validation schema, and submit handler
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      title: data?.title || '', // Pre-fill name if available in data
+      comment: '',
+    },
+    validationSchema,
+    onSubmit: async (values) => {
+      setloading(true)
+      const payload = {
+        note:{
+          ...values,
+          access_request_id: data.id
+        }
+      }
+      try {
+        const endpoint = `${baseEndpoints.profile}/notes`;
+        const res = await axiosInstance.post(endpoint, payload)
+        setloading(false)
+        console.log(res);
+      } catch (error) {
+        setloading(false)
+      }
 
-    // state.conversations.byId[conversationId].messages.push(newMessage);
-  };
+      // setOpen(false); // Close the dialog after submission
+    },
+  });
 
   return (
-    <>
-      <Backdrop
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={open}
-        onClick={handleClose}
-      />
-
-      <Box
-        sx={{
-          top: 100,
-          bottom: 12,
-          right: 0,
-          position: 'fixed',
-          zIndex: 2001,
-          ...(open && { right: 12 }),
-        }}
+    <BootstrapDialog
+      open={open}
+      onClose={handleClose}
+      fullWidth
+      maxWidth="sm"
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle textAlign="center" id="alert-dialog-title">
+        Add Note
+      </DialogTitle>
+      <DialogContent
+        sx={{ padding: '10px', margin: '10px', '&::-webkit-scrollbar': { display: 'none' } }}
       >
-        <Paper
+        <Box
+          component="form"
+          onSubmit={formik.handleSubmit}
           sx={{
-            height: 1,
-            width: '0px',
-            overflow: 'hidden',
-            boxShadow: (theme) => theme.customShadows.z24,
-            transition: (theme) => theme.transitions.create('width'),
-            ...(open && { width: isMobile ? '90vw' : '70vw' }),
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+            width: '100%',
+            maxWidth: 500,
+            margin: '0 auto',
           }}
+          noValidate
+          autoComplete="off"
         >
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            sx={{ py: 2, pr: 1, pl: 2.5 }}
-          >
-            <Typography variant="subtitle1">Add Notes</Typography>
-            <IconButton onClick={handleClose}>
-              <Icon icon={closeFill} width={20} height={20} />
-            </IconButton>
-          </Stack>
-
-          <Divider />
-
-          <Scrollbar sx={{ height: 1 }}>
-            <Stack spacing={4} sx={{ pt: 3, px: 3, pb: 15 }}>
-              <Container maxWidth="lg">
-                <Box display="flex" flexDirection="column" height="65vh">
-                  <Box flexGrow={1}  overflow="auto" mb={2}>
-                    {conversation.messages.map((message) => (
-                      <ChatMessageItem
-                        key={message.id}
-                        message={message}
-                        conversation={conversation}
-                        handleConversartion={handleConversartion}
-                      />
-                    ))}
-                    </Box>
-                    <Stack
-                      direction="row"
-                      alignItems="center"
-                      justifyContent="space-between"
-                      sx={{ py: 2, pr: 1, pl: 2.5 }}
-                    >
-                      <ChatMessageInput onSend={handleConversartion} conversationId={conversation.id} />
-                    </Stack>
-                  </Box>
-                
-              </Container>
-            </Stack>
-          </Scrollbar>
-        </Paper>
-      </Box>
-    </>
+          <TextField
+            label="Title"
+            variant="outlined"
+            fullWidth
+            name="title"
+            disabled
+            value={formik.values.title}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.title && Boolean(formik.errors.title)}
+            helperText={formik.touched.title && formik.errors.title}
+          />
+          <TextareaAutosize
+            minRows={4}
+            placeholder="Enter Comment"
+            name="comment"
+            value={formik.values.comment}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            style={{
+              width: '100%',
+              padding: '16.5px 14px',
+              fontSize: '1rem',
+              borderRadius: 4,
+              border: '1px solid rgba(0, 0, 0, 0.23)',
+              outline: 'none',
+              resize: 'vertical',
+            }}
+          />
+          {formik.touched.comment && formik.errors.comment && (
+            <Box sx={{ color: 'error.main', fontSize: '0.875rem', marginTop: '-8px' }}>
+              {formik.errors.comment}
+            </Box>
+          )}
+        </Box>
+        <DialogActions sx={{ marginTop: 2 }}>
+          <Button variant="outlined" onClick={handleClose}>
+            Cancel
+          </Button>
+          <LoadingButton loading={loading} type="submit" variant="contained" onClick={formik.handleSubmit}>
+            Submit
+          </LoadingButton>
+        </DialogActions>
+      </DialogContent>
+    </BootstrapDialog>
   );
 }

@@ -89,7 +89,8 @@ export default function RecievedDataTableView({
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
   };
-  const handleAddNoteModal = () => {
+  const handleAddNoteModal = (row) => {
+    setSelectedRowData(row)
     setshowAddNote(!showAddNote);
   };
 
@@ -140,9 +141,9 @@ export default function RecievedDataTableView({
                     avatarUrl={row.avatarUrl}
                     validity={row.end_time}
                     starttime={row.start_time}
-                    selected={selected.indexOf(row.name) !== -1}
+                    selected={selected.indexOf(row.title) !== -1}
                     handleClick={(event) => handleClick(event, row.id)}
-                    handleAddNoteModal={handleAddNoteModal}
+                    handleAddNoteModal={() =>handleAddNoteModal(row)}
                     notificationCount={row.notificationCount}
                     handleViewDetails={() => handleViewDetails(row)}
                     approveRequest={approveRequest}
@@ -171,7 +172,7 @@ export default function RecievedDataTableView({
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       )}
-      <AddNotes open={showAddNote} setOpen={handleAddNoteModal} />
+      <AddNotes data={selectedRowData} open={showAddNote} setOpen={handleAddNoteModal} />
       <DataDetails description="Received Data"  isOpen={isDialogOpen('data-details')} card={card} data={selectedRowData} onClose={closeDialog} />
       {/* <AlertDialog  maxWidth="lg" title="Generate Access Code" component={<SavedSuccessModal handleCloseModal={handleSharedModal} />} open={showAddNote} /> */}
     </>

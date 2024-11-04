@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import { Icon } from '@iconify/react';
+import { useSnackbar } from 'notistack';
 import React, { useState, useEffect } from 'react';
 import trash from '@iconify/icons-eva/trash-2-outline';
 import addItem from '@iconify/icons-eva/plus-circle-outline';
@@ -21,6 +22,8 @@ import { EmailTokenModal } from '../profile/view/constant';
 const Emails = () => {
     const [primaryEmailIndex, setPrimaryEmailIndex] = useState(0);
     const [emails, setEmails] = useState([]);
+    const { enqueueSnackbar } = useSnackbar();
+    const [tokenResent, settokenResent] = useState(false)
     const [currentEmailId, setCurrentEmailId] = useState(null);
     const { openDialog, closeDialog, isDialogOpen } = useDialogState();
     // console.log(isDialogOpen());qlCzGr
@@ -76,6 +79,27 @@ const Emails = () => {
                 await axiosInstance.post(`${emailEndpoint.emails}/${emailId}/resend_verification`);
                 openDialog(EmailTokenModal)
             }
+            console.error('Error setting primary email:', error);
+        }
+    };
+    const resendToken = async () => {
+        settokenResent(true)
+        try {
+
+          const response =  await axiosInstance.post(`${emailEndpoint.emails}/${currentEmailId}/resend_verification`);
+          console.log(response);
+          if (response.status === 200) {
+            settokenResent(false)
+            enqueueSnackbar(response.data.message, {
+              variant: 'success',
+            });
+          }
+        } catch (error) {
+            settokenResent(false)
+            enqueueSnackbar(error.response.data.error, {
+                variant: 'error',
+            });
+           
             console.error('Error setting primary email:', error);
         }
     };
@@ -192,7 +216,7 @@ const Emails = () => {
         fullWidth
         maxWidth="sm"
         title="View & Share Request"
-        component={<EmailToken onComplete={verifyOtp} />}
+        component={<EmailToken onComplete={verifyOtp} resendToken={resendToken} tokenResent={tokenResent} />}
         open={isDialogOpen(EmailTokenModal)}
       />
       

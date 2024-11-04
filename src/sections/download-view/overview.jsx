@@ -16,7 +16,7 @@ import {
 
 } from './styled';
 
-const Overview = ({data, email, handleDownload}) => {
+const Overview = ({data, email, handleDownload, fullData}) => {
  console.log()
   return (
     <Grid item mb={3} xs={12} md={12} lg={12}>
@@ -44,7 +44,7 @@ const Overview = ({data, email, handleDownload}) => {
                   <div className="staff-id">Gender : {data?.gender.toUpperCase()}</div>
                   <div className="small doj text-muted">Phone number : 07070069690</div>
                   <div className="staff-msg">
-                    <Button onClick={handleDownload} variant="contained"  sx={{my: 1}}>
+                    <Button disabled={!fullData.download}  onClick={handleDownload} variant="contained"  sx={{my: 1}}>
                       Download Information
                     </Button>
                   </div>
@@ -99,6 +99,7 @@ const Overview = ({data, email, handleDownload}) => {
 
 Overview.propTypes = {
   data: PropTypes.object,
+  fullData: PropTypes.object,
   email: PropTypes.string,
   handleDownload: PropTypes.func
 }

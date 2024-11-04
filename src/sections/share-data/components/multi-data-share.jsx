@@ -93,7 +93,6 @@ const MultiDataShare = ({ fields, name, setFieldValue, values, fieldData, multiS
       container
       sx={{ marginLeft: 0, background: '#F5F6F7', padding: '10px', borderRadius: '5px' }}
     >
-      {name}
       {mapped && mapped.map((field) => (
         <Grid item xs={12} md={4} mb={2} key={field.id}>
           <Item>

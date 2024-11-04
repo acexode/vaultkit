@@ -68,6 +68,7 @@ export const requestDataEndpoint = (id) => ({
   sentDataRequest: `${baseEndpoints.share}/sent_data_requests`,
   sharedData: `${baseEndpoints.share}/shared_data`,
   recievedData: `${baseEndpoints.share}/received_data`,
+  addNote: `${baseEndpoints.profile}/notes`,
 });
 
 export const getSingleProfileUrl = (category, id, userId) => {
