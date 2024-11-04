@@ -48,7 +48,6 @@ useEffect(() => {
     try {
       const api = profileAPIs(user?.id)
       const response = await api.contactAPI._readMany()
-      console.log(response);
     
     if(response.data) {
       setData(response.data)

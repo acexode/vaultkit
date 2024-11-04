@@ -40,10 +40,9 @@ const BasicInfo = () => {
   const { handleCurrentForm } = useGlobalContext();
   const [data, setData] = useState(null);
   const { user, getBasicInfo } = useAuth();
-
+  console.log(user)
   useEffect(() => {
     if (user) {
-      console.log(user);
       setData(user?.basic);
     }
     if (!user.basic) {

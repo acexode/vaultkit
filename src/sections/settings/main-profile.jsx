@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
-import { useCallback } from 'react';
 import { enqueueSnackbar } from 'notistack';
+import { useState, useEffect, useCallback } from 'react';
 import { Form, useFormik, FormikProvider } from 'formik';
 
 import { LoadingButton } from '@mui/lab';
@@ -14,72 +14,137 @@ import {
   TextField,
   Typography,
   FormHelperText,
-  FormControlLabel
+  FormControlLabel,
 } from '@mui/material';
 
 import useAuth from 'src/hooks/useAuth';
 import useIsMountedRef from 'src/hooks/useIsMountedRef';
 
+// import axiosInstance from 'src/utils/axios';
+
+import axiosInstance from 'src/utils/axios';
+
+import { profileAPIs } from 'src/apis';
 import countries from 'src/_mock/countries';
 import UploadAvatar from 'src/layouts/dashboard/common/UploadAvatar';
-
+import { getSingleProfileDataPatchUrl } from 'src/configs/endpoints';
 
 // hooks
 // import useAuth from '../../../../hooks/useAuth';
 // utils
 
-
 // ----------------------------------------------------------------------
 
 export default function MainProfileView() {
   const isMountedRef = useIsMountedRef();
-  const { user, updateProfile } = useAuth();
+  const { user, getBasicInfo } = useAuth();
+  const [basicInfo, setBasicInfo] = useState();
+  const [contactInfo, setContactInfo] = useState();
+  const [loading, setLoading] = useState(false);
+  const basicUrl = getSingleProfileDataPatchUrl('personal-info', user.id);
+  const contactUrl = getSingleProfileDataPatchUrl('contact-info', user.id);
+
+  const createFormData = (data, prefix) => {
+    const formData = new FormData();
+    Object.keys(data).forEach((key) => {
+      formData.append(prefix ? `${prefix}[${key}]` : key, data[key]);
+    });
+    return formData;
+  };
 
   const UpdateUserSchema = Yup.object().shape({
-    displayName: Yup.string().required('Name is required')
+    first_name: Yup.string().required('Name is required'),
   });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      displayName: user?.basic?.first_name || '',
+      first_name: basicInfo?.first_name || '',
       email: user?.email,
-      photoURL: user?.photoURL,
-      phoneNumber: user?.phoneNumber,
-      country: user?.country,
-      address: user?.address,
-      state: user?.state,
-      city: user?.city,
-      zipCode: user?.zipCode,
-      isPublic: user?.isPublic
+      profile_picture_url: basicInfo?.profile_picture_url?.url,
+      phone_number: basicInfo?.phone_number,
+      nationality: basicInfo?.nationality,
+      home_address: contactInfo?.home_address,
+      province: contactInfo?.province,
+      city: contactInfo?.city,
+      postal_code: contactInfo?.postal_code,
+      // is_private: basicInfo?.is_private
     },
 
     validationSchema: UpdateUserSchema,
-    onSubmit: async (values, { setErrors, setSubmitting }) => {
+    onSubmit: async (values, { setErrors, setSubmitting,  }) => {
+     
+      const basicInfoData = {
+        first_name: values.first_name,
+        profile_picture_url: values.profile_picture_url,
+        phone_number: values.phone_number,
+        nationality: values.nationality,
+      };
+      const basicData = createFormData(basicInfoData, 'basic_information');
+      const contactInfoData = {
+        home_address: values.home_address,
+        province: values.province,
+        city: values.city,
+        postal_code: values.postal_code,
+      };
+      const contactData = createFormData(contactInfoData, 'contact_information');
+     
       try {
-        await updateProfile({ ...values });
-        enqueueSnackbar('Update success', { variant: 'success' });
-        if (isMountedRef.current) {
-          setSubmitting(false);
+        setLoading(true);
+
+
+        const updateBasicInfo = axiosInstance.patch(basicUrl, basicData);
+        const updateContactInfo = axiosInstance.patch(contactUrl, contactData);
+
+        
+        const [basicInfoResponse, contactInfoResponse] = await Promise.all([updateBasicInfo, updateContactInfo]);
+        if(basicInfoResponse?.status === 200 && contactInfoResponse?.status === 200){
+          enqueueSnackbar('Update successful', { variant: 'success' });
+        }else {
+          enqueueSnackbar('Unable to update profile', { variant: 'error' });
         }
+        
       } catch (error) {
         if (isMountedRef.current) {
           setErrors({ afterSubmit: error.code });
           setSubmitting(false);
         }
+      } finally {
+        setLoading(false);
+        if (isMountedRef.current) setSubmitting(false);
       }
-    }
+    },
   });
 
-  const { values, errors, touched, isSubmitting, handleSubmit, getFieldProps, setFieldValue } = formik;
+  const { values, errors, touched, handleSubmit, getFieldProps, isSubmitting, setFieldValue } =
+    formik;
+
+  useEffect(() => {
+    const fetchContact = async () => {
+      const api = profileAPIs(user?.id);
+      const response = await api.contactAPI._readMany();
+
+      if (response.data) {
+        setContactInfo(response.data);
+      }
+    };
+    if (user) {
+      setBasicInfo(user?.basic);
+    }
+    if (!user.basic) {
+      getBasicInfo();
+    }
+    fetchContact();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const handleDrop = useCallback(
     (acceptedFiles) => {
       const file = acceptedFiles[0];
       if (file) {
-        setFieldValue('photoURL', {
+        setFieldValue('profile_picture_url', {
           ...file,
-          preview: URL.createObjectURL(file)
+          preview: URL.createObjectURL(file),
         });
       }
     },
@@ -94,10 +159,10 @@ export default function MainProfileView() {
             <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
               <UploadAvatar
                 accept="image/*"
-                file={values.photoURL}
+                file={values.profile_picture_url}
                 maxSize={3145728}
                 onDrop={handleDrop}
-                error={Boolean(touched.photoURL && errors.photoURL)}
+                error={Boolean(touched.profile_picture_url && errors.profile_picture_url)}
                 caption={
                   <Typography
                     variant="caption"
@@ -106,7 +171,7 @@ export default function MainProfileView() {
                       mx: 'auto',
                       display: 'block',
                       textAlign: 'center',
-                      color: 'text.secondary'
+                      color: 'text.secondary',
                     }}
                   >
                     Allowed *.jpeg, *.jpg, *.png, *.gif
@@ -115,7 +180,7 @@ export default function MainProfileView() {
               />
 
               <FormHelperText error sx={{ px: 2, textAlign: 'center' }}>
-                {touched.photoURL && errors.photoURL}
+                {touched.profile_picture_url && errors.profile_picture_url}
               </FormHelperText>
 
               <FormControlLabel
@@ -131,25 +196,47 @@ export default function MainProfileView() {
             <Card sx={{ p: 3 }}>
               <Stack spacing={{ xs: 2, md: 3 }}>
                 <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-                  <TextField fullWidth label="Name" {...getFieldProps('displayName')} />
-                  <TextField fullWidth disabled label="Email Address" {...getFieldProps('email')} />
+                  <TextField
+                    fullWidth
+                    label="Name"
+                    {...getFieldProps('first_name')}
+                    InputLabelProps={{ shrink: true }}
+                  />
+                  <TextField
+                    fullWidth
+                    disabled
+                    label="Email Address"
+                    {...getFieldProps('email')}
+                    InputLabelProps={{ shrink: true }}
+                  />
                 </Stack>
 
                 <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-                  <TextField fullWidth label="Phone Number" {...getFieldProps('phoneNumber')} />
-                  <TextField fullWidth label="Address" {...getFieldProps('address')} />
+                  <TextField
+                    fullWidth
+                    label="Phone Number"
+                    {...getFieldProps('phone_number')}
+                    InputLabelProps={{ shrink: true }}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Address"
+                    {...getFieldProps('home_address')}
+                    InputLabelProps={{ shrink: true }}
+                  />
                 </Stack>
 
                 <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                   <TextField
                     select
                     fullWidth
-                    label="Country"
-                    placeholder="Country"
-                    {...getFieldProps('country')}
+                    label="nationality"
+                    placeholder="nationality"
+                    {...getFieldProps('nationality')}
                     SelectProps={{ native: true }}
-                    error={Boolean(touched.country && errors.country)}
-                    helperText={touched.country && errors.country}
+                    error={Boolean(touched.nationality && errors.nationality)}
+                    helperText={touched.nationality && errors.nationality}
+                    InputLabelProps={{ shrink: true }}
                   >
                     <option value="" />
                     {countries.map((option) => (
@@ -158,18 +245,32 @@ export default function MainProfileView() {
                       </option>
                     ))}
                   </TextField>
-                  <TextField fullWidth label="State/Region" {...getFieldProps('state')} />
+                  <TextField
+                    fullWidth
+                    label="State/Region"
+                    {...getFieldProps('province')}
+                    InputLabelProps={{ shrink: true }}
+                  />
                 </Stack>
 
                 <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-                  <TextField fullWidth label="City" {...getFieldProps('city')} />
-                  <TextField fullWidth label="Zip/Code" {...getFieldProps('zipCode')} />
+                  <TextField
+                    fullWidth
+                    label="City"
+                    {...getFieldProps('city')}
+                    InputLabelProps={{ shrink: true }}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Zip/Code"
+                    {...getFieldProps('postal_code')}
+                    InputLabelProps={{ shrink: true }}
+                  />
                 </Stack>
-
               </Stack>
 
               <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-                <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+                <LoadingButton type="submit" variant="contained" loading={loading || isSubmitting}>
                   Save Changes
                 </LoadingButton>
               </Box>
@@ -180,5 +281,3 @@ export default function MainProfileView() {
     </FormikProvider>
   );
 }
-
-
