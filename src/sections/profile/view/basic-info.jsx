@@ -73,10 +73,21 @@ const BasicInfo = () => {
     return '';
   };
 
+  const allValuesAreNull = (obj) => {
+    const keysToIgnore = ['id'];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const key in obj) {
+      if (!keysToIgnore.includes(key) && obj[key] !== null) {
+        return false;
+      }
+    }
+    return true;
+  };
+
   return (
     <Container>
       <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
-        {data ? (
+        {data && !allValuesAreNull(data) ? (
           <Card
             sx={{
               p: 2,

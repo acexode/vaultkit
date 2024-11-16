@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 // import { useState } from 'react';
 
-
 import { useSnackbar } from 'notistack';
 
 import Card from '@mui/material/Card';
@@ -38,38 +37,36 @@ const Item = styled('div')(({ theme }) => ({
   boxSizing: 'border-box',
 }));
 const ContactInfo = () => {
-  const {handleCurrentForm} = useGlobalContext();
-  const [data, setData] = useState(null)
-  const {user} = useAuth()
+  const { handleCurrentForm } = useGlobalContext();
+  const [data, setData] = useState(null);
+  const { user } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
 
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const api = profileAPIs(user?.id)
-      const response = await api.contactAPI._readMany()
-    
-    if(response.data) {
-      setData(response.data)
-    }
-    if(response.error){
-      enqueueSnackbar(response.error.message, { 
-        autoHideDuration: 1000,
-        anchorOrigin: {
-          vertical: "top",
-          horizontal: "right"
-        },
-        variant: "error"
-      })
-    }
-   
-   } catch (error) {
-    console.log(error)
-   }
-  }
-  fetchData()
- },[enqueueSnackbar, user])
-  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const api = profileAPIs(user?.id);
+        const response = await api.contactAPI._readMany();
+
+        if (response.data) {
+          setData(response.data);
+        }
+        if (response.error) {
+          enqueueSnackbar(response.error.message, {
+            autoHideDuration: 1000,
+            anchorOrigin: {
+              vertical: 'top',
+              horizontal: 'right',
+            },
+            variant: 'error',
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, [enqueueSnackbar, user]);
 
   function convertToSentenceCase(str) {
     // Replace underscores with spaces
@@ -90,44 +87,61 @@ useEffect(() => {
   return (
     <Container>
       <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
-        {data && !allValuesAreNull(data) ? <Card
-          sx={{
-            p: 2,
-            width: 1,
-            maxWidth: 520,
-          }}
-        >
-          <Stack>
-            <Box sx={{ mb: 3 }}>
-              <Item>
-                <ListItemText sx={{ minWidth: '84px' }}>Contact Info</ListItemText>
-                <ListItemText sx={{ textAlign: 'right' }}>
-                  <Button variant="outlined" onClick={() => handleCurrentForm('contact-info', data?.id, 1)}>Edit Info</Button>
-                </ListItemText>
-              </Item>
-            </Box>
-            
-            {Object.keys(data)
-                .filter(e => e !== 'id') 
+        {data && !allValuesAreNull(data) ? (
+          <Card
+            sx={{
+              p: 2,
+              width: 1,
+              maxWidth: 520,
+            }}
+          >
+            <Stack>
+              <Box sx={{ mb: 3 }}>
+                <Item>
+                  <ListItemText sx={{ minWidth: '84px' }}>Contact Info</ListItemText>
+                  <ListItemText sx={{ textAlign: 'right' }}>
+                    <Button
+                      variant="outlined"
+                      onClick={() => handleCurrentForm('contact-info', data?.id, 1)}
+                    >
+                      Edit Info
+                    </Button>
+                  </ListItemText>
+                </Item>
+              </Box>
+
+              {Object.keys(data)
+                .filter((e) => e !== 'id')
                 .map((e) => (
                   <ListItemRoot key={e}>
                     <Item>
-                      <ListItemText sx={{ minWidth: '84px' }}>{convertToSentenceCase(e)}</ListItemText>
+                      <ListItemText sx={{ minWidth: '84px' }}>
+                        {convertToSentenceCase(e)}
+                      </ListItemText>
                       <ListItemText sx={{ textAlign: 'right' }}>
                         <Typography sx={{ fontWeight: '700' }}>{data[e]}</Typography>
                       </ListItemText>
                     </Item>
                   </ListItemRoot>
                 ))}
-          </Stack>
-        </Card>: <>
-        <EmptyContent
-        title="You havent added any data"
-        description="Click the button below to start adding your data"
-      />
-           <Button onClick={()=> handleCurrentForm('contact-info', false, 1)} variant='outlined' size='lg' color='inherit'>Add Data</Button>
-        </>}
-        
+            </Stack>
+          </Card>
+        ) : (
+          <>
+            <EmptyContent
+              title="You havent added any data"
+              description="Click the button below to start adding your data"
+            />
+            <Button
+              onClick={() => handleCurrentForm('contact-info', false, 1)}
+              variant="outlined"
+              size="lg"
+              color="inherit"
+            >
+              Add Data
+            </Button>
+          </>
+        )}
       </Stack>
     </Container>
   );
