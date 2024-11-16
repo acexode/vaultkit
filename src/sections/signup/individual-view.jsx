@@ -53,7 +53,7 @@ export default function IndividualSignupView() {
       try {
         
         const response = await registerIndiviual(values)
-        console.log(response)
+        
         router.push('/dashboard');
           enqueueSnackbar(response?.data?.status.message, { 
             autoHideDuration: 1000,
@@ -69,7 +69,7 @@ export default function IndividualSignupView() {
           // console.log(error?.response?.status);
           if (error?.response?.status === 422) {
             enqueueSnackbar(error?.response?.data?.status?.message, { 
-              autoHideDuration: 3000,
+              autoHideDuration: 9000,
               anchorOrigin: {
                 vertical: "top",
                 horizontal: "right"
