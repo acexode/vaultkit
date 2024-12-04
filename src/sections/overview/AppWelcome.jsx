@@ -42,10 +42,8 @@ export default function AppWelcome({ displayName }) {
   };
   const handleClose = () => {
     setOpen(false);
-    setsharedSuccessfully(true)
   };
   const handleSharedModal = () => {
-    console.log('close modal');
     setsharedSuccessfully(false);
   };
   return (

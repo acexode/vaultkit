@@ -103,9 +103,8 @@ const MyFormComponent = ({ fields, title, url, tag }) => {
           setloading(false)
         }
       } catch (error) {
-        console.log(error);
         enqueueSnackbar('Error saving data', {
-          variant: 'success',
+          variant: 'error',
         });
         setloading(false)
       }
