@@ -163,46 +163,54 @@ export default function ShareView({ handleCloseModal }) {
     },
     onSubmit: async (values) => {
       console.log(values);
-      const data = {
-        access_request: {
-          title: values.title,
-          receiver_email: values.receiver_email,
-          receiver_type: 'user',
-          sharer_type: 'user',
-          start_time: values.start_time,
-          end_time: values.end_time,
-          download: values.download,
-          resource: resourceMap(values, typeMapping),
-          sharer_id: user?.id,
-        },
-      };
-      console.log(data);
+      const resources = resourceMap(values, typeMapping)
+      if(resources.length){
+        const data = {
+          access_request: {
+            title: values.title,
+            receiver_email: values.receiver_email,
+            receiver_type: 'user',
+            sharer_type: 'user',
+            start_time: values.start_time,
+            end_time: values.end_time,
+            download: values.download,
+            resource: resourceMap(values, typeMapping),
+            sharer_id: user?.id,
+          },
+        };
+        console.log(data);
+  
+        try {
+          setLoading(true);
+          const url = requestDataEndpoint(user.id);
+          const response = await axiosInstance.post(url.share, data);
+          handleRefetch()
+          if (response.status === 200) {
+            enqueueSnackbar(response.data.success, {
+              variant: 'success',
+            });
+          }
+          setLoading(false);
+          handleClose('share-data-view');
+        } catch (error) {
+          console.log(error);
+          setLoading(false);
+          const errorCodes = [404, 422]
+          if (errorCodes.includes(error?.response?.status)) {
+            enqueueSnackbar(error.response.data.error, {
+              variant: 'error',
+            });
+          }else{
+            enqueueSnackbar('Something went wrong', {
+              variant: 'error',
+            });
+          }
+        }
 
-      try {
-        setLoading(true);
-        const url = requestDataEndpoint(user.id);
-        const response = await axiosInstance.post(url.share, data);
-        handleRefetch()
-        if (response.status === 200) {
-          enqueueSnackbar(response.data.success, {
-            variant: 'success',
-          });
-        }
-        setLoading(false);
-        handleClose('share-data-view');
-      } catch (error) {
-        console.log(error);
-        setLoading(false);
-        const errorCodes = [404, 422]
-        if (errorCodes.includes(error?.response?.status)) {
-          enqueueSnackbar(error.response.data.error, {
-            variant: 'error',
-          });
-        }else{
-          enqueueSnackbar('Something went wrong', {
-            variant: 'error',
-          });
-        }
+      }else{
+        enqueueSnackbar('You must select data for sharing', {
+          variant: 'error',
+        });
       }
     },
   });

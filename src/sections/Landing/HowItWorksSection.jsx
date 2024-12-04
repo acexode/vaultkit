@@ -11,7 +11,7 @@ const items = [
   { index: '02', title: 'Notify', text: 'Users receive email notifications about data requests.' },
   {
     index: '03',
-    title: 'Sign up/Sign in',
+    title: 'Sign up / Sign in',
     text: 'Users sign up or log in to VaultKit to manage their data.',
   },
   {
@@ -22,7 +22,7 @@ const items = [
 ];
 
 const HowItWorksSection = () => {
-  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [hoveredIndex, setHoveredIndex] = useState(0);
   const upMd = useResponsive('up', 'md');
     console.log(upMd);
   const handleMouseEnter = (index) => {
@@ -30,7 +30,7 @@ const HowItWorksSection = () => {
   };
 
   const handleMouseLeave = () => {
-    setHoveredIndex(null);
+    setHoveredIndex(hoveredIndex);
   };
   console.log('object');
   return (
@@ -82,7 +82,7 @@ const HowItWorksSection = () => {
                       height: '337px',
                       background: 'var(--Grey-Grey-900, #1f1f1f)',
                       backgroundColor: 'var(--Grey-Grey-900, #1f1f1f)',
-                      transition: 'all 0.5s ease',
+                      transition: 'all 0.5s ease-in',
                       borderRadius: '8px',
                       display: 'flex',
                       alignItems: 'center',
@@ -91,62 +91,21 @@ const HowItWorksSection = () => {
                     //   paddingTop: '24px'
                     }}
                   >
-                    <Box sx={{marginBottom: '59px'}}>Box {index + 1}</Box>
-
-                    <Typography variant='body1' sx={{ 
-                        transform: 'rotate(90deg)'
-                    }}>Request Data</Typography>
+                    <Box sx={{marginBottom: '59px'}}>
+                    <Typography sx={{ 
+                        transform: hoveredIndex !== index ?  'rotate(90deg)' : 'rotate(0deg)', fontSize: hoveredIndex === index ? '32px' : '24px', fontWeight: 500, lineHeight: hoveredIndex === index ? '38px' : '28px'
+                    }}>{_.title}</Typography>
+                    </Box>
+                   {hoveredIndex === index &&  <Box sx={{marginBottom: '59px', px: '36px'}}>
+                    <Typography  sx={{lineHeight: '24px', fontWeight: 500, textAlign: 'center', color: '#C8C8C8'}}>{_.text} </Typography>
+                    </Box>
+}
+                  
                   </Box>
                 </Grid>
               ))}
             </Grid>
 
-            <StyledC.HowItWorksGrid>
-              <Grid container spacing={2}>
-                {Array.from({ length: 4 }).map((_, index) => (
-                  <Grid
-                    item
-                    key={index}
-                    md={12}
-                    onMouseEnter={() => handleMouseEnter(index)}
-                    onMouseLeave={handleMouseLeave}
-                    sx={{
-                      transition: 'flex-grow 0.3s ease',
-                      flexGrow: hoveredIndex === index ? 1 : 0,
-                      flexBasis: hoveredIndex === index ? '339px' : '124px',
-                      height: '200px', // Adjust height as needed
-                      background: 'var(--Grey-Grey-900, #1f1f1f)',
-                      backgroundColor: 'var(--Grey-Grey-900, #1f1f1f)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    {/* <StyledC.Div42>
-                  <StyledC.Heading5>01</StyledC.Heading5>
-                 {hoveredIndex === index && 
-                 <>
-                     <StyledC.Heading6>Request Data</StyledC.Heading6>
-                     <StyledC.Supportingtext15>
-                       Companies send data requests to users via email.
-                     </StyledC.Supportingtext15>
-                 
-                 </>
-                 }
-                </StyledC.Div42> */}
-                  </Grid>
-                ))}
-              </Grid>
-              <StyledC.Div41>
-                <StyledC.Div42>
-                  <StyledC.Heading5>01</StyledC.Heading5>
-                  <StyledC.Heading6>Request Data</StyledC.Heading6>
-                  <StyledC.Supportingtext15>
-                    Companies send data requests to users via email.
-                  </StyledC.Supportingtext15>
-                </StyledC.Div42>
-              </StyledC.Div41>
-            </StyledC.HowItWorksGrid>
           </StyledC.Headingandsupportingtext>
         </StyledC.HowitWorksContent>
       </StyledC.HowitWorksContainer>

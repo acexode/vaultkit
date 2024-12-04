@@ -1277,7 +1277,7 @@ export const Headersection = styled(Box)(({ theme }) => ({
 
 export const Container3 = styled(Box)(({ theme }) => ({
   display: 'flex',
-  width: '1280px',
+  width: '100%',
   maxWidth: '100%',
   flexDirection: 'column',
   justifyContent: 'start',
@@ -1300,10 +1300,12 @@ export const Content3 = styled(Box)(({ theme }) => ({
 
 export const Headingandsupportingtext2 = styled(Box)({
   display: 'flex',
-  width: '768px',
+  width: '100%',
   maxWidth: '100%',
   flexDirection: 'column',
-  justifyContent: 'start',
+  justifyContent: 'center',
+  alignItems: 'center',
+  textAlign: 'center'
 });
 
 export const Headingandsubheading = styled(Box)(({ theme }) => ({
@@ -1311,7 +1313,8 @@ export const Headingandsubheading = styled(Box)(({ theme }) => ({
   width: '100%',
   flexDirection: 'column',
   lineHeight: 1.2,
-  justifyContent: 'start',
+  justifyContent: 'center',
+  alignItems: 'center',
   [theme.breakpoints.down('md')]: {
     maxWidth: '100%',
   },
@@ -1330,8 +1333,8 @@ export const Badgegroup4 = styled(Box)(({ theme }) => ({
   whiteSpace: 'nowrap',
   textTransform: 'uppercase',
   letterSpacing: '0.56px',
-  justifyContent: 'start',
-  padding: '4px',
+  justifyContent: 'center',
+  padding: '5px 4px',
   font: '14px Matter, sans-serif',
   [theme.breakpoints.down('md')]: {
     whiteSpace: 'initial',
@@ -1377,7 +1380,7 @@ export const Section = styled(Box)(({ theme }) => ({
 
 export const Container4 = styled(Box)(({ theme }) => ({
   display: 'flex',
-  width: '1280px',
+  width: '100%',
   maxWidth: '100%',
   flexDirection: 'column',
   justifyContent: 'start',
@@ -1472,6 +1475,7 @@ export const Checkitems = styled(Box)({
 export const Checkitemtext = styled(Box)({
   display: 'flex',
   width: '100%',
+  marginTop: '16px',
   alignItems: 'start',
   gap: '12px',
   justifyContent: 'start',
@@ -1969,7 +1973,7 @@ export const FaQsection = styled(Box)(({ theme }) => ({
 
 export const Div46 = styled(Box)({
   display: 'flex',
-  width: '1280px',
+  width: '100%',
   maxWidth: '100%',
   flexDirection: 'column',
   justifyContent: 'start',
@@ -2444,7 +2448,7 @@ export const Img37 = styled('img')({
 export const Container7 = styled(Box)(({ theme }) => ({
   display: 'flex',
   marginTop: '64px',
-  width: '1280px',
+  width: '100%',
   maxWidth: '100%',
   flexDirection: 'column',
   fontWeight: 500,
@@ -2548,7 +2552,7 @@ export const Footer4 = styled(Box)(({ theme }) => ({
 
 export const Container8 = styled(Box)(({ theme }) => ({
   display: 'flex',
-  width: '1280px',
+  width: '100%',
   maxWidth: '100%',
   flexDirection: 'column',
   justifyContent: 'start',
@@ -2782,7 +2786,7 @@ export const Buttonbase23 = styled(Box)({
 export const Container9 = styled(Box)(({ theme }) => ({
   display: 'flex',
   marginTop: '64px',
-  width: '1280px',
+  width: '100%',
   maxWidth: '100%',
   flexDirection: 'column',
   color: 'var(--Grey-Grey-800, #343434)',

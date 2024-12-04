@@ -72,7 +72,7 @@ function MenuDesktopItem({ item, pathname, isHome, isOpen, isOffset, onOpen, onC
             display: 'flex',
             cursor: 'pointer',
             alignItems: 'center',
-            ...(isHome && { color: 'common.white' }),
+            ...(isHome && { color: 'common.primary' }),
             ...(isOffset && { color: 'text.primary' }),
             ...(isOpen && { opacity: 0.48 })
           }}
@@ -190,7 +190,7 @@ function MenuDesktopItem({ item, pathname, isHome, isOpen, isOffset, onOpen, onC
         href={path}
         target="_blank"
         sx={{
-          ...(isHome && { color: 'common.white' }),
+          ...(isHome && { color: 'common.primary' }),
           ...(isOffset && { color: 'text.primary' }),
           ...(isActive && { color: 'primary.main' })
         }}
@@ -205,7 +205,7 @@ function MenuDesktopItem({ item, pathname, isHome, isOpen, isOffset, onOpen, onC
       to={path}
       component={RouterLink}
       sx={{
-        ...(isHome && { color: 'common.white' }),
+        ...(isHome && { color: 'common.primary' }),
         ...(isOffset && { color: 'text.primary' }),
         ...(isActive && { color: 'primary.main' })
       }}
